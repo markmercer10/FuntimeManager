@@ -2,3 +2,5 @@
 modDatabase\.bas
 
 connection\.txt
+
+*.qif
