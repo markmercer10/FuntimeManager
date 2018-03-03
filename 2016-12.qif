@@ -1,0 +1,835 @@
+!Type:Bank
+D12/30/2016
+T-5.00
+N-
+POverdraft Protect. Fee 
+MOverdraft Protect. Fee 
+^
+D12/30/2016
+T-0.55
+N-
+POverdraft Charge    
+MOverdraft Charge    
+^
+D12/30/2016
+T-115.95
+N-
+PService Charge      
+MService Charge      
+^
+D12/30/2016
+T-500.00
+N20
+PCheque              
+MCheque              
+^
+D12/30/2016
+T833.00
+N-
+PMB-DEP
+MDeposit             
+^
+D12/30/2016
+T300.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/30/2016
+T440.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/30/2016
+T315.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/30/2016
+T268.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/29/2016
+T-150.00
+N21
+PCheque              
+MCheque              
+^
+D12/29/2016
+T-283.25
+N54
+PCheque              
+MCheque              
+^
+D12/29/2016
+T300.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/28/2016
+T-394.15
+N53
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-50.00
+N18
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-343.14
+N45
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-50.00
+N17
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-700.73
+N43
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-378.63
+N52
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-50.00
+N19
+PCheque              
+MCheque              
+^
+D12/28/2016
+T-505.34
+N44
+PCheque              
+MCheque              
+^
+D12/28/2016
+T300.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/28/2016
+T100.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/28/2016
+T80.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/28/2016
+T140.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/28/2016
+T-52.01
+N-
+PCIRCLE K / IRVING #QPS   ST JO
+MPOS Purchase        
+^
+D12/28/2016
+T-156.60
+N-
+PWAL-MART #3196           ST JO
+MPOS Purchase        
+^
+D12/28/2016
+T-214.50
+N-
+PCOSTCO WHOLESALE W539    ST JO
+MPOS Purchase        
+^
+D12/28/2016
+T236.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/23/2016
+T-2262.43
+N-
+PBANQUE DEVELOPPEMENT DU CANADA
+MBusiness PAD        
+^
+D12/23/2016
+T-50.00
+N22
+PCheque              
+MCheque              
+^
+D12/23/2016
+T-40.45
+N-
+PWHITBOURNE DRUG MART     WHITB
+MPOS Purchase        
+^
+D12/23/2016
+T-50.16
+N-
+PCIRCLE K / IRVING #212   WHITB
+MPOS Purchase        
+^
+D12/23/2016
+T220.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/23/2016
+T315.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/23/2016
+T660.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/23/2016
+T-994.00
+N-
+PMB-CREDIT CARD/LOC PAY.
+MCustomer Transfer Dr.  
+^
+D12/23/2016
+T14378.50
+N-
+PGOVT NF/LAB A/P              
+MAccounts Payable    
+^
+D12/22/2016
+T566.91
+N-
+PGOVT NF/LAB A/P              
+MAccounts Payable    
+^
+D12/21/2016
+T-5.00
+N-
+POverdrawn Handling Chg.
+MOverdrawn Handling Chg.
+^
+D12/21/2016
+T-700.73
+N37
+PCheque              
+MCheque              
+^
+D12/21/2016
+T-300.00
+N-
+PMB-TRANSFER
+MCustomer Transfer Dr.  
+^
+D12/21/2016
+T-550.84
+N-
+PSTAPLES #434             ST. J
+MPOS Purchase        
+^
+D12/21/2016
+T-128.77
+N-
+PCANADIAN TIRE #216       ST JO
+MPOS Purchase        
+^
+D12/21/2016
+T-141.19
+N-
+PWAL-MART #3015           CARBO
+MPOS Purchase        
+^
+D12/21/2016
+T-42.86
+N-
+PPITCHER'S TAKE-OUT & B   NEW H
+MPOS Purchase        
+^
+D12/20/2016
+T-25.96
+N-
+PFOODLAND #9214           WHITB
+MPOS Purchase        
+^
+D12/20/2016
+T-19.32
+N-
+PTIM HORTONS #5343# QTH   WHITB
+MPOS Purchase        
+^
+D12/20/2016
+T-8.63
+N-
+PSUBWAY # 58838           WHITB
+MPOS Purchase        
+^
+D12/20/2016
+T554.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/20/2016
+T300.00
+N-
+PPC-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/20/2016
+T220.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/20/2016
+T300.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/19/2016
+T-413.56
+N41
+PCheque              
+MCheque              
+^
+D12/19/2016
+T-320.95
+N42
+PCheque              
+MCheque              
+^
+D12/19/2016
+T-332.05
+N40
+PCheque              
+MCheque              
+^
+D12/19/2016
+T-505.34
+N38
+PCheque              
+MCheque              
+^
+D12/19/2016
+T-360.88
+N39
+PCheque              
+MCheque              
+^
+D12/19/2016
+T188.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/19/2016
+T-1.81
+N-
+PWAL-MART #3015           CARBO
+MPOS Purchase        
+^
+D12/19/2016
+T-105.51
+N-
+PWAL-MART #3015           CARBO
+MPOS Purchase        
+^
+D12/19/2016
+T-9.14
+N-
+PGREEN'S DRUG MART        DILDO
+MPOS Purchase        
+^
+D12/19/2016
+T140.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/19/2016
+T165.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/19/2016
+T70.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/19/2016
+T-40.17
+N-
+PPARADISE ESSO            PARAD
+MPOS Purchase        
+^
+D12/16/2016
+T236.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/16/2016
+T440.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/16/2016
+T-1.00
+N-
+PMB-EMAIL MONEY TRF
+MService Charge      
+^
+D12/16/2016
+T-90.00
+N-
+PMB-EMAIL MONEY TRF
+MDebit Memo          
+^
+D12/16/2016
+T315.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/16/2016
+T-91.01
+N-
+PFOODLAND #9214           WHITB
+MPOS Purchase        
+^
+D12/15/2016
+T-7.14
+N-
+PTIM HORTONS #5343# QTH   WHITB
+MPOS Purchase        
+^
+D12/15/2016
+T-17.22
+N-
+PNEEDS #426         QPS   TRINI
+MPOS Purchase        
+^
+D12/15/2016
+T-11.30
+N-
+PTHE INSIDE SCOOP         NEW H
+MPOS Purchase        
+^
+D12/15/2016
+T-23.78
+N-
+PGREEN'S DRUG MART        DILDO
+MPOS Purchase        
+^
+D12/15/2016
+T-19.15
+N-
+PTIM HORTONS #5343# QTH   WHITB
+MPOS Purchase        
+^
+D12/15/2016
+T50.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/14/2016
+T-233.35
+N36
+PCheque              
+MCheque              
+^
+D12/14/2016
+T-360.88
+N35
+PCheque              
+MCheque              
+^
+D12/14/2016
+T-23.13
+N-
+PTHE INSIDE SCOOP         NEW H
+MPOS Purchase        
+^
+D12/14/2016
+T-20.90
+N-
+PTREASURE TROVE EMPORIU   SOUTH
+MPOS Purchase        
+^
+D12/13/2016
+T486.00
+N-
+PMB-DEP
+MDeposit             
+^
+D12/13/2016
+T15.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T50.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T150.00
+N-
+PPC-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T140.00
+N-
+PPC-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T315.00
+N-
+PPC-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T300.00
+N-
+PPC-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/13/2016
+T-40.14
+N-
+PTIM HORTONS #5343# QTH   WHITB
+MPOS Purchase        
+^
+D12/13/2016
+T-13.56
+N-
+PCIRCLE K / IRVING #212   WHITB
+MPOS Purchase        
+^
+D12/12/2016
+T-399.69
+N33
+PCheque              
+MCheque              
+^
+D12/12/2016
+T-700.73
+N25
+PCheque              
+MCheque              
+^
+D12/12/2016
+T-505.34
+N32
+PCheque              
+MCheque              
+^
+D12/12/2016
+T-387.50
+N34
+PCheque              
+MCheque              
+^
+D12/12/2016
+T-379.93
+N-
+PCOSTCO WHOLESALE W539    ST JO
+MPOS Purchase        
+^
+D12/12/2016
+T295.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/12/2016
+T172.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/9/2016
+T-700.73
+N16
+PCheque              
+MCheque              
+^
+D12/9/2016
+T-700.73
+N31
+PCheque              
+MCheque              
+^
+D12/9/2016
+T-700.73
+N19
+PCheque              
+MCheque              
+^
+D12/9/2016
+T-1.00
+N-
+PMB-EMAIL MONEY TRF
+MService Charge      
+^
+D12/9/2016
+T-415.00
+N-
+PMB-EMAIL MONEY TRF
+MDebit Memo          
+^
+D12/9/2016
+T220.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/9/2016
+T70.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/9/2016
+T150.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/8/2016
+T-329.83
+N30
+PCheque              
+MCheque              
+^
+D12/8/2016
+T300.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/8/2016
+T220.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/8/2016
+T-271.08
+N-
+PNEEDS #426         QPS   TRINI
+MPOS Purchase        
+^
+D12/8/2016
+T-62.67
+N-
+PDILDO FRESHMART          DILDO
+MPOS Purchase        
+^
+D12/8/2016
+T-74.52
+N-
+PPITCHER'S TAKE-OUT & B   NEW H
+MPOS Purchase        
+^
+D12/8/2016
+T-180.49
+N-
+PCANADIAN TIRE #217       CARBO
+MPOS Purchase        
+^
+D12/8/2016
+T-311.65
+N-
+PDOLLARAMA # 765          CARBO
+MPOS Purchase        
+^
+D12/7/2016
+T-11.59
+N-
+PNORTH ATLANTIC PETROLE   WHITB
+MPOS Purchase        
+^
+D12/7/2016
+T-89.82
+N-
+PMONTY'S PLACE            WHITE
+MPOS Purchase        
+^
+D12/7/2016
+T140.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/7/2016
+T-52.10
+N-
+PN ATLANTIC PETROLEUM P   WHITB
+MPOS Purchase        
+^
+D12/7/2016
+T-26.97
+N-
+PCIRCLE K / IRVING #212   WHITB
+MPOS Purchase        
+^
+D12/6/2016
+T-700.73
+N10
+PCheque              
+MCheque              
+^
+D12/6/2016
+T4862.75
+N-
+PEASTERN REGIONAL HEALTH AUTHOR
+MProv. Family Ben.   
+^
+D12/6/2016
+T60.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/6/2016
+T50.00
+N-
+PMB-TRANSFER
+MCustomer Transfer Cr.  
+^
+D12/6/2016
+T50.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/5/2016
+T-477.32
+N29
+PCheque              
+MCheque              
+^
+D12/5/2016
+T-190.28
+N27
+PCheque              
+MCheque              
+^
+D12/5/2016
+T-505.34
+N26
+PCheque              
+MCheque              
+^
+D12/5/2016
+T-343.14
+N28
+PCheque              
+MCheque              
+^
+D12/5/2016
+T-441.15
+N-
+PJUNGLE JIM'S- BAY ROBE   BAY R
+MPOS Purchase        
+^
+D12/5/2016
+T-332.30
+N-
+PCOSTCO WHOLESALE W539    ST JO
+MPOS Purchase        
+^
+D12/5/2016
+T280.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/5/2016
+T172.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/2/2016
+T470.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/2/2016
+T420.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/2/2016
+T-27.19
+N-
+PMARY BROWN'S #1050       WHITB
+MPOS Purchase        
+^
+D12/2/2016
+T-19.56
+N-
+PCIRCLE K / IRVING #212   WHITB
+MPOS Purchase        
+^
+D12/2/2016
+T220.00
+N-
+PMB-EMAIL MONEY TRF
+MCredit Memo         
+^
+D12/1/2016
+T-10.00
+N-
+PScotiaBusinessLoanProtection 
+MInsurance           
+^
+D12/1/2016
+T-2.00
+N-
+PGOVERNMENT TAX PAYMENTS      
+MBill Payment        
+^
+D12/1/2016
+T-135.00
+N-
+PMB-TRANSFER
+MCustomer Transfer Dr.  
+^
