@@ -550,6 +550,9 @@ Attribute VB_Exposed = False
 ' -Runtime error middle initial too many characters
 ' -Fee class update popup doesn't change amount!
 
+' v2.2.1 - Apr 17, 2018
+' -Added sick as option in attendance.
+'  ALTER TABLE `funtime`.`attendance` ADD COLUMN `sick` TINYINT(1) NULL DEFAULT 0 AFTER `attended`;
 
 Private timeout_counter As Long
 Private listButtons(30) As Control
@@ -574,11 +577,11 @@ End Sub
 
 
 Private Sub adminButn_Click()
-    'If Not RIDE Then
+    If Not RIDE Then
         dlgPassword.Show 1
-    'Else
-    '    authenticated = True
-    'End If
+    Else
+        authenticated = True
+    End If
     
     If authenticated Then admin_enable
 End Sub
