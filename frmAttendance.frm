@@ -13,7 +13,7 @@ Begin VB.Form frmAttendance
    MinButton       =   0   'False
    ScaleHeight     =   8610
    ScaleWidth      =   8160
-   StartUpPosition =   3  'Windows Default
+   StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton printButn 
       Caption         =   "Print"
       Height          =   372
@@ -104,7 +104,7 @@ Begin VB.Form frmAttendance
          _Version        =   393216
          CalendarTitleBackColor=   16764006
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   75169795
+         Format          =   165806083
          CurrentDate     =   42536
       End
       Begin MSComCtl2.DTPicker dpTo 
@@ -118,7 +118,7 @@ Begin VB.Form frmAttendance
          _Version        =   393216
          CalendarTitleBackColor=   16764006
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   75169795
+         Format          =   165806083
          CurrentDate     =   42536
       End
       Begin VB.Label Label2 
@@ -361,27 +361,27 @@ End Sub
 
 
 Private Sub Form_Load()
-    Dim y As Long
+    Dim Y As Long
     Dim cl As ADODB.Recordset
     Dim ddiff As Long
-    For y = 2016 To Year(Date)
-        cboYear.AddItem y
-        cboYearMo.AddItem y
-    Next y
+    For Y = 2016 To year(Date)
+        cboYear.AddItem Y
+        cboYearMo.AddItem Y
+    Next Y
     dpTo = Date
     dpFrom = Date '- 7
     ddiff = Weekday(dpFrom.value) - 2
     dpFrom = dpFrom.value - ddiff
     
-    For y = 1 To 3 'reusing y variable just as an int
-        Frame(y).Top = Frame(0).Top
-        Frame(y).Left = Frame(0).Left
-    Next y
+    For Y = 1 To 3 'reusing y variable just as an int
+        Frame(Y).Top = Frame(0).Top
+        Frame(Y).Left = Frame(0).Left
+    Next Y
     
-    For y = 1 To 7 'reusing y variable just as an int again
-        col_width(y) = ListView.ColumnHeaders(y).width
-        col_label(y) = ListView.ColumnHeaders(y).Text
-    Next y
+    For Y = 1 To 7 'reusing y variable just as an int again
+        col_width(Y) = ListView.ColumnHeaders(Y).width
+        col_label(Y) = ListView.ColumnHeaders(Y).Text
+    Next Y
 
     
     Set cl = db.Execute("SELECT * FROM clients ORDER BY last, first ASC")
@@ -389,7 +389,7 @@ Private Sub Form_Load()
         If Not (.EOF And .BOF) Then
             .MoveFirst
             Do Until .EOF
-                cboClient.AddItem "(" & Trim(str(!idclient)) & ") " & !Last & ", " & !First
+                cboClient.AddItem "(" & Trim(str(!idClient)) & ") " & !Last & ", " & !First
                 .MoveNext
             Loop
         End If
@@ -398,14 +398,14 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub ListView_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    If ListView.SortKey = ColumnHeader.index - 1 Then
+    If ListView.SortKey = ColumnHeader.Index - 1 Then
         If ListView.SortOrder = lvwAscending Then
             ListView.SortOrder = lvwDescending
         Else
             ListView.SortOrder = lvwAscending
         End If
     Else
-        ListView.SortKey = ColumnHeader.index - 1
+        ListView.SortKey = ColumnHeader.Index - 1
     End If
     ListView.Sorted = True
 End Sub
@@ -431,45 +431,45 @@ Private Sub Timer1_Timer()
     
 End Sub
 
-Private Sub viewOptions_Click(index As Integer)
+Private Sub viewOptions_Click(Index As Integer)
     Dim f As Long
     Dim i As Long
     
     ListView.ListItems.Clear
-    selected_view = index
+    selected_view = Index
     
     For f = 0 To 3
         Frame(f).Visible = False
     Next f
-    i = index
+    i = Index
     If i >= 2 Then i = i - 1 ' this is the mechanism that allows the use of frame(1) for button (1) and (2)
     If i <= 3 Then Frame(i).Visible = True ' this is the mechanism that makes sure you dont refer to a frame that doesn't exist
     
-    If index = 0 And cboClient.ListIndex >= 0 Then 'client
+    If Index = 0 And cboClient.ListIndex >= 0 Then 'client
         fillByClient
-    ElseIf index = 1 And dpFrom <= dpTo Then 'date
+    ElseIf Index = 1 And dpFrom <= dpTo Then 'date
         chkUnpaid.Visible = True
         fillByDate
-    ElseIf index = 2 And dpFrom <= dpTo Then 'fee class
+    ElseIf Index = 2 And dpFrom <= dpTo Then 'fee class
         chkUnpaid.Visible = False
         fillByFeeClass
-    ElseIf index = 3 And cboMonth.ListIndex > -1 And cboYear.ListIndex > -1 Then   'day
+    ElseIf Index = 3 And cboMonth.ListIndex > -1 And cboYear.ListIndex > -1 Then   'day
         fillByDays
-    ElseIf index = 4 And cboYear.ListIndex > -1 Then   'month
+    ElseIf Index = 4 And cboYear.ListIndex > -1 Then   'month
         'fillByMonth
-    ElseIf index = 5 Then    'year
+    ElseIf Index = 5 Then    'year
         'fillByYear
     End If
     
-    If index = 1 And dpFrom < dpTo Then 'date
+    If Index = 1 And dpFrom < dpTo Then 'date
         
     End If
     
-    If index = 2 And cboMonth.ListIndex >= 0 And cboYearMo.ListIndex >= 0 Then 'month
+    If Index = 2 And cboMonth.ListIndex >= 0 And cboYearMo.ListIndex >= 0 Then 'month
         
     End If
     
-    If index = 3 And cboYear.ListIndex >= 0 Then 'year
+    If Index = 3 And cboYear.ListIndex >= 0 Then 'year
         
     End If
     
@@ -484,13 +484,13 @@ Sub fillByClient()
     Dim clientID As Long
     Dim att As ADODB.Recordset
     Dim li As ListItem
-    Dim y As Long ' way to go! now I'm using y here too!!
+    Dim Y As Long ' way to go! now I'm using y here too!!
     Dim unpaid As String
     
-    For y = 1 To 7
-        ListView.ColumnHeaders(y).width = col_width(y)
-        ListView.ColumnHeaders(y).Text = col_label(y)
-    Next y
+    For Y = 1 To 7
+        ListView.ColumnHeaders(Y).width = col_width(Y)
+        ListView.ColumnHeaders(Y).Text = col_label(Y)
+    Next Y
     
     clientID = getClientID(cboClient.Text)
     
@@ -531,13 +531,13 @@ End Sub
 Sub fillByDate()
     Dim att As ADODB.Recordset
     Dim li As ListItem
-    Dim y As Long ' way to go! now I'm using y here too!!
+    Dim Y As Long ' way to go! now I'm using y here too!!
     Dim unpaid As String
     
-    For y = 1 To 7
-        ListView.ColumnHeaders(y).width = col_width(y)
-        ListView.ColumnHeaders(y).Text = col_label(y)
-    Next y
+    For Y = 1 To 7
+        ListView.ColumnHeaders(Y).width = col_width(Y)
+        ListView.ColumnHeaders(Y).Text = col_label(Y)
+    Next Y
     
     If chkUnpaid Then
         unpaid = " AND paid=0"

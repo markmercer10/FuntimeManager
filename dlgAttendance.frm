@@ -162,6 +162,46 @@ Begin VB.Form frmAttendanceEntry
       TabIndex        =   1
       Top             =   0
       Width           =   12252
+      Begin VB.CheckBox chkAttended 
+         Caption         =   "Absent"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000FF&
+         Height          =   405
+         Index           =   0
+         Left            =   3360
+         Style           =   1  'Graphical
+         TabIndex        =   6
+         Top             =   615
+         Width           =   1092
+      End
+      Begin VB.CheckBox chkSick 
+         Caption         =   "Sick"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000FF&
+         Height          =   405
+         Index           =   0
+         Left            =   4440
+         Style           =   1  'Graphical
+         TabIndex        =   25
+         Top             =   615
+         Width           =   975
+      End
       Begin VB.CheckBox chkExistsOld 
          ForeColor       =   &H0000FF00&
          Height          =   288
@@ -209,69 +249,49 @@ Begin VB.Form frmAttendanceEntry
       Begin MSComCtl2.DTPicker signin 
          Height          =   405
          Index           =   0
-         Left            =   4440
+         Left            =   5400
          TabIndex        =   7
          Top             =   615
-         Width           =   1455
-         _ExtentX        =   2566
+         Width           =   975
+         _ExtentX        =   1720
          _ExtentY        =   714
          _Version        =   393216
          Enabled         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
-            Size            =   9.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         CustomFormat    =   "h:mm"
-         Format          =   55508994
+         CustomFormat    =   "hh:mm"
+         Format          =   165806083
          CurrentDate     =   42533
-      End
-      Begin VB.CheckBox chkAttended 
-         Caption         =   "Absent"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   11.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H000000FF&
-         Height          =   405
-         Index           =   0
-         Left            =   3360
-         Style           =   1  'Graphical
-         TabIndex        =   6
-         Top             =   615
-         Width           =   1092
       End
       Begin MSComCtl2.DTPicker signout 
          Height          =   405
          Index           =   0
-         Left            =   5880
+         Left            =   6360
          TabIndex        =   8
          Top             =   615
-         Width           =   1455
-         _ExtentX        =   2566
+         Width           =   975
+         _ExtentX        =   1720
          _ExtentY        =   714
          _Version        =   393216
          Enabled         =   0   'False
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
-            Size            =   9.75
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         CustomFormat    =   "h:mm"
-         Format          =   339607554
+         CustomFormat    =   "hh:mm"
+         Format          =   165806083
          CurrentDate     =   42533
       End
       Begin VB.Label labSADELETE 
@@ -413,7 +433,7 @@ Begin VB.Form frmAttendanceEntry
          Strikethrough   =   0   'False
       EndProperty
       MonthBackColor  =   16777215
-      StartOfWeek     =   339607553
+      StartOfWeek     =   165806081
       TitleBackColor  =   16755302
       CurrentDate     =   42533
    End
@@ -643,6 +663,7 @@ Sub fillAttendanceData()
         chkExists(Index).Tag = 0
         chkExists_chg (Index)
         chkAttended(Index) = 0
+        chkSick(Index) = 0
         signin(Index) = CDate("8:00")
         signout(Index) = CDate("17:00")
         chkPaid(Index) = 0
@@ -657,6 +678,7 @@ Sub fillAttendanceData()
                         chkExists(Index).Tag = 1
                         chkExists_chg (Index)
                         chkAttended(Index) = !attended
+                        chkSick(Index) = !sick
                         signin(Index) = !signin
                         signout(Index) = !signout
                         chkPaid(Index) = !paid
@@ -735,6 +757,7 @@ Private Sub chkAttended_Click(Index As Integer)
         signin(Index).Enabled = True
         signout(Index).Enabled = True
         chkPaid(Index).Enabled = True
+        chkAttended(Index).width = 2067
         
         'chk if this attended day is already paid on a receipt.  if so automatically set it to paid.
         Dim q As ADODB.Recordset
@@ -752,6 +775,7 @@ Private Sub chkAttended_Click(Index As Integer)
         signin(Index).Enabled = False
         signout(Index).Enabled = False
         chkPaid(Index).Enabled = False
+        chkAttended(Index).width = 1092
     End If
     Changed = True
     saved.Visible = False
@@ -781,6 +805,14 @@ End Sub
 
 
 
+
+Private Sub chkSick_Click(Index As Integer)
+    If chkSick(Index).value = 1 Then
+        chkSick(Index).forecolor = vbGreen
+    Else
+        chkSick(Index).forecolor = vbRed
+    End If
+End Sub
 
 Private Sub Form_Load()
     lastloaded = 0
@@ -963,6 +995,7 @@ Private Sub SaveButn_Click()
             'update
             sql = "UPDATE attendance SET "
             sql = sql & "attended=" & chkAttended(Index).value & ","
+            sql = sql & "sick=" & chkSick(Index).value & ","
             sql = sql & "signin=" & sqlTime(signin(Index).value) & ","
             sql = sql & "signout=" & sqlTime(signout(Index).value) & ","
             sql = sql & "paid=" & chkPaid(Index).value
@@ -971,11 +1004,12 @@ Private Sub SaveButn_Click()
         Else
             'insert
             sql = "INSERT INTO attendance "
-            sql = sql & "(idClient,date,attended,signin,signout,paid)"
+            sql = sql & "(idClient,date,attended,sick,signin,signout,paid)"
             sql = sql & " VALUES ("
             sql = sql & labClient(Index).Tag & ","
             sql = sql & sqlDate(MonthView.value) & ","
             sql = sql & chkAttended(Index).value & ","
+            sql = sql & chkSick(Index).value & ","
             sql = sql & sqlTime(signin(Index).value) & ","
             sql = sql & sqlTime(signout(Index).value) & ","
             sql = sql & chkPaid(Index).value
@@ -1057,6 +1091,9 @@ Sub newLine(ByVal Index As Long, ByVal section As Byte)
     Load chkAttended(Index)
         chkAttended(Index).Top = lineTop
         chkAttended(Index).Visible = True
+    Load chkSick(Index)
+        chkSick(Index).Top = lineTop
+        chkSick(Index).Visible = True
     Load signin(Index)
         signin(Index).Top = lineTop
         signin(Index).Visible = True
