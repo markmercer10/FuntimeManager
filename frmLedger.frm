@@ -14,6 +14,82 @@ Begin VB.Form frmLedger
    ScaleHeight     =   12855
    ScaleWidth      =   10230
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ComboBox cboYear 
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      ItemData        =   "frmLedger.frx":0000
+      Left            =   2400
+      List            =   "frmLedger.frx":0007
+      Style           =   2  'Dropdown List
+      TabIndex        =   20
+      Top             =   120
+      Width           =   1215
+   End
+   Begin MSComctlLib.ListView ListViewFiltered 
+      Height          =   1695
+      Left            =   0
+      TabIndex        =   19
+      Top             =   840
+      Visible         =   0   'False
+      Width           =   3135
+      _ExtentX        =   5530
+      _ExtentY        =   2990
+      View            =   3
+      LabelWrap       =   -1  'True
+      HideSelection   =   0   'False
+      FullRowSelect   =   -1  'True
+      GridLines       =   -1  'True
+      _Version        =   393217
+      ForeColor       =   -2147483640
+      BackColor       =   255
+      BorderStyle     =   1
+      Appearance      =   1
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      NumItems        =   5
+      BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Text            =   "Date"
+         Object.Width           =   2540
+      EndProperty
+      BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   1
+         Text            =   "Description"
+         Object.Width           =   7056
+      EndProperty
+      BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
+         SubItemIndex    =   2
+         Text            =   "Debit"
+         Object.Width           =   2540
+      EndProperty
+      BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
+         SubItemIndex    =   3
+         Text            =   "Credit"
+         Object.Width           =   2540
+      EndProperty
+      BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
+         SubItemIndex    =   4
+         Text            =   "Balance"
+         Object.Width           =   2540
+      EndProperty
+   End
    Begin MSComctlLib.ProgressBar ProgressBar 
       Height          =   495
       Left            =   2040
@@ -29,7 +105,7 @@ Begin VB.Form frmLedger
    Begin VB.CommandButton printButn 
       Height          =   495
       Left            =   8040
-      Picture         =   "frmLedger.frx":0000
+      Picture         =   "frmLedger.frx":0016
       Style           =   1  'Graphical
       TabIndex        =   16
       Top             =   120
@@ -168,7 +244,7 @@ Begin VB.Form frmLedger
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   167510019
+         Format          =   167575555
          CurrentDate     =   42718
       End
       Begin VB.Label Label3 
@@ -377,13 +453,13 @@ Begin VB.Form frmLedger
          Strikethrough   =   0   'False
       EndProperty
       Height          =   375
-      ItemData        =   "frmLedger.frx":2ED7
+      ItemData        =   "frmLedger.frx":2EED
       Left            =   0
-      List            =   "frmLedger.frx":2ED9
+      List            =   "frmLedger.frx":2EEF
       Style           =   2  'Dropdown List
       TabIndex        =   1
       Top             =   120
-      Width           =   3615
+      Width           =   2295
    End
    Begin VB.CommandButton adjustButn 
       Caption         =   "Add Adjustment"
@@ -478,7 +554,17 @@ Private Sub Form_Load()
         cboClient.ListIndex = 0
     End If
     Set cl = Nothing
+    
+    For y = 2015 To year(Date)
+        cboYear.AddItem y
+    Next y
+    cboYear.ListIndex = 0
 
+    ListViewFiltered.Left = ListView.Left
+    ListViewFiltered.Top = ListView.Top
+    ListViewFiltered.width = ListView.width
+    ListViewFiltered.height = ListView.height
+    
 End Sub
 
 Function getClientID(ByVal s As String) As Long
@@ -495,6 +581,7 @@ Sub updateListview()
     Dim sc As ADODB.Recordset
     Dim ad As ADODB.Recordset
     Dim li As ListItem
+    Dim fli As ListItem
     Dim d As Date
     Dim tempdate As Date
     Dim nextbill As Date
@@ -508,6 +595,7 @@ Sub updateListview()
     Dim pmnote As String
     Dim daysperweek As Byte
     Dim day As Byte
+    Dim si As ListSubItem
     
     ListView.ListItems.Clear
     bal = 0
@@ -646,6 +734,24 @@ Sub updateListview()
             Next i
         End If
     End With
+    
+    If cboYear.ListIndex <> 0 Then 'a year is selected
+        ListViewFiltered.ListItems.Clear
+        For Each li In ListView.ListItems
+            If li.Text <> "" Then
+                If year(CDate(li.Text)) = val(cboYear.Text) Then
+                    fli = ListViewFiltered.ListItems.Add(, , li.Text)
+                    For Each si In li.ListSubItems
+                        fli.ListSubItems.Add si.Index, si.key, si.Text
+                    Next si
+                End If
+            End If
+        Next li
+        ListViewFiltered.Visible = True
+    Else
+        ListViewFiltered.Visible = False
+    End If
+    
     Set ad = Nothing
     Set sc = Nothing
     Set cl = Nothing

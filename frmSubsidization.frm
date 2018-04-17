@@ -894,7 +894,7 @@ Private Sub FlexGrid_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub FlexGrid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+Private Sub FlexGrid_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
     editCell.Visible = False
 End Sub
 
@@ -911,9 +911,9 @@ Private Sub Form_Load()
     'MsgBox getFeesAtDate(37, CDate("Aug 1, 2016"))
     cboMonth.ListIndex = month(Date) - 1 ' set it to this month
     If month(Date) > 1 Then cboMonth.ListIndex = cboMonth.ListIndex - 1 ' if it's not january set it to last month
-    For y = 2016 To year(Date)
-        cboYear.AddItem y
-    Next y
+    For Y = 2016 To year(Date)
+        cboYear.AddItem Y
+    Next Y
     cboYear.ListIndex = cboYear.ListCount - 1
     
     Set q = db.Execute("SELECT * FROM subsidy ORDER BY year DESC, month DESC")
@@ -1064,7 +1064,11 @@ Sub fillData()
                                             FlexGrid.TextMatrix(i, 37) = val(FlexGrid.TextMatrix(i, 37)) + 1
                                         Else
                                             If atn!attended = 0 Then
-                                                FlexGrid.TextMatrix(i, c) = "A" ' CHILD MARKED AS ABSENT TODAY
+                                                If atn!sick = 1 Then
+                                                    FlexGrid.TextMatrix(i, c) = "S" ' CHILD MARKED AS SICK TODAY
+                                                Else
+                                                    FlexGrid.TextMatrix(i, c) = "A" ' CHILD MARKED AS ABSENT TODAY
+                                                End If
                                                 FlexGrid.TextMatrix(i, 37) = val(FlexGrid.TextMatrix(i, 37)) + 1
                                             Else 'ATTENDED
                                                 'MsgBox atn!signin & "  " & Hour(atn!signin)
@@ -1175,7 +1179,7 @@ Sub loadData(ByVal Mo As Byte, ByVal yr As Long)
     Dim cl As ADODB.Recordset
     Dim subs_id As Long
     Dim days As String
-    Dim st As StringTokenizer
+    Dim ST As StringTokenizer
     Dim tok As String
     Dim j As Byte
     
@@ -1217,10 +1221,10 @@ Sub loadData(ByVal Mo As Byte, ByVal yr As Long)
                 
                 j = 1
                 days = !day_codes
-                Set st = New StringTokenizer
-                st.Init days, ","
-                Do Until Not st.hasMoreTokens
-                    tok = st.nextToken
+                Set ST = New StringTokenizer
+                ST.Init days, ","
+                Do Until Not ST.hasMoreTokens
+                    tok = ST.nextToken
                     FlexGrid.TextMatrix(i, j) = tok
                     j = j + 1
                 Loop
@@ -1262,7 +1266,7 @@ Sub loadData(ByVal Mo As Byte, ByVal yr As Long)
     Set cl = Nothing
     Set subs = Nothing
     Set subs_ent = Nothing
-    Set st = Nothing
+    Set ST = Nothing
 End Sub
 
 Sub tallys()
@@ -1359,7 +1363,7 @@ End Sub
 
 Sub initFlexgrid()
     Dim c As Long
-    Dim y As Long
+    Dim Y As Long
     
     FlexGrid.Clear
     clientList.Clear
