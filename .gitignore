@@ -4,3 +4,7 @@ modDatabase\.bas
 connection\.txt
 
 *.qif
+
+*.exe
+
+*.vbw
