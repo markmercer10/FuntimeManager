@@ -267,7 +267,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm"
-         Format          =   165806083
+         Format          =   165609475
          CurrentDate     =   42533
       End
       Begin MSComCtl2.DTPicker signout 
@@ -291,7 +291,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm"
-         Format          =   165806083
+         Format          =   165609475
          CurrentDate     =   42533
       End
       Begin VB.Label labSADELETE 
@@ -433,7 +433,7 @@ Begin VB.Form frmAttendanceEntry
          Strikethrough   =   0   'False
       EndProperty
       MonthBackColor  =   16777215
-      StartOfWeek     =   165806081
+      StartOfWeek     =   165609473
       TitleBackColor  =   16755302
       CurrentDate     =   42533
    End
