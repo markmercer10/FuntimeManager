@@ -212,6 +212,35 @@ Function getPayperiodAtDate(ByVal client As Long, ByVal d As Date) As Long
     Set q = Nothing
 End Function
 
+Function getParents(ByVal client As Long) As ADODB.Recordset
+    Set getParents = db.Execute("SELECT * FROM client_contacts INNER JOIN contacts ON (client_contacts.idContact = contacts.idContact) WHERE idClient = " & client & " AND type=""Parent""")
+End Function
+
+Function getEmergency(ByVal client As Long) As ADODB.Recordset
+    Set getEmergency = db.Execute("SELECT * FROM client_contacts INNER JOIN contacts ON (client_contacts.idContact = contacts.idContact) WHERE idClient = " & client & " AND type=""Emergency""")
+End Function
+
+Function getDoctor(ByVal client As Long) As ADODB.Recordset
+    Set getDoctor = db.Execute("SELECT * FROM client_contacts INNER JOIN contacts ON (client_contacts.idContact = contacts.idContact) WHERE idClient = " & client & " AND type=""Doctor""")
+End Function
+
+Function getBestContactInfo(ByVal contact As Long) As String
+    Dim c As ADODB.Recordset
+    Set c = db.Execute("SELECT * FROM contacts WHERE idContact = " & contact)
+    If Not (c.EOF And c.BOF) Then
+        c.MoveFirst
+        If ("" & c!cell) <> "" Then
+            getBestContactInfo = c!cell
+        ElseIf ("" & c!land) <> "" Then
+            getBestContactInfo = c!land
+        ElseIf ("" & c!email) <> "" Then
+            getBestContactInfo = c!email
+        Else
+            getBestContactInfo = ""
+        End If
+    End If
+End Function
+
 Function getRoomAtDate(ByVal client As Long, ByVal d As Date) As String
     Dim q As ADODB.Recordset
     Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
@@ -233,6 +262,34 @@ Function getSubsidizedAtDate(ByVal client As Long, ByVal d As Date) As Long
         If Not (.EOF And .BOF) Then
             .MoveFirst
             getSubsidizedAtDate = !subsidized
+        End If
+    End With
+    Set q = Nothing
+End Function
+
+Function getStartDateAtDate(ByVal client As Long, ByVal d As Date) As Date
+    Dim q As ADODB.Recordset
+    getStartDateAtDate = ""
+    Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
+    If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
+    With q
+        If Not (.EOF And .BOF) Then
+            .MoveFirst
+            getStartDateAtDate = !startDate
+        End If
+    End With
+    Set q = Nothing
+End Function
+
+Function getEndDateAtDate(ByVal client As Long, ByVal d As Date) As Date
+    Dim q As ADODB.Recordset
+    getEndDateAtDate = ""
+    Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
+    If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
+    With q
+        If Not (.EOF And .BOF) Then
+            .MoveFirst
+            getEndDateAtDate = !endDate
         End If
     End With
     Set q = Nothing
@@ -279,7 +336,7 @@ End Function
 
 
 Sub ShellSort(arr As Variant, numEls As Long, descending As Boolean)
-    Dim Index As Long, index2 As Long, firstItem As Long
+    Dim index As Long, index2 As Long, firstItem As Long
     Dim distance As Long, value As Variant
     
     ' Exit if it is not an array.
@@ -294,9 +351,9 @@ Sub ShellSort(arr As Variant, numEls As Long, descending As Boolean)
     ' Sort the array.
     Do
         distance = distance \ 3
-        For Index = distance + firstItem To numEls + firstItem - 1
-            value = arr(Index)
-            index2 = Index
+        For index = distance + firstItem To numEls + firstItem - 1
+            value = arr(index)
+            index2 = index
             Do While (arr(index2 - distance) > value) Xor descending
                 arr(index2) = arr(index2 - distance)
                 index2 = index2 - distance
@@ -367,8 +424,27 @@ Sub check_for_client_changes()
             Unload dlgAgeChange
         End If
     End With
-    
-    
+End Sub
+
+Sub insertClientChange(changedate As Date, idClient As Long, feeClassID As Long, fees As String, payperiod As Byte, room As String, subsidized As Byte, authorizationNumber As String, parentalContribution As Double, startDate As Variant, endDate As Variant, active As Byte)
+    sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, authorizationNumber, parentalContribution, startDate, endDate, active) VALUES ("
+    sql = sql & sqlDate(changedate) & ","
+    sql = sql & idClient & ","
+    sql = sql & feeClassID & ","
+    sql = sql & fees & ","
+    sql = sql & payperiod & ","
+    sql = sql & """" & room & ""","
+    sql = sql & subsidized & ","
+    sql = sql & """" & authorizationNumber & ""","
+    sql = sql & parentalContribution & ","
+    sql = sql & sqlDate(startDate) & ","
+    If IsNull(endDate) Then
+        sql = sql & "NULL ,"
+    Else
+        sql = sql & sqlDate(endDate) & ","
+    End If
+    sql = sql & active & ")"
+    db.Execute sql
 End Sub
 
 Function isSchoolAgeClass(ByVal feeClassID As Long) As Boolean

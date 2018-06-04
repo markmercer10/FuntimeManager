@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form frmClients 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Clients"
@@ -14,13 +14,21 @@ Begin VB.Form frmClients
    ScaleHeight     =   6225
    ScaleWidth      =   18330
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton ButnClientLabels 
+      Caption         =   "Client Labels"
+      Height          =   615
+      Left            =   2760
+      TabIndex        =   7
+      Top             =   0
+      Width           =   1575
+   End
    Begin VB.CommandButton butnChanges 
       Caption         =   "Client Changes"
       Height          =   615
       Left            =   1200
       TabIndex        =   6
       Top             =   0
-      Width           =   1695
+      Width           =   1575
    End
    Begin VB.CommandButton listButn 
       Caption         =   "Print List of Active Clients"
@@ -40,13 +48,13 @@ Begin VB.Form frmClients
       _ExtentY        =   529
       _Version        =   393216
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   158793731
+      Format          =   123863043
       CurrentDate     =   42536
    End
    Begin VB.CheckBox chkActive 
       Caption         =   "Display only active clients"
       Height          =   252
-      Left            =   3120
+      Left            =   4440
       TabIndex        =   2
       Top             =   240
       Value           =   1  'Checked
@@ -75,7 +83,7 @@ Begin VB.Form frmClients
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
-      NumItems        =   18
+      NumItems        =   16
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "ID"
          Object.Width           =   0
@@ -97,71 +105,64 @@ Begin VB.Form frmClients
       EndProperty
       BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   4
-         Text            =   "Phone Number"
+         Text            =   "DOB"
          Object.Width           =   2540
       EndProperty
       BeginProperty ColumnHeader(6) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   5
-         Text            =   "Parent 1"
-         Object.Width           =   2540
-      EndProperty
-      BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   6
-         Text            =   "Parent 2"
-         Object.Width           =   2540
-      EndProperty
-      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   7
-         Text            =   "Emergency Cont."
-         Object.Width           =   3528
-      EndProperty
-      BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   8
-         Text            =   "DOB"
-         Object.Width           =   2540
-      EndProperty
-      BeginProperty ColumnHeader(10) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   9
          Text            =   "Age"
          Object.Width           =   970
       EndProperty
+      BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   6
+         Text            =   "Gender"
+         Object.Width           =   758
+      EndProperty
+      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   7
+         Text            =   "MCP Number"
+         Object.Width           =   2540
+      EndProperty
+      BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   8
+         Text            =   "Allergies"
+         Object.Width           =   4304
+      EndProperty
+      BeginProperty ColumnHeader(10) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
+         SubItemIndex    =   9
+         Text            =   "Fees"
+         Object.Width           =   1235
+      EndProperty
       BeginProperty ColumnHeader(11) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   10
-         Text            =   "gender"
-         Object.Width           =   776
-      EndProperty
-      BeginProperty ColumnHeader(12) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   11
-         Text            =   "Fees"
-         Object.Width           =   1058
-      EndProperty
-      BeginProperty ColumnHeader(13) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   12
          Text            =   "Start Date"
          Object.Width           =   2540
       EndProperty
-      BeginProperty ColumnHeader(14) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   13
+      BeginProperty ColumnHeader(12) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   11
          Text            =   "End Date"
          Object.Width           =   2540
       EndProperty
-      BeginProperty ColumnHeader(15) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   14
+      BeginProperty ColumnHeader(13) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   12
          Text            =   "PP"
          Object.Width           =   882
       EndProperty
-      BeginProperty ColumnHeader(16) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   15
+      BeginProperty ColumnHeader(14) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   13
          Text            =   "Room"
          Object.Width           =   1429
       EndProperty
-      BeginProperty ColumnHeader(17) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   16
+      BeginProperty ColumnHeader(15) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   14
          Text            =   "Subsidized"
          Object.Width           =   776
       EndProperty
-      BeginProperty ColumnHeader(18) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-         SubItemIndex    =   17
+      BeginProperty ColumnHeader(16) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   2
+         SubItemIndex    =   15
          Text            =   "Active"
          Object.Width           =   776
       EndProperty
@@ -200,6 +201,9 @@ Private Sub butnChanges_Click()
     frmClientChanges.Show 1
 End Sub
 
+Private Sub ButnClientLabels_Click()
+    frmClientLabels.Show 1
+End Sub
 Private Sub chkActive_Click()
     updateListview
 End Sub
@@ -211,7 +215,7 @@ End Sub
 Private Sub dpAges_Click()
     Dim i As Long
     For i = 1 To ListView.ListItems.count
-        ListView.ListItems(i).SubItems(9) = getAge(CDate(ListView.ListItems(i).SubItems(8)), dpAges.value)
+        ListView.ListItems(i).SubItems(9) = getAge(CDate(ListView.ListItems(i).SubItems(6)), dpAges.value)
     Next i
 End Sub
 
@@ -256,14 +260,14 @@ Private Sub listButn_Click()
 End Sub
 
 Private Sub ListView_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    If ListView.SortKey = ColumnHeader.Index - 1 Then
+    If ListView.SortKey = ColumnHeader.index - 1 Then
         If ListView.SortOrder = lvwAscending Then
             ListView.SortOrder = lvwDescending
         Else
             ListView.SortOrder = lvwAscending
         End If
     Else
-        ListView.SortKey = ColumnHeader.Index - 1
+        ListView.SortKey = ColumnHeader.index - 1
     End If
     ListView.Sorted = True
 End Sub
@@ -303,24 +307,19 @@ Sub updateListview()
                 li.SubItems(1) = !Last
                 li.SubItems(2) = !First
                 li.SubItems(3) = "" & !initial
-                li.SubItems(4) = "" & !phone
-                li.SubItems(5) = "" & !parent1
-                li.SubItems(6) = "" & !parent2
-                li.SubItems(7) = "" & !emergency
-                li.SubItems(8) = ansiDate(!DOB) 'shortDate(!DOB)
-                li.SubItems(9) = getAge(!DOB, dpAges.value)
-                li.SubItems(10) = !gender
-                'LI.SubItems(11) = !feeClassID
-                li.SubItems(11) = !fees
-                li.SubItems(12) = ansiDate(!startdate)
-                li.SubItems(13) = ansiDate(!enddate)
-                li.SubItems(14) = !payperiod
-                li.SubItems(15) = !room
-                If !subsidized Then li.SubItems(16) = "*"
-                If !active Then li.SubItems(17) = "*"
-                
-                
-                
+                li.SubItems(4) = ansiDate(!DOB) 'shortDate(!DOB)
+                li.SubItems(5) = getAge(!DOB, dpAges.value)
+                li.SubItems(6) = !gender
+                li.SubItems(7) = "" & !MCP
+                li.SubItems(8) = "" & !allergies
+                li.SubItems(9) = !fees
+                If !fees <= 0 Then li.ListSubItems(9).forecolor = vbRed: li.ListSubItems(9).bold = True
+                li.SubItems(10) = ansiDate(!startDate)
+                li.SubItems(11) = ansiDate(!endDate)
+                li.SubItems(12) = !payperiod
+                li.SubItems(13) = !room
+                If !subsidized Then li.SubItems(14) = "*"
+                If !active Then li.SubItems(15) = "*"
                 .MoveNext
             Loop
         End If

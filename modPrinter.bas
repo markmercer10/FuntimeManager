@@ -64,6 +64,7 @@ Option Explicit
 '                    Added sizing for form backgrounds so that it doesnt print a full page of grey background when the form is only small...
 '2009-03-18: v1.8.2: corrected the sizing for form backgrounds, now uses scalex and scaley and f.picture if a picture has been specified for the form and f.image otherwise.
 '2009-05-26: v1.8.3: added default values for horizOffset and vertiOffset
+'2013-06-03: v1.8.4: added the framePrint function to print just a single frame from a form
 
 
 ' ************************************
@@ -106,7 +107,7 @@ Public Declare Function SelectObject Lib "gdi32" (ByVal hdc As Long, ByVal hObje
 Public Declare Function DeleteObject Lib "gdi32" (ByVal hObject As Long) As Long
 Public Declare Function CreateDC Lib "gdi32" Alias "CreateDCA" (ByVal lpDriverName As String, ByVal lpDeviceName As String, ByVal lpOutput As Long, ByVal lpInitData As Long) As Long
 Public Declare Function DeleteDC Lib "gdi32" (ByVal hdc As Long) As Long
-Public Declare Function TextOut Lib "gdi32" Alias "TextOutA" (ByVal hdc As Long, ByVal X As Long, ByVal Y As Long, ByVal lpString As String, ByVal nCount As Long) As Long ' or Boolean
+Public Declare Function TextOut Lib "gdi32" Alias "TextOutA" (ByVal hdc As Long, ByVal x As Long, ByVal y As Long, ByVal lpString As String, ByVal nCount As Long) As Long ' or Boolean
 
 Public Declare Function DrawTextEx Lib "user32.dll" Alias "DrawTextExA" (ByVal hdc As Long, ByVal lpsz As String, ByVal n As Long, ByRef lpRect As RECT, ByVal un As Long, ByRef lpDrawTextParams As Any) As Long
 Public Declare Function SetRect Lib "user32.dll" (ByRef lpRect As RECT, ByVal x1 As Long, ByVal Y1 As Long, ByVal x2 As Long, ByVal Y2 As Long) As Long
@@ -115,8 +116,8 @@ Public Declare Function SetRectEmpty Lib "user32.dll" (ByRef lpRect As RECT) As 
 
 Declare Function BitBlt Lib "gdi32" ( _
         ByVal hDestDC As Long, _
-        ByVal X As Long, _
-        ByVal Y As Long, _
+        ByVal x As Long, _
+        ByVal y As Long, _
         ByVal nWidth As Long, _
         ByVal nHeight As Long, _
         ByVal hSrcDC As Long, _
@@ -167,7 +168,7 @@ Sub printBarGraph(ByRef frm As Form, ByRef printObj As Printer, ByRef Chart As M
     Dim scaleHeightConst As Double
     Dim pages As Byte
     Dim currentPage As Byte
-    Dim m, n As Double
+    Dim M, n As Double
     Dim twips_per_inch  As Double
     
     Dim rot_x As Long
@@ -282,7 +283,7 @@ Sub printBarGraph(ByRef frm As Form, ByRef printObj As Printer, ByRef Chart As M
 End Sub
 
 
-Function printRotated(ByVal OutString As String, ByVal angle_deg As Double, ByVal X As Long, ByVal Y As Long, ByVal fontname As String, ByVal fontsize As Double)
+Function printRotated(ByVal OutString As String, ByVal angle_deg As Double, ByVal x As Long, ByVal y As Long, ByVal fontname As String, ByVal fontsize As Double)
       Dim lf As LOGFONT
       Dim result As Long
       Dim hOldfont As Long
@@ -295,7 +296,7 @@ Function printRotated(ByVal OutString As String, ByVal angle_deg As Double, ByVa
       lf.lfFaceName = fontname
       hFont = CreateFontIndirect(lf)
       hOldfont = SelectObject(hPrintDc, hFont)
-      result = TextOut(hPrintDc, X, Y, OutString, Len(OutString))
+      result = TextOut(hPrintDc, x, y, OutString, Len(OutString))
       result = SelectObject(hPrintDc, hOldfont)
       result = DeleteObject(hFont)
 End Function
@@ -303,18 +304,18 @@ End Function
 
 Sub printPieChart(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal xCenter As Double, ByVal yCenter As Double, ByVal rad As Double, ByVal legendColumnWidthMult As Double)
     Dim i As Byte
-    Dim total As Long
+    Dim Total As Long
     Dim angleStart As Double
     Dim angleEnd As Double
     Dim col As Long
-    Dim X, Y As Double
+    Dim x, y As Double
     Dim centerslicex, centerslicey As Double
     Dim backupPrintObjFillStyle As Long
     'printObj.Circle (xCenter, yCenter), rad, 0 '&HFF
-    total = 0
+    Total = 0
     For i = 1 To Chart.ColumnCount
         Chart.column = i
-        total = total + Chart.Data
+        Total = Total + Chart.Data
     Next i
     angleStart = 0
     angleEnd = 0
@@ -330,7 +331,7 @@ Sub printPieChart(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal xCent
     printObj.fontsize = 8
     For i = 1 To Chart.ColumnCount
         Chart.column = i
-        angleEnd = angleStart + (Chart.Data / total) * 360#
+        angleEnd = angleStart + (Chart.Data / Total) * 360#
         
         backupPrintObjFillStyle = printObj.FillStyle
         printObj.FillStyle = vbFSSolid
@@ -340,7 +341,7 @@ Sub printPieChart(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal xCent
             printObj.Circle (xCenter, yCenter), rad, col, ((720 + angleEnd - 90) Mod 360 - 360) / 180 * PI, ((720 + angleStart - 90) Mod 360 - 360) / 180 * PI
         End If
         
-        If CLng((Chart.Data / total) * 100) >= 5 Then
+        If CLng((Chart.Data / Total) * 100) >= 5 Then
             centerslicex = xCenter + Cos(((angleStart + angleEnd) / 2# - 90) / 180# * PI) * rad * 0.65
             centerslicey = yCenter + Sin(((angleStart + angleEnd) / 2# - 90) / 180# * PI) * rad * 0.65
             printObj.CurrentX = centerslicex - (0.5 * ((Len(Left$(Chart.ColumnLabel, 12)) + 1) * 0.05))
@@ -351,17 +352,17 @@ Sub printPieChart(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal xCent
         angleStart = angleEnd
         
         If i > Chart.ColumnCount / 2 Then
-            X = xCenter + rad * 0.2 * legendColumnWidthMult
-            Y = yCenter + rad * 1.2 + (i - Chart.ColumnCount / 2) * rad * 0.2
+            x = xCenter + rad * 0.2 * legendColumnWidthMult
+            y = yCenter + rad * 1.2 + (i - Chart.ColumnCount / 2) * rad * 0.2
         Else
-            X = xCenter - rad * 0.9 * legendColumnWidthMult
-            Y = yCenter + rad * 1.2 + i * rad * 0.2
+            x = xCenter - rad * 0.9 * legendColumnWidthMult
+            y = yCenter + rad * 1.2 + i * rad * 0.2
         End If
         printObj.forecolor = vbBlack
-        printObj.Line (X, Y)-(X + rad * 0.15, Y + rad * 0.15), col, BF
-        printObj.CurrentX = X + rad * 0.2
-        printObj.CurrentY = Y
-        printObj.Print Chart.ColumnLabel & " " & CLng((Chart.Data / total) * 100) & "%"
+        printObj.Line (x, y)-(x + rad * 0.15, y + rad * 0.15), col, BF
+        printObj.CurrentX = x + rad * 0.2
+        printObj.CurrentY = y
+        printObj.Print Chart.ColumnLabel & " " & CLng((Chart.Data / Total) * 100) & "%"
     Next i
     printObj.FillStyle = backupPrintObjFillStyle
 
@@ -392,11 +393,11 @@ End Function
 
 
 
-Sub printTextColor(ByVal s As String, ByVal X As Long, ByVal Y As Long, ByVal forecolor As Long, ByVal backcolor As Long, ByVal textwidth As Long, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
+Sub printTextColor(ByVal s As String, ByVal x As Double, ByVal y As Double, ByVal forecolor As Long, ByVal backcolor As Long, ByVal textwidth As Double, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
     'prints text by specifying foreground and background colors
     '(negative values for backcolor makes it transparent)
     
-    Dim textlength As Long
+    Dim textlength As Double
     
     Printer.forecolor = forecolor
     Printer.Font = fontname
@@ -409,19 +410,19 @@ Sub printTextColor(ByVal s As String, ByVal X As Long, ByVal Y As Long, ByVal fo
     If backcolor >= 0 Then ' for transparent background pass in -1
         Printer.FillStyle = vbFSSolid
         Printer.FillColor = backcolor
-        Printer.Line (X, Y)-(X + textwidth, Y + (22 * fontsize) + 15), backcolor, BF
-        Printer.Line (X, Y)-(X + textwidth, Y + (22 * fontsize) + 15), backcolor, B
+        Printer.Line (x, y)-(x + textwidth, y + (22 * fontsize) + 15), backcolor, BF
+        Printer.Line (x, y)-(x + textwidth, y + (22 * fontsize) + 15), backcolor, B
     End If
     
     If justify = 1 Then
-        Printer.CurrentX = X + textwidth - textlength
-        Printer.CurrentY = Y
+        Printer.CurrentX = x + textwidth - textlength
+        Printer.CurrentY = y
     ElseIf justify = 2 Then
-        Printer.CurrentX = X + (textwidth / 2#) - (textlength / 2#)
-        Printer.CurrentY = Y
+        Printer.CurrentX = x + (textwidth / 2#) - (textlength / 2#)
+        Printer.CurrentY = y
     Else
-        Printer.CurrentX = X
-        Printer.CurrentY = Y
+        Printer.CurrentX = x
+        Printer.CurrentY = y
     End If
     
     Printer.Print s
@@ -445,14 +446,14 @@ Sub printTextRect(ByVal Text As String, ByVal Left As Long, ByVal Top As Long, B
 End Sub
 
 
-Sub printTextWB(ByVal s As String, ByVal X As Double, ByVal Y As Double, ByVal textwidth As Double, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
+Sub printTextWB(ByVal s As String, ByVal x As Double, ByVal y As Double, ByVal textwidth As Double, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
     'prints black text on white background
-    printTextColor s, X, Y, vbBlack, vbWhite, textwidth, fontname, fontsize, bold, justify
+    printTextColor s, x, y, vbBlack, vbWhite, textwidth, fontname, fontsize, bold, justify
 End Sub
 
-Sub printText(ByVal s As String, ByVal X As Long, ByVal Y As Long, ByVal textwidth As Long, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
+Sub printText(ByVal s As String, ByVal x As Double, ByVal y As Double, ByVal textwidth As Double, ByVal fontname As String, ByVal fontsize As Byte, ByVal bold As Boolean, ByVal justify As Byte)
     'prints black text on transparent background
-    printTextColor s, X, Y, vbBlack, -1, textwidth, fontname, fontsize, bold, justify
+    printTextColor s, x, y, vbBlack, -1, textwidth, fontname, fontsize, bold, justify
 
 End Sub
 
@@ -462,7 +463,7 @@ Sub printListView(ByVal lv As ListView, ByVal pageLength As Byte, ByVal LeftMarg
     Dim ColumnX(25)     As Double
     Dim numColumns      As Integer
     'Dim sourceForm      As Form
-    Dim Y               As Double
+    Dim y               As Double
     Dim i, j, P, count  As Integer
     Dim temp, temp2     As String
     Dim pageStart       As Integer
@@ -515,13 +516,13 @@ Sub printListView(ByVal lv As ListView, ByVal pageLength As Byte, ByVal LeftMarg
                 pageEnd = pageEnd + pageLength
             End If
         End If
-        Y = TopMargin
+        y = TopMargin
         
         Printer.FontBold = True
         For i = 0 To numColumns - 1
             If lv.ColumnHeaders(i + 1).width > 100 Then
                 Printer.CurrentX = ColumnX(i)
-                Printer.CurrentY = Y - 320
+                Printer.CurrentY = y - 320
                 Printer.Print Left$(Trim(lv.ColumnHeaders(i + 1).Text), Int(lv.ColumnHeaders(i + 1).width * columnScale / twips_per_char))
             End If
         Next i
@@ -533,11 +534,11 @@ Sub printListView(ByVal lv As ListView, ByVal pageLength As Byte, ByVal LeftMarg
         'MsgBox TopMargin - 240 + (j Mod pageLength) * twips_per_inch / rowScale
         For j = pageStart To pageEnd
         
-            Y = TopMargin - 240 + (((j - 1) Mod pageLength) + 1) * twips_per_inch / rowScale
+            y = TopMargin - 240 + (((j - 1) Mod pageLength) + 1) * twips_per_inch / rowScale
             For i = 0 To numColumns - 1
                 If lv.ColumnHeaders(i + 1).width > 100 Then
                     Printer.CurrentX = ColumnX(i)
-                    Printer.CurrentY = Y
+                    Printer.CurrentY = y
                     If i = 0 Then
                         temp = lv.ListItems(j).Text
                     Else
@@ -587,8 +588,8 @@ Sub printFlexGrid(ByRef printObj As Variant, ByVal fg As MSFlexGrid, ByVal LeftM
     Dim PrinterName     As String
     Dim r               As Long
     Dim c               As Long
-    Dim X               As Long
-    Dim Y               As Long
+    Dim x               As Long
+    Dim y               As Long
     Dim twips_per_inch  As Double
     Dim twips_per_line  As Double
     
@@ -608,32 +609,32 @@ Sub printFlexGrid(ByRef printObj As Variant, ByVal fg As MSFlexGrid, ByVal LeftM
     
     printObj.Line (LeftMargin, TopMargin)-(LeftMargin + fg.width * columnScale, TopMargin + fg.height), vbWhite, BF
     printObj.Line (LeftMargin, TopMargin)-(LeftMargin + fg.width * columnScale, TopMargin + fg.height), 0, B
-    X = LeftMargin
+    x = LeftMargin
     For c = 0 To fg.Cols - 1
-        X = X + fg.ColWidth(c) * columnScale
-        printObj.Line (X, TopMargin)-(X, TopMargin + fg.height), 0
+        x = x + fg.ColWidth(c) * columnScale
+        printObj.Line (x, TopMargin)-(x, TopMargin + fg.height), 0
     Next c
     
-    Y = TopMargin '+ 45 'twips_per_line - 45
+    y = TopMargin '+ 45 'twips_per_line - 45
     For r = 0 To fg.rows - 1
-        X = LeftMargin + 45
+        x = LeftMargin + 45
         fg.row = r
         For c = 0 To fg.Cols - 1
             fg.col = c
             If fg.ColWidth(c) > 0 Then
-                printObj.CurrentY = Y
-                printObj.CurrentX = X
+                printObj.CurrentY = y
+                printObj.CurrentX = x
                 printObj.Print fg.Text
             End If
             
-            X = X + fg.ColWidth(c) * columnScale
+            x = x + fg.ColWidth(c) * columnScale
         Next c
-        Y = Y + twips_per_line
-        printObj.Line (LeftMargin, Y)-(LeftMargin + fg.width * columnScale, Y), 0
-        If Y >= TopMargin + fg.height Then Exit For
+        y = y + twips_per_line
+        printObj.Line (LeftMargin, y)-(LeftMargin + fg.width * columnScale, y), 0
+        If y >= TopMargin + fg.height Then Exit For
     Next r
 End Sub
-Sub printLineGraph(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal X As Double, ByVal Y As Double, ByVal width As Double, ByVal height As Double)
+Sub printLineGraph(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal x As Double, ByVal y As Double, ByVal width As Double, ByVal height As Double)
     Dim i, j As Long
     Dim column As Long
     Dim row As Long
@@ -649,28 +650,28 @@ Sub printLineGraph(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal X As
     printObj.fontname = "Times New Roman"
     printObj.fontsize = 8
     
-    printObj.CurrentX = X - 400
-    printObj.CurrentY = Y - 70
+    printObj.CurrentX = x - 400
+    printObj.CurrentY = y - 70
     printObj.Print Chart.Plot.Axis(VtChAxisIdY).ValueScale.Maximum
-    printObj.CurrentX = X - 400
-    printObj.CurrentY = Y + (height / 2) - 70
+    printObj.CurrentX = x - 400
+    printObj.CurrentY = y + (height / 2) - 70
     printObj.Print Chart.Plot.Axis(VtChAxisIdY).ValueScale.Maximum / 2
-    printObj.CurrentX = X - 400
-    printObj.CurrentY = Y + height - 70
+    printObj.CurrentX = x - 400
+    printObj.CurrentY = y + height - 70
     printObj.Print "0"
     
     rowWidth = width / Chart.RowCount
     printObj.FillColor = vbWhite
-    printObj.Line (X, Y)-(X + width, Y + height), vbWhite, BF
-    printObj.Line (X, Y)-(X + width, Y + height), 0, B
-    printObj.Line (X, Y + (height / 2))-(X + width, Y + (height / 2)), 0
+    printObj.Line (x, y)-(x + width, y + height), vbWhite, BF
+    printObj.Line (x, y)-(x + width, y + height), 0, B
+    printObj.Line (x, y + (height / 2))-(x + width, y + (height / 2)), 0
     
     For i = 0 To Chart.RowCount - 1
         Chart.row = i + 1
-        printObj.CurrentX = X + ((i + 0.25) * rowWidth)
-        printObj.CurrentY = Y + height + 100
+        printObj.CurrentX = x + ((i + 0.25) * rowWidth)
+        printObj.CurrentY = y + height + 100
         printObj.Print Chart.RowLabel
-        printObj.Line (X + i * rowWidth, Y)-(X + i * rowWidth, Y + height), 0
+        printObj.Line (x + i * rowWidth, y)-(x + i * rowWidth, y + height), 0
     Next i
     
     printObj.DrawWidth = 5
@@ -679,10 +680,10 @@ Sub printLineGraph(ByRef printObj As Variant, ByRef Chart As MSChart, ByVal X As
         col = CLng(Chart.Plot.SeriesCollection(i).Pen.VtColor.Red) + CLng(Chart.Plot.SeriesCollection(i).Pen.VtColor.Green) * 256 + CLng(Chart.Plot.SeriesCollection(i).Pen.VtColor.Blue) * 65536
         j = 0
         Chart.row = 1
-        printObj.PSet (X + ((j + 0.5) * rowWidth), Y + height - height * (Chart.Data / max)), col
+        printObj.PSet (x + ((j + 0.5) * rowWidth), y + height - height * (Chart.Data / max)), col
         For j = 1 To Chart.RowCount - 1
             Chart.row = j + 1
-            printObj.Line -(X + ((j + 0.5) * rowWidth), Y + height - height * (Chart.Data / max)), col
+            printObj.Line -(x + ((j + 0.5) * rowWidth), y + height - height * (Chart.Data / max)), col
         Next j
     Next i
     printObj.DrawWidth = 1
@@ -756,13 +757,13 @@ Sub formPrint(f As Form, Optional ByVal horizOffset As Long = 50, Optional ByVal
                 L = c.Left
                 T = c.Top
             End If
-            If c.Container.Name <> f.Name Then
+            If c.Container.name <> f.name Then
                 Set cont = c.Container
                 Do
                     If cont.Visible Then
                         L = L + cont.Left
                         T = T + cont.Top
-                        If cont.Container.Name = f.Name Then
+                        If cont.Container.name = f.name Then
                             Exit Do
                         Else
                             Set cont = cont.Container
@@ -782,10 +783,10 @@ Sub formPrint(f As Form, Optional ByVal horizOffset As Long = 50, Optional ByVal
                         Printer.fontsize = c.fontsize
                         Printer.Line (L + horizOffset, T + vertiOffset + 30)-(c.width + L + horizOffset, c.height + T + vertiOffset - 15), vbWhite, BF
                         Printer.Line (L + horizOffset, T + vertiOffset + (c.Font.Size * 15))-(c.width + L + horizOffset, c.height + T + vertiOffset - 15), 0, B
-                        printTextWB c.Caption, L + horizOffset + 60, T + vertiOffset + 30, Printer.textwidth(c.Caption) + 30, c.Font.Name, c.Font.Size, c.Font.bold, 0
+                        printTextWB c.Caption, L + horizOffset + 60, T + vertiOffset + 30, Printer.textwidth(c.Caption) + 30, c.Font.name, c.Font.Size, c.Font.bold, 0
                     End If
                 End If
-                If TypeOf c Is TextBox Then
+                If TypeOf c Is textBox Then
                     If c.Visible Then
                         Printer.FontItalic = c.FontItalic
                         Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
@@ -820,7 +821,7 @@ Sub formPrint(f As Form, Optional ByVal horizOffset As Long = 50, Optional ByVal
                     If c.Visible Then
                         Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
                         Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
-                        printTextWB c.Text, L + horizOffset + 15, T + vertiOffset + ((c.height - 30) / 2#) - (c.Font.Size * 7.5), c.width - 30, c.Font.Name, c.Font.Size, c.Font.bold, 0
+                        printTextWB c.Text, L + horizOffset + 15, T + vertiOffset + ((c.height - 30) / 2#) - (c.Font.Size * 7.5), c.width - 30, c.Font.name, c.Font.Size, c.Font.bold, 0
                     End If
                 ElseIf TypeOf c Is CommandButton Then
                     If c.Visible Then
@@ -908,7 +909,7 @@ Sub formPrint(f As Form, Optional ByVal horizOffset As Long = 50, Optional ByVal
                         printListView c, rows, L + horizOffset, 450 + T + vertiOffset, 1, False
                     End If
                     'printListView c, 27, 1000, 1000, 1, False
-                ElseIf TypeOf c Is DTPicker Then
+                ElseIf TypeOf c Is dtPicker Then
                     If c.Visible Then
                         Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
                         Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
@@ -943,6 +944,312 @@ Sub formPrint(f As Form, Optional ByVal horizOffset As Long = 50, Optional ByVal
             End If ' inherited invisiblity
         End If ' non-visible controls
     Next c ' each control
+    
+    Printer.EndDoc
+    
+    Set c = Nothing
+    Set cont = Nothing
+    SetRectEmpty rec
+    'Set Rec = Nothing
+End Sub
+
+Sub framePrint(f As Form, FR As Frame, Optional ByVal horizOffset As Long = 50, Optional ByVal vertiOffset As Long = 50)
+
+' +-----------------------------------+
+' |                                   |
+' |     M A R K   M E R C E R ' S     |
+' |      F O R M   P R I N T E R      |
+' |  WEB: www.woodjoint.ca/mark       |
+' |  EMAIL: mark@creatiworks.ca       |
+' |  DOCUMENTATION: Under Main Module |
+' |                                   |
+' +-----------------------------------+
+
+'Oct 17, 2012 - Added funtionality to break down printing into pages.  If controls are below a certain point it holds them until the subsequent page.
+
+    If f.ScaleMode <> vbTwips Then
+        MsgBox "Form scalemode is not twips, please change this before printing"
+        Exit Sub
+    End If
+    
+    Dim c As Control
+    Dim cont As Control
+    Dim forecol As Long ' forecolor
+    Dim i As Long
+    Dim j As Long
+    Dim k As Long
+    Dim invisible As Boolean
+    Dim rows As Long
+    Dim s As String
+    Dim str As String
+    Dim line As Long
+    Dim r As Double ' radius of pie chart
+    Dim L As Long ' Master Left location of a control
+    Dim T As Long ' Master Top location of a control
+    Dim b As Long ' Master Bottom location of the control
+    Dim y As Long ' Actual Print Coordinate including the passed in offset variable.
+    Dim adjust As Long ' can be used to adjust the size of items in a control.
+    Dim rec As RECT
+    Dim txt As String
+    Dim skip As Boolean
+    Dim pageheight As Long
+    Dim page As Long
+    Dim left_to_print As Boolean
+    Dim print_this_control As Boolean
+    
+    Printer.ScaleMode = vbTwips
+    Printer.forecolor = 0
+    pageheight = Printer.ScaleHeight - 400
+    page = 1
+    
+    If f.Picture = 0 Then
+        Printer.PaintPicture f.Image, horizOffset, vertiOffset, Printer.ScaleX(f.ScaleWidth, vbTwips, Printer.ScaleMode), Printer.ScaleY(f.ScaleHeight, vbTwips, Printer.ScaleMode)
+    Else
+        Printer.PaintPicture f.Picture, horizOffset, vertiOffset, Printer.ScaleX(f.ScaleWidth, vbTwips, Printer.ScaleMode), Printer.ScaleY(f.ScaleHeight, vbTwips, Printer.ScaleMode)
+    End If
+    Printer.FillStyle = vbFSSolid
+    ' the following two ifs clip a forms bkg picture
+    'If f.height < f.Picture.height Then
+    '    Printer.Line (-30 + horizOffset, f.height + vertiOffset)-(f.Picture.width + 30 + horizOffset, f.Picture.height + 30 + vertiOffset), vbWhite, BF
+    'End If
+    'If f.width < f.Picture.width Then
+    '    Printer.Line (f.width + horizOffset, -30 + vertiOffset)-(f.Picture.width + 30 + horizOffset, f.Picture.height + 30 + vertiOffset), vbWhite, BF
+    'End If
+    
+    Do
+    left_to_print = False
+    For Each c In f.Controls
+        invisible = False
+        If Not TypeOf c Is Timer And _
+            Not TypeOf c Is ImageList And _
+            Not TypeOf c Is CommonDialog And _
+            Not TypeOf c Is Menu Then
+            Printer.FillColor = vbWhite
+            
+            skip = False
+            If TypeOf c Is line Then
+                L = 0
+                T = 0
+                skip = True
+            Else
+                L = c.Left
+                T = c.Top
+            End If
+            
+            If c.Container.name <> f.name Then
+                Set cont = c.Container
+                Do
+                    If cont.Container.name = f.name Then
+                        skip = True
+                        Exit Do
+                    Else
+                        If cont.Visible Then
+                            If cont.name = FR.name Then
+                                Exit Do
+                            Else
+                                L = L + cont.Left
+                                T = T + cont.Top
+                                Set cont = cont.Container
+                            End If
+                        Else
+                            invisible = True
+                            Exit Do
+                        End If
+                    End If
+                Loop
+            Else
+                skip = True
+            End If
+            
+            
+            
+            
+            
+            y = T + vertiOffset
+            If Not skip Then b = y + c.height
+            
+            'If Not invisible And Not skip Then print_this_control = True
+            If (y >= pageheight * (page - 1) And b < pageheight * page) Or (y < 0 And page = 1) Then print_this_control = True
+            If invisible Then print_this_control = False
+            If skip Then print_this_control = False
+            If b >= pageheight * page And Not invisible And Not skip Then
+                left_to_print = True
+            End If
+            If y > pageheight Then y = y Mod pageheight
+            'If B >= pageheight * page Then MsgBox c.name
+            T = y - vertiOffset
+            
+            
+            If print_this_control Then
+                If TypeOf c Is Frame Then
+                    If c.Visible Then
+                        Printer.Font = c.Font
+                        Printer.fontsize = c.fontsize
+                        Printer.Line (L + horizOffset, T + vertiOffset + 30)-(c.width + L + horizOffset, c.height + T + vertiOffset - 15), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset + (c.Font.Size * 15))-(c.width + L + horizOffset, c.height + T + vertiOffset - 15), 0, B
+                        printTextWB c.Caption, L + horizOffset + 60, T + vertiOffset + 30, Printer.textwidth(c.Caption) + 30, c.Font.name, c.Font.Size, c.Font.bold, 0
+                    End If
+                End If
+                If TypeOf c Is textBox Then
+                    If c.Visible Then
+                        Printer.FontItalic = c.FontItalic
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
+                        
+                        forecol = c.forecolor
+                        If forecol < 0 Then forecol = vbBlack
+                        
+                        Printer.Font = c.Font
+                        Printer.fontsize = c.fontsize
+                        If c.MultiLine Then
+                            Printer.ScaleMode = vbPixels
+                            
+                            Printer.forecolor = forecol
+                            Printer.FontBold = c.FontBold
+                            Printer.fontname = c.fontname
+                            Printer.fontsize = c.fontsize
+                            
+                            txt = Replace(c.Text, " & ", " && ")
+                            'SetRect Rec, (horizOffset + L) / RECT_SCALE + 15, (vertiOffset + T) / RECT_SCALE + 15, (horizOffset + L + c.width) / RECT_SCALE, (vertiOffset + T + c.height) / RECT_SCALE
+                            SetRect rec, Printer.ScaleX((horizOffset + L) + 15, vbTwips, Printer.ScaleMode), Printer.ScaleY((vertiOffset + T) + 15, vbTwips, Printer.ScaleMode), Printer.ScaleX((horizOffset + L + c.width), vbTwips, Printer.ScaleMode), Printer.ScaleY((vertiOffset + T + c.height), vbTwips, Printer.ScaleMode)
+                            DrawTextEx Printer.hdc, txt, Len(txt), rec, DT_WORDBREAK, ByVal 0&
+                            
+                            Printer.ScaleMode = vbTwips
+                        Else
+                            printTextColor c.Text, L + horizOffset + 15, T + vertiOffset + 15, forecol, vbWhite, c.width - 30, c.fontname, c.Font.Size, c.Font.bold, c.Alignment
+                        End If
+                    End If
+                ElseIf TypeOf c Is ComboBox Then
+                    If c.Visible Then
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
+                        printTextWB c.Text, L + horizOffset + 15, T + vertiOffset + ((c.height - 30) / 2#) - (c.Font.Size * 7.5), c.width - 30, c.Font.name, c.Font.Size, c.Font.bold, 0
+                    End If
+                ElseIf TypeOf c Is CommandButton Then
+                    If c.Visible Then
+                        Printer.FontItalic = c.FontItalic
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
+                        printTextWB Replace(c.Caption, "&&", "&"), L + horizOffset + 15, T + vertiOffset + (c.height / 2#) - (c.Font.Size * 7.5), c.width - 30, c.fontname, c.Font.Size, c.Font.bold, 2
+                    End If
+                ElseIf TypeOf c Is Shape Then
+                    If c.Shape <> 4 And c.Visible Then
+                        'Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), greyScale(c.FillColor), BF ' greyscale version for non color printing
+                        Printer.FillStyle = c.FillStyle
+                        If c.FillStyle = 0 Then '(solid)
+                            Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), c.FillColor, BF
+                        Else
+                            Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), c.BorderColor, B
+                        End If
+                        Printer.FillStyle = vbFSSolid
+                    End If
+                ElseIf TypeOf c Is line Then
+                    If c.Visible Then
+                        Printer.DrawWidth = 5
+                        Printer.Line (L + c.x1 + horizOffset, T + c.Y1 + vertiOffset)-(L + c.x2 + horizOffset, T + c.Y2 + vertiOffset), c.BorderColor
+                        Printer.DrawWidth = 1
+                    End If
+                ElseIf TypeOf c Is Label Then
+                    If c.Visible Then
+                        Printer.FontItalic = c.FontItalic
+                        forecol = c.forecolor
+                        If forecol < 0 Then forecol = vbBlack
+                        
+                        Printer.Font = c.Font
+                        Printer.fontsize = c.fontsize
+                        
+                        txt = Replace(c.Caption, " && ", " & ")
+                        If Printer.textwidth(txt) > c.width Then 'multiple lines
+                            Printer.ScaleMode = vbPixels
+                            Printer.forecolor = forecol
+                            Printer.FontBold = c.FontBold
+                            Printer.fontname = c.fontname
+                            SetRect rec, Printer.ScaleX((horizOffset + L) + 15, vbTwips, Printer.ScaleMode), Printer.ScaleY((vertiOffset + T) + 15, vbTwips, Printer.ScaleMode), Printer.ScaleX((horizOffset + L + c.width), vbTwips, Printer.ScaleMode), Printer.ScaleY((vertiOffset + T + c.height), vbTwips, Printer.ScaleMode)
+                            DrawTextEx Printer.hdc, txt, Len(txt), rec, DT_WORDBREAK, ByVal 0&
+                            Printer.ScaleMode = vbTwips
+                        Else
+                            If c.BackStyle = 1 Then ' opaque background
+                                printTextColor txt, L + horizOffset + 15, T + vertiOffset, c.forecolor, c.backcolor, c.width - 30, c.fontname, c.Font.Size, c.Font.bold, c.Alignment
+                            Else ' transparent background
+                                printTextColor txt, L + horizOffset + 15, T + vertiOffset, c.forecolor, -1, c.width - 30, c.fontname, c.Font.Size, c.Font.bold, c.Alignment
+                            End If
+                            'printText txt, L + horizOffset + 15, T + vertiOffset + (c.height / 2#) - (c.Font.size * 7.5) - 15, c.width - 30, c.fontname, c.Font.size, c.Font.bold, c.Alignment
+                        End If
+                    End If
+                ElseIf TypeOf c Is OptionButton Then
+                    If c.Visible Then
+                        Printer.FillColor = vbWhite
+                        Printer.Circle (L + horizOffset + 100, T + vertiOffset + (c.height / 2#)), 90, vbBlack
+                        If c.value Then
+                            Printer.FillColor = vbBlack
+                            Printer.Circle (L + horizOffset + 100, T + vertiOffset + (c.height / 2#)), 50, vbBlack
+                        End If
+                        printText c.Caption, L + horizOffset + 220, T + vertiOffset + (c.height / 2#) - (c.Font.Size * 7.5) - 15, c.width - 30, c.fontname, c.Font.Size, c.Font.bold, c.Alignment
+                    End If
+                ElseIf TypeOf c Is CheckBox Then
+                    If c.Visible Then
+                        adjust = 80 ' half of the width (or) height of the box
+                        Printer.Line (L + horizOffset, T + vertiOffset + (c.height / 2#) - adjust)-(L + horizOffset + adjust * 2, T + vertiOffset + (c.height / 2#) + adjust), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset + (c.height / 2#) - adjust)-(L + horizOffset + adjust * 2, T + vertiOffset + (c.height / 2#) + adjust), vbBlack, B
+                        'Printer.Line (L + horizOffset + adjust, T + vertiOffset + adjust)-(L + horizOffset + c.height - adjust, T + vertiOffset + c.height - adjust), vbBlack, B
+                        If c.value = 1 Then
+                            Printer.Line (L + horizOffset, T + vertiOffset + (c.height / 2#) - adjust)-(L + horizOffset + adjust * 2, T + vertiOffset + (c.height / 2#) + adjust), vbBlack
+                            Printer.Line (L + horizOffset + adjust * 2, T + vertiOffset + (c.height / 2#) - adjust)-(L + horizOffset, T + vertiOffset + (c.height / 2#) + adjust), vbBlack
+                            'Printer.Line (L + horizOffset + adjust, T + vertiOffset + adjust)-(L + horizOffset + c.height - adjust, T + vertiOffset + c.height - adjust), vbBlack
+                            'Printer.Line (L + horizOffset + c.height - adjust, T + vertiOffset + adjust)-(L + horizOffset + adjust, T + vertiOffset + c.height - adjust), vbBlack
+                        End If
+                        printText c.Caption, L + horizOffset + adjust * 2 + 60, T + vertiOffset + (c.height / 2#) - (c.Font.Size * 7.5) - 15, c.width - 30, c.fontname, c.Font.Size, c.Font.bold, 0
+                    End If
+                ElseIf TypeOf c Is PictureBox Then
+                    If c.Visible Then
+                        Printer.PaintPicture c.Image, L + horizOffset, T + vertiOffset, c.width, c.height
+                    End If
+                ElseIf TypeOf c Is ListView Then
+                    If c.Visible Then
+                        rows = Int(c.height / 225) - 1
+                        If rows < 1 Then rows = 1
+                        printListView c, rows, L + horizOffset, 450 + T + vertiOffset, 1, False
+                    End If
+                    'printListView c, 27, 1000, 1000, 1, False
+                ElseIf TypeOf c Is dtPicker Then
+                    If c.Visible Then
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), vbWhite, BF
+                        Printer.Line (L + horizOffset, T + vertiOffset)-(c.width + L + horizOffset, c.height + T + vertiOffset), 0, B
+                        printText Format(c.value, "mmm dd, yyyy"), L + horizOffset + 15, T + vertiOffset + ((c.height - 30) / 2#) - (c.Font.Size * 7.5), c.width - 30, "arial", c.Font.Size, c.Font.bold, 0
+                    End If
+                ElseIf TypeOf c Is MSChart Then
+                    If c.Visible And c.chartType = 3 Then 'line
+                        If c.width > 850 And c.height > 600 Then
+                            printLineGraph Printer, c, L + horizOffset + 650, T + vertiOffset + 250, c.width - 850, c.height - 600
+                        End If
+                    ElseIf c.Visible And c.chartType = 1 Then 'bar
+                        If c.width > 850 And c.height > 600 Then
+                            printBarGraph f, Printer, c, L + horizOffset + 650, T + vertiOffset + 250, c.width - 850, c.height - 600, 30, "Bar Graph", True
+                        End If
+                    ElseIf c.Visible And c.chartType = 14 Then 'pie
+                        If c.width > 850 And c.height > 600 Then
+                            r = (c.width * 3 + c.height) / 8#
+                            printPieChart Printer, c, L + horizOffset + r, T + vertiOffset + r, r, 1
+                        End If
+                    End If
+                ElseIf TypeOf c Is MSFlexGrid Then
+                    If c.Visible Then
+                        printFlexGrid Printer, c, L + horizOffset, T + vertiOffset, 1
+                    End If
+                'ElseIf TypeOf c Is Bezier Then
+                '    If c.Visible Then
+                '        MsgBox "About to print a bezier graph... pause and see if enddoc has been called"
+                '        c.drawGraph True
+                '        MsgBox "Just Finished printing a bezier graph... pause and see if enddoc has been called"
+                '    End If
+                End If
+            End If ' inherited invisiblity
+        End If ' non-visible controls
+    Next c ' each control
+    
+    page = page + 1
+    Printer.NewPage
+    Loop Until left_to_print = False
     
     Printer.EndDoc
     

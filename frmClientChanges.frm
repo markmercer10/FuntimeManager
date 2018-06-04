@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form frmClientChanges 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Changes to Clients"
@@ -25,10 +25,10 @@ Begin VB.Form frmClientChanges
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   5535
+      Height          =   6495
       Left            =   4680
       TabIndex        =   5
-      Top             =   2520
+      Top             =   2160
       Visible         =   0   'False
       Width           =   5655
       Begin VB.CommandButton cancelButn 
@@ -45,7 +45,7 @@ Begin VB.Form frmClientChanges
          Height          =   495
          Left            =   1920
          TabIndex        =   25
-         Top             =   4800
+         Top             =   5760
          Width           =   1695
       End
       Begin VB.CommandButton okButn 
@@ -62,7 +62,7 @@ Begin VB.Form frmClientChanges
          Height          =   495
          Left            =   3720
          TabIndex        =   24
-         Top             =   4800
+         Top             =   5760
          Width           =   1695
       End
       Begin VB.TextBox txtAuth 
@@ -156,7 +156,7 @@ Begin VB.Form frmClientChanges
          Height          =   375
          Left            =   2280
          TabIndex        =   20
-         Top             =   4320
+         Top             =   5280
          Width           =   855
       End
       Begin VB.CheckBox chkSubs 
@@ -249,8 +249,88 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   117243907
+         Format          =   107085827
          CurrentDate     =   42687
+      End
+      Begin MSComCtl2.DTPicker StartDTPicker 
+         Height          =   375
+         Left            =   2280
+         TabIndex        =   26
+         Top             =   4320
+         Width           =   2055
+         _ExtentX        =   3625
+         _ExtentY        =   661
+         _Version        =   393216
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         CustomFormat    =   "MMM d, yyyy"
+         Format          =   107085827
+         CurrentDate     =   42687
+      End
+      Begin MSComCtl2.DTPicker EndDTPicker 
+         Height          =   375
+         Left            =   2280
+         TabIndex        =   28
+         Top             =   4800
+         Width           =   2055
+         _ExtentX        =   3625
+         _ExtentY        =   661
+         _Version        =   393216
+         BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         CustomFormat    =   "MMM d, yyyy"
+         Format          =   107085827
+         CurrentDate     =   42687
+      End
+      Begin VB.Label Label11 
+         Alignment       =   1  'Right Justify
+         Caption         =   "End Date"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   120
+         TabIndex        =   29
+         Top             =   4800
+         Width           =   1935
+      End
+      Begin VB.Label Label10 
+         Alignment       =   1  'Right Justify
+         Caption         =   "Start Date"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   120
+         TabIndex        =   27
+         Top             =   4320
+         Width           =   1935
       End
       Begin VB.Label Label9 
          Alignment       =   1  'Right Justify
@@ -267,7 +347,7 @@ Begin VB.Form frmClientChanges
          Height          =   375
          Left            =   120
          TabIndex        =   14
-         Top             =   4320
+         Top             =   5280
          Width           =   1935
       End
       Begin VB.Label Label8 
@@ -501,7 +581,7 @@ Begin VB.Form frmClientChanges
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   10
+      NumItems        =   12
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "ID"
          Object.Width           =   0
@@ -514,7 +594,7 @@ Begin VB.Form frmClientChanges
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   2
          Text            =   "Fee Class"
-         Object.Width           =   8820
+         Object.Width           =   6703
       EndProperty
       BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -540,7 +620,7 @@ Begin VB.Form frmClientChanges
       BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   7
          Text            =   "Authorization #"
-         Object.Width           =   3881
+         Object.Width           =   2999
       EndProperty
       BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -550,6 +630,16 @@ Begin VB.Form frmClientChanges
       EndProperty
       BeginProperty ColumnHeader(10) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   9
+         Text            =   "StartDate"
+         Object.Width           =   2117
+      EndProperty
+      BeginProperty ColumnHeader(11) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   10
+         Text            =   "EndDate"
+         Object.Width           =   2117
+      EndProperty
+      BeginProperty ColumnHeader(12) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   11
          Text            =   "Active"
          Object.Width           =   1411
       EndProperty
@@ -620,13 +710,13 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub ListView_ColumnClick(ByVal ColumnHeader As MSComctlLib.ColumnHeader)
-    ListView.SortKey = ColumnHeader.Index - 1
+    ListView.SortKey = ColumnHeader.index - 1
     fillList
 End Sub
 
 Private Sub ListView_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     If Button = 2 Then
-        If ListView.SelectedItem.Index = 1 Or ListView.SelectedItem.Index = ListView.ListItems.count Then
+        If ListView.SelectedItem.index = 1 Or ListView.SelectedItem.index = ListView.ListItems.count Then
             mnuDelete.Enabled = False
         Else
             mnuDelete.Enabled = True
@@ -661,12 +751,14 @@ Private Sub mnuEdit_Click()
             chkSubs.value = !subsidized
             txtAuth = "" & !authorizationNumber
             txtParentCont = Format(!parentalContribution, "0.00")
+            StartDTPicker.value = !startdate
+            EndDTPicker.value = !enddate
             chkActive.value = !active
         End If
     End With
     frmEdit.Visible = True
     
-    If ListView.SelectedItem.Index = 1 Then
+    If ListView.SelectedItem.index = 1 Then
         dtPicker.Enabled = False
         chkActive.Enabled = False
     Else
@@ -693,6 +785,10 @@ Private Sub okButn_Click()
         sql = sql & "authorizationNumber=""" & txtAuth.Text & ""","
         sql = sql & "parentalContribution=" & val(txtParentCont.Text) & ","
     End If
+            sql = sql & sqlDate(getStartDateAtDate(val(Timer1.Tag), dpEffective.value)) & ","
+            sql = sql & sqlDate(getEndDateAtDate(val(Timer1.Tag), dpEffective.value)) & ","
+    sql = sql & "startDate=" & sqlDate(StartDTPicker.value) & ","
+    sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
     sql = sql & "active=" & chkActive.value
     sql = sql & " WHERE idChange = " & editID
     
@@ -791,10 +887,10 @@ End Sub
 Sub fillList()
     Dim q As ADODB.Recordset
     Dim li As ListItem
-    Dim total As Double
+    Dim Total As Double
     ListView.ListItems.Clear
     
-    total = 0
+    Total = 0
     ListView.Sorted = False
     Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = """ & ListClients.List(cboClients.ListIndex) & """ ORDER BY date, idChange ASC")
     With q
@@ -810,7 +906,9 @@ Sub fillList()
                 li.SubItems(6) = !subsidized
                 li.SubItems(7) = "" & !authorizationNumber
                 li.SubItems(8) = !parentalContribution
-                li.SubItems(9) = !active
+                li.SubItems(9) = "" & ansiDate(!startdate)
+                li.SubItems(10) = "" & ansiDate(!enddate)
+                li.SubItems(11) = !active
                 'total = total + (!value_num / 100#)
                 .MoveNext
             Loop
@@ -824,3 +922,5 @@ Sub fillList()
     Set q = Nothing
     Set li = Nothing
 End Sub
+
+

@@ -894,7 +894,7 @@ Private Sub FlexGrid_KeyDown(KeyCode As Integer, Shift As Integer)
     End If
 End Sub
 
-Private Sub FlexGrid_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub FlexGrid_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
     editCell.Visible = False
 End Sub
 
@@ -911,9 +911,9 @@ Private Sub Form_Load()
     'MsgBox getFeesAtDate(37, CDate("Aug 1, 2016"))
     cboMonth.ListIndex = month(Date) - 1 ' set it to this month
     If month(Date) > 1 Then cboMonth.ListIndex = cboMonth.ListIndex - 1 ' if it's not january set it to last month
-    For Y = 2016 To year(Date)
-        cboYear.AddItem Y
-    Next Y
+    For y = 2016 To year(Date)
+        cboYear.AddItem y
+    Next y
     cboYear.ListIndex = cboYear.ListCount - 1
     
     Set q = db.Execute("SELECT * FROM subsidy ORDER BY year DESC, month DESC")
@@ -976,8 +976,8 @@ Sub fillData()
                 Else
                     clientFrom = periodStart
                     clientTo = periodEnd
-                    If clientFrom < !startdate Then clientFrom = !startdate
-                    If clientTo > !enddate Then clientTo = !enddate
+                    If clientFrom < !startDate Then clientFrom = !startDate
+                    If clientTo > !endDate Then clientTo = !endDate
                     
                     If !subsidized = 1 Then
                         If getSubsidizedAtDate(!idClient, clientFrom) = 0 Then
@@ -1012,7 +1012,12 @@ Sub fillData()
                     FlexGrid.row = i
                     FlexGrid.TextMatrix(i, 0) = !Last & ", " & !First
                     clientList.AddItem !idClient, i
-                    FlexGrid.TextMatrix(i, 32) = !parent1
+                    Dim parents As ADODB.Recordset
+                    Set parents = getParents(!idClient)
+                    If Not (parents.EOF And parents.BOF) Then
+                        parents.MoveFirst
+                        FlexGrid.TextMatrix(i, 32) = parents!name
+                    End If
                     FlexGrid.TextMatrix(i, 33) = "" & !authorizationNumber
                     FlexGrid.TextMatrix(i, 34) = Format(clientFrom, "mmm d")
                     FlexGrid.TextMatrix(i, 35) = Format(clientTo, "mmm d")
@@ -1052,7 +1057,7 @@ Sub fillData()
                                 'MsgBox d
                             If Not isWeekend(d) And d >= EPOCH Then
                                 If d >= clientFrom And d <= clientTo Then
-                                    If fc.Fields(weekdayToLetter(wkday)) And d >= !startdate Then 'if billed for today
+                                    If fc.Fields(weekdayToLetter(wkday)) And d >= !startDate Then 'if billed for today
                                     'If ((wkday = 2 And fc!M = 1) Or (wkday = 3 And fc!T = 1) Or (wkday = 4 And fc!W = 1) Or (wkday = 5 And fc!h = 1) Or (wkday = 6 And fc!f = 1)) And d >= !startdate Then 'if billed for today
                                         totalCost = totalCost + getFeesAtDate(!idClient, d) / daysperweek 'CALCULATE DAILY CHARGES
                                         'If !idClient = 36 Then MsgBox totalCost
@@ -1108,7 +1113,6 @@ Sub fillData()
                                 
                                 'INFANT CARE
                                 If FlexGrid.TextMatrix(i, c) = "P" And getAgeM(cl!DOB, d) < 24 Then FlexGrid.TextMatrix(i, c) = "IC"
-                            
                         
                                 Set sc = db.Execute("SELECT * FROM school_closures WHERE date = " & sqlDate(d) & " ORDER BY type DESC LIMIT 1")
                                 If Not (sc.EOF And sc.BOF) Then
@@ -1116,7 +1120,7 @@ Sub fillData()
                                     'MsgBox !First & kindergartenAge(!DOB, d)
                                     'Dim j As Byte
                                     'For j = 1 To FlexGrid.rows - 2
-                                        If FlexGrid.TextMatrix(i, c) = "AS" Or FlexGrid.TextMatrix(i, c) = "P" Then
+                                        If FlexGrid.TextMatrix(i, c) = "AS" Or FlexGrid.TextMatrix(i, c) = "P" Or FlexGrid.TextMatrix(i, c) = "S" Then
                                             If isSchoolAgeClass(getFeeClassAtDate(clientList.List(i), CDate(cboMonth.Text & " " & c & ", " & cboYear.Text))) Then
                                                 If sc!Type = "SC" Then
                                                     FlexGrid.TextMatrix(i, c) = "SC"
@@ -1127,12 +1131,9 @@ Sub fillData()
                                         End If
                                     'Next j
                                 End If
-                            
-                            
                             Else
                                 FlexGrid.TextMatrix(i, c) = "" ' WEEKEND
                             End If
-                            
                         Next c
                     End If
                     
@@ -1142,31 +1143,14 @@ Sub fillData()
                 
                     i = i + 1
                 End If
-                
-                'MsgBox cl.RecordCount
                 .MoveNext
-                'MsgBox cl.RecordCount & " End   " & .EOF
-                
-                
             Loop
         End If
     End With
     
     FlexGrid.rows = FlexGrid.rows + 2
-    'For c = 36 To 43
-    '    temp = 0
-    '    For r = 1 To FlexGrid.rows - 3
-    '        temp = temp + val(FlexGrid.TextMatrix(r, c))
-    '    Next r
-    '    If c <= 38 Then
-    '        FlexGrid.TextMatrix(FlexGrid.rows - 1, c) = Int(temp)
-    '    Else
-    '        FlexGrid.TextMatrix(FlexGrid.rows - 1, c) = Format(temp, "0.00")
-    '    End If
-    '
-    'Next c
-    tallys
     
+    tallys
     
     Set cl = Nothing
     Set atn = Nothing
@@ -1363,7 +1347,7 @@ End Sub
 
 Sub initFlexgrid()
     Dim c As Long
-    Dim Y As Long
+    Dim y As Long
     
     FlexGrid.Clear
     clientList.Clear
@@ -1435,8 +1419,8 @@ Private Sub loadButn_Click()
     LOADED = True
 End Sub
 
-Private Sub modButn_Click(Index As Integer)
-    FlexGrid.Text = modButn(Index).Caption
+Private Sub modButn_Click(index As Integer)
+    FlexGrid.Text = modButn(index).Caption
     FlexGrid.CellBackColor = &HCCCCFF
     frameModAttendance.Visible = False
     tallys

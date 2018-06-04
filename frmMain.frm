@@ -554,6 +554,22 @@ Attribute VB_Exposed = False
 ' -Added sick as option in attendance.
 '  ALTER TABLE `funtime`.`attendance` ADD COLUMN `sick` TINYINT(1) NULL DEFAULT 0 AFTER `attended`;
 
+' v2.3.0 - Jun 4, 2018
+' -Added contacts and client_contacts table.  Now instead of the clients table
+'   having the phone number, parent1, parent2, emergency fields, I've created
+'   the above tables so that any number of contacts can be added to a single
+'   client and they can be designated as parent/guardian, emergency, doctor, or
+'   other.
+' -Added MCP and Allergies to the clients table
+' -Added the ability to print a list of clients formatted for sticky labels
+' -Added a reactivate button on client form
+' -Added tracking for start and end date in client_changes
+' -On client create, prompt if duplicate client
+' -Fixed subsidy calculation: Sick + SC = $30
+
+
+' *********************************************************************
+
 Private timeout_counter As Long
 Private listButtons(30) As Control
 
@@ -743,36 +759,6 @@ Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, x As Single, y
     mouseoutButtons
 End Sub
 
-Private Sub Label2_Click()
-    'THIS WAS ONLY USED FOR INITIALIZATION
-    If False Then
-        Dim q As ADODB.Recordset
-        Dim sql As String
-        
-        Set q = db.Execute("SELECT * FROM clients")
-        With q
-            .MoveFirst
-            Do Until .EOF
-                sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, active) VALUES ("
-                sql = sql & sqlDate(!startdate) & ","
-                sql = sql & !idClient & ","
-                sql = sql & !feeClassID & ","
-                sql = sql & !fees & ","
-                sql = sql & !payperiod & ","
-                sql = sql & """" & !room & ""","
-                sql = sql & !subsidized & ","
-                sql = sql & !active & ")"
-                db.Execute sql
-                .MoveNext
-            Loop
-        End With
-        
-        MsgBox "Done!"
-        Label2.Enabled = False
-        Set q = Nothing
-    End If
-End Sub
-
 Private Sub ledgerButn_Click()
     frmLedger.Show 1
 End Sub
@@ -890,7 +876,7 @@ Sub updateDataHealth()
     Dim rec_account_guid  As String
     Dim days(5) As Long
     Dim avgdays As Double
-    Dim Index As Long
+    Dim index As Long
     
     Set q = db.Execute("SELECT * FROM Attendance WHERE date >= " & sqlDate(Date - 6) & " ORDER BY date ASC")
     tempdate = Date - 7
@@ -930,14 +916,14 @@ Sub updateDataHealth()
     
     'Most Recent Income
     Set q = gcdb.Execute("SELECT transactions.post_date as Date FROM splits INNER JOIN transactions ON splits.tx_guid = transactions.guid WHERE account_guid != '" & rec_account_guid & "' AND value_num < 0 ORDER BY post_date DESC LIMIT 5")
-    Index = 1
+    index = 1
     With q
         If Not (.EOF And .BOF) Then .MoveFirst
         Do Until .EOF
-            If Index > 5 Then Exit Do
-            days(Index) = DateDiff("d", !Date, Date)
+            If index > 5 Then Exit Do
+            days(index) = DateDiff("d", !Date, Date)
             'MsgBox !Date & "  " & days(index)
-            Index = Index + 1
+            index = index + 1
             .MoveNext
         Loop
     End With
@@ -954,14 +940,14 @@ Sub updateDataHealth()
     'Most Recent Expenses
     'Set q = gcdb.Execute("SELECT transactions.post_date as Date FROM splits INNER JOIN transactions ON splits.tx_guid = transactions.guid WHERE account_guid != '" & rec_account_guid & "' AND value_num > 0 ORDER BY post_date DESC LIMIT 5") THIS INCLUDED PAYROLL WHICH IS UPDATED WEEKLY.
     Set q = gcdb.Execute("SELECT transactions.post_date as Date FROM splits INNER JOIN transactions ON splits.tx_guid = transactions.guid WHERE account_guid != '" & rec_account_guid & "' AND account_guid != '" & payroll_account_guid & "' AND value_num > 0 ORDER BY post_date DESC LIMIT 5")
-    Index = 1
+    index = 1
     With q
         If Not (.EOF And .BOF) Then .MoveFirst
         Do Until .EOF
-            If Index > 5 Then Exit Do
-            days(Index) = DateDiff("d", !Date, Date)
+            If index > 5 Then Exit Do
+            days(index) = DateDiff("d", !Date, Date)
             'MsgBox !Date & "  " & days(index)
-            Index = Index + 1
+            index = index + 1
             .MoveNext
         Loop
     End With

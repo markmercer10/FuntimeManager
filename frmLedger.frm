@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form frmLedger 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Client Ledger"
@@ -244,7 +244,7 @@ Begin VB.Form frmLedger
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   167575555
+         Format          =   107544579
          CurrentDate     =   42718
       End
       Begin VB.Label Label3 
@@ -742,7 +742,7 @@ Sub updateListview()
                 If year(CDate(li.Text)) = val(cboYear.Text) Then
                     fli = ListViewFiltered.ListItems.Add(, , li.Text)
                     For Each si In li.ListSubItems
-                        fli.ListSubItems.Add si.Index, si.key, si.Text
+                        fli.ListSubItems.Add si.index, si.key, si.Text
                     Next si
                 End If
             End If
@@ -852,12 +852,19 @@ Private Sub printButn_Click()
     If print_annual_receipt Then
         Dim cl As ADODB.Recordset
         Set cl = db.Execute("SELECT * FROM clients WHERE idClient = " & getClientID(cboClient.Text))
+        Dim c As ADODB.Recordset
+        Dim parentname As String
+        Set c = getParents(q!idClient)
+        If Not (c.EOF And c.BOF) Then
+            c.MoveFirst
+            parentname = "Parent: " & c!name
+        End If
         Printer.PaintPicture frmMain.Image1.Picture, 1100, 1, 1200, 1200
         printText "Funtime Child Care Center", 2500, 1, 10000, "Arial", 24, True, 0
         printText "17 Brown's Place, Whitbourne, NL, A0B 3K0", 2500, 500, 10000, "Arial", 12, True, 0
         printText "Phone: 709-759-2202      Fax : 709-759-3208", 2500, 800, 10000, "Arial", 12, True, 0
         printText "Official Receipt for Income Tax Purposes", 3000, 1250, 10000, "Arial", 14, True, 0
-        printText "Received from " & cl!parent1 & " for childcare (" & Trim(MiD$(cboClient.Text, InStr(1, cboClient.Text, "-") + 2)) & ")", 1500, 1750, 10000, "Arial", 12, True, 0
+        printText "Received from " & parentname & " for childcare (" & Trim(MiD$(cboClient.Text, InStr(1, cboClient.Text, "-") + 2)) & ")", 1500, 1750, 10000, "Arial", 12, True, 0
         Set cl = Nothing
         printListView ListView, 55, 1500, 2550, 1, True
     Else
@@ -874,7 +881,7 @@ End Sub
 
 Private Sub receiptButn_Click()
     Dim yr As Long
-    Dim Index As Long
+    Dim index As Long
     Dim li As ListItem
     Dim Total As Double
     If month(Date) <= 3 Then
@@ -883,18 +890,18 @@ Private Sub receiptButn_Click()
         yr = val(InputBox("Enter Year", "Year", year(Date)))
     End If
     Total = 0
-    For Index = ListView.ListItems.count To 1 Step -1
-        If Left$(ListView.ListItems(Index).SubItems(1), 7) <> "Payment" Then
-            ListView.ListItems.Remove (Index)
-        ElseIf year(CDate(ListView.ListItems(Index).Text)) <> yr Then
-            ListView.ListItems.Remove (Index)
-        ElseIf InStr(1, ListView.ListItems(Index).SubItems(1), "Subsidy Automatic") > 0 Then
-            ListView.ListItems.Remove (Index)
+    For index = ListView.ListItems.count To 1 Step -1
+        If Left$(ListView.ListItems(index).SubItems(1), 7) <> "Payment" Then
+            ListView.ListItems.Remove (index)
+        ElseIf year(CDate(ListView.ListItems(index).Text)) <> yr Then
+            ListView.ListItems.Remove (index)
+        ElseIf InStr(1, ListView.ListItems(index).SubItems(1), "Subsidy Automatic") > 0 Then
+            ListView.ListItems.Remove (index)
         Else
-            Total = Total + val(ListView.ListItems(Index).SubItems(3))
-            ListView.ListItems(Index).SubItems(1) = Left$(Replace(ListView.ListItems(Index).SubItems(1), vbCrLf, " "), 50)
+            Total = Total + val(ListView.ListItems(index).SubItems(3))
+            ListView.ListItems(index).SubItems(1) = Left$(Replace(ListView.ListItems(index).SubItems(1), vbCrLf, " "), 50)
         End If
-    Next Index
+    Next index
     ListView.ColumnHeaders(2).width = 6000
     ListView.ColumnHeaders(3).width = 0
     ListView.ColumnHeaders(4).Text = "Amount"

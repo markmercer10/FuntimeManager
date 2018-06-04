@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form dlgAgeChange 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Child Aged Out of Fee Class"
@@ -124,7 +124,7 @@ Begin VB.Form dlgAgeChange
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   137691139
+      Format          =   123994115
       CurrentDate     =   42531
    End
    Begin VB.Label Label4 
@@ -252,31 +252,20 @@ Private Sub okButn_Click()
     sql = sql & "fees=" & txtFees & ","
     sql = sql & "room=""" & cboRoom.Text & """"
     sql = sql & " WHERE idClient = " & Timer1.Tag
-    'MsgBox sql
     db.Execute sql
     
-    
-    'add record to client_changes table
-    'Dim q As ADODB.Recordset
-    'Set q = db.Execute("SELECT * FROM clients WHERE idClient = """ & Timer1.Tag & """")
-    'With q
-        'If Not (.EOF And .BOF) Then
-            '.MoveFirst
-            sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, authorizationNumber, parentalContribution, active) VALUES ("
-            sql = sql & sqlDate(dpEffective.value) & ","
-            sql = sql & Timer1.Tag & ","
-            sql = sql & cboFeeClass.ListIndex + 1 & ","
-            sql = sql & txtFees & ","
-            sql = sql & getPayperiodAtDate(val(Timer1.Tag), dpEffective.value) & ","
-            sql = sql & """" & cboRoom.Text & ""","
-            sql = sql & getSubsidizedAtDate(val(Timer1.Tag), dpEffective.value) & ","
-            sql = sql & """" & getAuthorizationNumberAtDate(val(Timer1.Tag), dpEffective.value) & ""","
-            sql = sql & getParentContributionAtDate(val(Timer1.Tag), dpEffective.value) & ","
-            sql = sql & getActiveAtDate(val(Timer1.Tag), dpEffective.value) & ")"
-            db.Execute sql
-            '.MoveNext
-        'End If
-    'End With
+    insertClientChange sqlDate(dpEffective.value), _
+    Timer1.Tag, _
+    cboFeeClass.ListIndex + 1, _
+    txtFees, _
+    getPayperiodAtDate(val(Timer1.Tag), dpEffective.value), _
+    cboRoom.Text, _
+    getSubsidizedAtDate(val(Timer1.Tag), dpEffective.value), _
+    getAuthorizationNumberAtDate(val(Timer1.Tag), dpEffective.value), _
+    getParentContributionAtDate(val(Timer1.Tag), dpEffective.value), _
+    getStartDateAtDate(val(Timer1.Tag), dpEffective.value), _
+    getEndDateAtDate(val(Timer1.Tag), dpEffective.value), _
+    getActiveAtDate(val(Timer1.Tag), dpEffective.value)
     
     Set q = Nothing
     Unload Me

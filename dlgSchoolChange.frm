@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form dlgSchoolChange 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Summer Switch"
@@ -115,7 +115,7 @@ Begin VB.Form dlgSchoolChange
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   137625603
+      Format          =   124059651
       CurrentDate     =   42531
    End
    Begin VB.Label message 
@@ -245,18 +245,19 @@ Private Sub okButn_Click()
     'MsgBox sql
     db.Execute sql
     
-    
     'add record to client_changes table
-    sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, active) VALUES ("
-    sql = sql & sqlDate(dpEffective.value) & ","
-    sql = sql & Timer1.Tag & ","
-    sql = sql & cboFeeClass.ListIndex + 1 & ","
-    sql = sql & txtFees & ","
-    sql = sql & getPayperiodAtDate(val(Timer1.Tag), dpEffective.value) & ","
-    sql = sql & """" & cboRoom.Text & ""","
-    sql = sql & getSubsidizedAtDate(val(Timer1.Tag), dpEffective.value) & ","
-    sql = sql & getActiveAtDate(val(Timer1.Tag), dpEffective.value) & ")"
-    db.Execute sql
+    insertClientChange sqlDate(dpEffective.value), _
+    Timer1.Tag, _
+    cboFeeClass.ListIndex + 1, _
+    txtFees, _
+    getPayperiodAtDate(val(Timer1.Tag), dpEffective.value), _
+    cboRoom.Text, _
+    getSubsidizedAtDate(val(Timer1.Tag), dpEffective.value), _
+    getAuthorizationNumberAtDate(val(Timer1.Tag), dpEffective.value), _
+    getParentContributionAtDate(val(Timer1.Tag), dpEffective.value), _
+    getStartDateAtDate(val(Timer1.Tag), dpEffective.value), _
+    getEndDateAtDate(val(Timer1.Tag), dpEffective.value), _
+    getActiveAtDate(val(Timer1.Tag), dpEffective.value)
     
     If Abs(DateDiff("d", LDOS, Date)) < 10 Then
         LDOS = dpEffective.value

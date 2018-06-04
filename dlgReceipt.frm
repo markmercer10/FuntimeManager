@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form dlgReceipt 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Receipt"
@@ -156,7 +156,7 @@ Begin VB.Form dlgReceipt
       EndProperty
       CalendarTitleBackColor=   12632064
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   339476483
+      Format          =   123863043
       CurrentDate     =   42533
    End
    Begin MSComCtl2.DTPicker dpTodate 
@@ -179,7 +179,7 @@ Begin VB.Form dlgReceipt
       EndProperty
       CalendarTitleBackColor=   12632064
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   339476483
+      Format          =   123863043
       CurrentDate     =   42533
    End
    Begin MSComCtl2.DTPicker dpFromdate 
@@ -202,7 +202,7 @@ Begin VB.Form dlgReceipt
       EndProperty
       CalendarTitleBackColor=   12632064
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   339476483
+      Format          =   123863043
       CurrentDate     =   42533
    End
    Begin VB.ComboBox cboFeeClass 
@@ -576,10 +576,17 @@ Private Sub cboClient_Click()
     'MsgBox "|" & labReceivedFrom & "|" & (labReceivedFrom = "")
     'If labReceivedFrom = "" Then
     If ID = "" Then
-        labReceivedFrom = q!parent1
+        Dim p As ADODB.Recordset
+        Dim parentname As String
+        Set p = getParents(q!idClient)
+        If Not (p.EOF And p.BOF) Then
+            p.MoveFirst
+            parentname = "Parent: " & p!name
+        End If
+        labReceivedFrom = parentname
         txtWeeks = q!payperiod
         If InStr(1, labReceivedFrom, " ") = 0 And ID = "" Or labReceivedFrom = "" Then
-            labReceivedFrom = InputBox("Enter Received From", "Receipt", q!parent1)
+            labReceivedFrom = InputBox("Enter Received From", "Receipt", parentname)
         End If
     End If
     
