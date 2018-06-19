@@ -249,7 +249,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   222298115
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker StartDTPicker 
@@ -271,7 +271,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   222298115
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker EndDTPicker 
@@ -293,7 +293,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   222429187
          CurrentDate     =   42687
       End
       Begin VB.Label Label11 
@@ -785,8 +785,6 @@ Private Sub okButn_Click()
         sql = sql & "authorizationNumber=""" & txtAuth.Text & ""","
         sql = sql & "parentalContribution=" & val(txtParentCont.Text) & ","
     End If
-            sql = sql & sqlDate(getStartDateAtDate(val(Timer1.Tag), dpEffective.value)) & ","
-            sql = sql & sqlDate(getEndDateAtDate(val(Timer1.Tag), dpEffective.value)) & ","
     sql = sql & "startDate=" & sqlDate(StartDTPicker.value) & ","
     sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
     sql = sql & "active=" & chkActive.value

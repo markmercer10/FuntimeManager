@@ -567,6 +567,15 @@ Attribute VB_Exposed = False
 ' -On client create, prompt if duplicate client
 ' -Fixed subsidy calculation: Sick + SC = $30
 
+' v2.3.1 - Jun 18, 2018
+' -Fixed 'schools out' runtime error.  getStartDateAtDate and getEndDateAtDate were
+'   failing because they were trying to initialize a date with empty string.
+' -Formatted phone numbers throughout application
+' -Land line was showing as duplicate of cell phone
+' -Fixed a bug that allowed the selected index variable for contacts being added
+'   to clients change after it is supposed to be set, which was causing weird
+'   overwriting of database entries.
+
 
 ' *********************************************************************
 

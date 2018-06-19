@@ -49,7 +49,7 @@ Begin VB.Form dlgClient
       TabIndex        =   46
       Top             =   2160
       Visible         =   0   'False
-      Width           =   775
+      Width           =   5775
       Begin VB.Frame AddingContactOptions 
          BackColor       =   &H00FFFF00&
          BorderStyle     =   0  'None
@@ -59,7 +59,7 @@ Begin VB.Form dlgClient
          TabIndex        =   67
          Top             =   1080
          Visible         =   0   'False
-         Width           =   3060
+         Width           =   4380
          Begin VB.CommandButton AddingButnBack 
             BackColor       =   &H00FFBB88&
             Caption         =   "Back"
@@ -245,7 +245,7 @@ Begin VB.Form dlgClient
          TabIndex        =   55
          Top             =   480
          Visible         =   0   'False
-         Width           =   4530
+         Width           =   2850
          Begin VB.CommandButton butnCancelSaveContact 
             BackColor       =   &H00FFBB88&
             Caption         =   "Cancel"
@@ -1008,7 +1008,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124256259
+      Format          =   126091267
       CurrentDate     =   42531
    End
    Begin MSComCtl2.DTPicker dpStart 
@@ -1030,7 +1030,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124256259
+      Format          =   126091267
       CurrentDate     =   42531
    End
    Begin VB.TextBox txtFees 
@@ -1104,7 +1104,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124256259
+      Format          =   222035971
       CurrentDate     =   42530
    End
    Begin VB.TextBox txtAllergies 
@@ -1206,7 +1206,7 @@ Begin VB.Form dlgClient
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   107413507
+      Format          =   222035971
       CurrentDate     =   42531
    End
    Begin VB.Label Label17 
@@ -1481,6 +1481,7 @@ Option Explicit
 Dim originalStartDate As Date
 Dim changeDateReminder As Boolean
 Dim contactsLineNum As Long
+Dim contactsClickedLine As Long
 Dim animate_direction As Byte
 Dim animate_interval As Long
 Dim animate_progress As Double
@@ -1494,10 +1495,10 @@ Private Sub AddingButnSave_Click()
     AddingContactOptions.Visible = False
     
     'Delete old record
-    db.Execute "DELETE FROM client_contacts WHERE idClient=" & ID.Text & " AND idContact=" & LV_contacts.ListItems(contactsLineNum).Text
+    db.Execute "DELETE FROM client_contacts WHERE idClient=" & ID.Text & " AND idContact=" & LV_contacts.ListItems(contactsClickedLine).Text
     
     'Create DB Record
-    db.Execute "INSERT INTO client_contacts (idClient, idContact, type, canSignOut) VALUES (" & ID.Text & "," & LV_contacts.ListItems(contactsLineNum).Text & ",""" & AddingContactOptions.Tag & """," & AddingCanSignOut.value & ")"
+    db.Execute "INSERT INTO client_contacts (idClient, idContact, type, canSignOut) VALUES (" & ID.Text & "," & LV_contacts.ListItems(contactsClickedLine).Text & ",""" & AddingContactOptions.Tag & """," & AddingCanSignOut.value & ")"
     
     butnCancelContact_Click
     UpdateClientContacts
@@ -1572,10 +1573,11 @@ End Sub
 
 Private Sub butnInnerAddContact_Click()
     Dim c As Byte
+    contactsClickedLine = contactsLineNum
     butnCreateContact.Visible = False
     AddingContactOptions.Visible = True
     AddingButnSave.Enabled = False
-    AddingNameAs = LV_contacts.ListItems(contactsLineNum).SubItems(1) & " as:"
+    AddingNameAs = LV_contacts.ListItems(contactsClickedLine).SubItems(1) & " as:"
     AddingCanSignOut = 0
     For c = 0 To 3
         ContactType(c).value = False
@@ -1610,28 +1612,36 @@ End Sub
 
 Private Sub butnSaveContact_Click()
     If EditContactFrame.Tag = "Add" Then
+        Dim search As ADODB.Recordset
+        Set search = db.Execute("SELECT * FROM contacts WHERE name LIKE ""%" & contName & "%""")
+        With search
+            If Not (.EOF And .BOF) Then
+                .MoveFirst
+                If MsgBox("contact person """ & !name & """ already exists in the system.  Is this a different " & !name & "?  If it's the same person click 'No' and then 'Cancel', then link that contact to this client.", vbExclamation + vbYesNo) = vbNo Then Exit Sub
+            End If
+        End With
         db.Execute "INSERT INTO contacts (name, cell, land, email) VALUES (""" & contName & """,""" & contCell & """,""" & contLand & """,""" & contEmail & """)"
     Else
-        db.Execute "UPDATE contacts SET name=""" & contName & """, cell=""" & contCell & """, land=""" & contLand & """, email=""" & contEmail & """ WHERE idContact = " & LV_contacts.ListItems(contactsLineNum).Text
+        db.Execute "UPDATE contacts SET name=""" & contName & """, cell=""" & contCell & """, land=""" & contLand & """, email=""" & contEmail & """ WHERE idContact = " & LV_contacts.ListItems(contactsClickedLine).Text
     End If
     Animate2 0, 1000
 End Sub
 
 Private Sub butnUpdateContact_Click()
     Dim q As ADODB.Recordset
-    
+    contactsClickedLine = contactsLineNum
     LabEditContactInfo = "Update Contact Info"
     EditContactFrame.Tag = "Edit"
     EditContactFrame.height = 0
     EditContactFrame.Visible = True
     Animate2 1, 1000
     
-    Set q = db.Execute("SELECT * FROM contacts WHERE idContact = " & LV_contacts.ListItems(contactsLineNum).Text)
+    Set q = db.Execute("SELECT * FROM contacts WHERE idContact = " & LV_contacts.ListItems(contactsClickedLine).Text)
     If Not (q.EOF And q.BOF) Then
         q.MoveFirst
         contName = q!name
-        contCell = q!cell
-        contLand = q!land
+        contCell = formatPhoneNumber(q!cell)
+        contLand = formatPhoneNumber(q!land)
         contEmail = q!email
     End If
 End Sub
@@ -1696,8 +1706,8 @@ Private Sub ClientContacts_Click()
             Do Until .EOF
                 cName = !name
                 cType = !Type
-                cCell = !cell
-                cPhone = !land
+                cCell = formatPhoneNumber(!cell)
+                cPhone = formatPhoneNumber(!land)
                 cEmail = !email
                 If cType = "Parent" Then cType = "Parent/Guardian"
                 contactInfo = "Type: " & cType & vbCrLf & "Name: " & cName & vbCrLf & "Cell: " & cCell & vbCrLf & "Land: " & cPhone & vbCrLf & "Email: " & cEmail
@@ -1721,7 +1731,7 @@ Private Sub ContactFilter_KeyUp(KeyCode As Integer, Shift As Integer)
     
     Dim li As ListItem
     If Len(ContactFilter) > 0 Then
-        Set q = db.Execute("SELECT * FROM contacts WHERE name LIKE ""%" & ContactFilter & "%"" OR email LIKE ""%" & ContactFilter & "%""")
+        Set q = db.Execute("SELECT * FROM contacts WHERE name LIKE ""%" & ContactFilter & "%"" OR email LIKE ""%" & ContactFilter & "%"" ORDER BY name ASC")
         LV_contacts.ListItems.Clear
         With q
             If Not (.EOF And .BOF) Then
@@ -1733,7 +1743,7 @@ Private Sub ContactFilter_KeyUp(KeyCode As Integer, Shift As Integer)
                         Set li = LV_contacts.ListItems.Add(, , !idContact)
                         li.SubItems(1) = !name
                         li.SubItems(2) = truncatePhoneNumber(!cell)
-                        li.SubItems(3) = truncatePhoneNumber(!cell)
+                        li.SubItems(3) = truncatePhoneNumber(!land)
                         li.SubItems(4) = !email
                     End If
                     .MoveNext
@@ -1917,7 +1927,7 @@ Private Sub SaveButn_Click()
     With q
         If Not (.EOF And .BOF) Then
             .MoveFirst
-            insertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, !startDate, !endDate, !active
+            insertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, !startdate, !enddate, !active
             .MoveNext
         End If
     End With
@@ -1986,12 +1996,12 @@ Private Sub Timer1_Timer()
                 comboSelectItem cboGender, !gender
                 cboFeeClass.ListIndex = !feeClassID - 1
                 txtFees = !fees
-                dpStart.value = !startDate
-                originalStartDate = !startDate
-                If IsNull(!endDate) Then
+                dpStart.value = !startdate
+                originalStartDate = !startdate
+                If IsNull(!enddate) Then
                     dpEnd.value = Date
                 Else
-                    dpEnd.value = !endDate
+                    dpEnd.value = !enddate
                 End If
                 comboSelectItem cboPP, !payperiod
                 comboSelectItem cboRoom, !room

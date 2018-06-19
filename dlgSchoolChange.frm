@@ -115,7 +115,7 @@ Begin VB.Form dlgSchoolChange
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124059651
+      Format          =   126812163
       CurrentDate     =   42531
    End
    Begin VB.Label message 
@@ -246,7 +246,7 @@ Private Sub okButn_Click()
     db.Execute sql
     
     'add record to client_changes table
-    insertClientChange sqlDate(dpEffective.value), _
+    insertClientChange dpEffective.value, _
     Timer1.Tag, _
     cboFeeClass.ListIndex + 1, _
     txtFees, _
