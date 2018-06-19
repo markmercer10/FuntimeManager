@@ -1008,7 +1008,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   126091267
+      Format          =   107806723
       CurrentDate     =   42531
    End
    Begin MSComCtl2.DTPicker dpStart 
@@ -1030,7 +1030,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   126091267
+      Format          =   107806723
       CurrentDate     =   42531
    End
    Begin VB.TextBox txtFees 
@@ -1104,7 +1104,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   222035971
+      Format          =   128188419
       CurrentDate     =   42530
    End
    Begin VB.TextBox txtAllergies 
@@ -1206,7 +1206,7 @@ Begin VB.Form dlgClient
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   222035971
+      Format          =   128188419
       CurrentDate     =   42531
    End
    Begin VB.Label Label17 
@@ -1778,8 +1778,10 @@ Private Sub dpEffective_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub dpEffective_Validate(Cancel As Boolean)
-    If dpEffective.value < dpStart.value Then dpEffective.value = dpStart.value
-    If dpEffective.value > dpEnd.value Then dpEffective.value = dpEnd.value
+    If chkActive = 1 Then
+        If dpEffective.value < dpStart.value Then dpEffective.value = dpStart.value
+        If dpEffective.value > dpEnd.value Then dpEffective.value = dpEnd.value
+    End If
 End Sub
 
 Private Sub dpEnd_Change()

@@ -124,7 +124,7 @@ Begin VB.Form dlgAgeChange
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   123994115
+      Format          =   128122883
       CurrentDate     =   42531
    End
    Begin VB.Label Label4 
@@ -254,7 +254,7 @@ Private Sub okButn_Click()
     sql = sql & " WHERE idClient = " & Timer1.Tag
     db.Execute sql
     
-    insertClientChange sqlDate(dpEffective.value), _
+    insertClientChange dpEffective.value, _
     Timer1.Tag, _
     cboFeeClass.ListIndex + 1, _
     txtFees, _

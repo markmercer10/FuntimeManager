@@ -249,7 +249,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   222298115
+         Format          =   107085827
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker StartDTPicker 
@@ -271,7 +271,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   222298115
+         Format          =   107085827
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker EndDTPicker 
@@ -293,7 +293,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   222429187
+         Format          =   107085827
          CurrentDate     =   42687
       End
       Begin VB.Label Label11 
@@ -688,9 +688,9 @@ Private Sub cboFeeClasses_Click()
 End Sub
 
 Private Sub DTPicker_Change()
-    If dtPicker.value < startdate Then
+    If DTPicker.value < startdate Then
         MsgBox "You cannot set a client change to before the client's start date"
-        dtPicker.value = startdate
+        DTPicker.value = startdate
     End If
 End Sub
 
@@ -743,7 +743,7 @@ Private Sub mnuEdit_Click()
     With q
         If Not (.EOF And .BOF) Then
             .MoveFirst
-            dtPicker.value = ansiDate(!Date)
+            DTPicker.value = ansiDate(!Date)
             cboFeeClasses.ListIndex = !feeClassID - 1
             txtFees = Format(!fees, "0.00")
             comboSelectItem pp, !payperiod
@@ -752,17 +752,22 @@ Private Sub mnuEdit_Click()
             txtAuth = "" & !authorizationNumber
             txtParentCont = Format(!parentalContribution, "0.00")
             StartDTPicker.value = !startdate
-            EndDTPicker.value = !enddate
+            If (IsNull(!enddate)) Then
+                EndDTPicker.value = 0
+                EndDTPicker.Visible = False
+            Else
+                EndDTPicker.value = !enddate
+            End If
             chkActive.value = !active
         End If
     End With
     frmEdit.Visible = True
     
     If ListView.SelectedItem.index = 1 Then
-        dtPicker.Enabled = False
+        DTPicker.Enabled = False
         chkActive.Enabled = False
     Else
-        dtPicker.Enabled = True
+        DTPicker.Enabled = True
         chkActive.Enabled = True
     End If
     
@@ -775,7 +780,7 @@ Private Sub okButn_Click()
     
     
     sql = "UPDATE client_changes SET "
-    sql = sql & "date=" & sqlDate(dtPicker.value) & ","
+    sql = sql & "date=" & sqlDate(DTPicker.value) & ","
     sql = sql & "feeClassID=" & cboFeeClasses.ListIndex + 1 & ","
     sql = sql & "fees=" & txtFees & ","
     sql = sql & "payperiod=" & pp.Text & ","
@@ -786,7 +791,11 @@ Private Sub okButn_Click()
         sql = sql & "parentalContribution=" & val(txtParentCont.Text) & ","
     End If
     sql = sql & "startDate=" & sqlDate(StartDTPicker.value) & ","
-    sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
+    If EndDTPicker.Visible Then
+        sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
+    Else
+        sql = sql & "endDate=NULL,"
+    End If
     sql = sql & "active=" & chkActive.value
     sql = sql & " WHERE idChange = " & editID
     
@@ -798,7 +807,7 @@ Private Sub okButn_Click()
             If CDate(li.SubItems(1)) > latestdate Then latestdate = CDate(li.SubItems(1))
         End If
     Next li
-    If dtPicker.value > latestdate Then ' this is the last entry so update the clients table to match.
+    If DTPicker.value > latestdate Then ' this is the last entry so update the clients table to match.
         
         'NOT DONE!!!
         'This setup doesn't account for if you take the latest client change and save it as an earlier one so that a different one ends up being last.

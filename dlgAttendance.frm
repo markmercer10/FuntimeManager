@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form frmAttendanceEntry 
    Caption         =   "Attendance Entry"
    ClientHeight    =   10215
@@ -267,7 +267,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm"
-         Format          =   165609475
+         Format          =   108199939
          CurrentDate     =   42533
       End
       Begin MSComCtl2.DTPicker signout 
@@ -291,7 +291,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm"
-         Format          =   165609475
+         Format          =   108199939
          CurrentDate     =   42533
       End
       Begin VB.Label labSADELETE 
@@ -433,7 +433,7 @@ Begin VB.Form frmAttendanceEntry
          Strikethrough   =   0   'False
       EndProperty
       MonthBackColor  =   16777215
-      StartOfWeek     =   165609473
+      StartOfWeek     =   108199937
       TitleBackColor  =   16755302
       CurrentDate     =   42533
    End
@@ -474,7 +474,7 @@ Public selected As Long
 
 Sub fillClientList(ByVal d As Date)
     Dim clients As ADODB.Recordset
-    Dim Index As Long
+    Dim index As Long
     Dim i As Long
     Dim fc As ADODB.Recordset
     Dim rm As ADODB.Recordset
@@ -554,7 +554,7 @@ Sub fillClientList(ByVal d As Date)
     Set fc = db.Execute("SELECT * FROM fee_classes")
     Set clients = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(d) & " AND (endDate >= " & sqlDate(d) & " OR active=1 ) ORDER BY last, first")
     
-    Index = 0
+    index = 0
     'labIC.Top = 240 'Headers.height
     roomLabels(0).Top = 240
     'labIC.backcolor = &HBBFFFF
@@ -571,10 +571,10 @@ Sub fillClientList(ByVal d As Date)
                     .MoveFirst
                     Do Until .EOF
                         If client_hash(!idClient) = section Then
-                            If Index > lastloaded Then
-                                newLine Index, section
+                            If index > lastloaded Then
+                                newLine index, section
                             Else
-                                reactivateLine Index, section
+                                reactivateLine index, section
                             End If
                             
                             With fc
@@ -582,20 +582,20 @@ Sub fillClientList(ByVal d As Date)
                                     .MoveFirst
                                     Do Until .EOF
                                         'cboFeeClass(index).AddItem !Description & " - $" & !charge, !idFeeClasses - 1
-                                        If !idFeeClasses = getFeeClassAtDate(clients!idClient, d) Then labFeeClass(Index) = !Description & " - $" & !charge
+                                        If !idFeeClasses = getFeeClassAtDate(clients!idClient, d) Then labFeeClass(index) = !Description & " - $" & !charge
                                         'If !idFeeClasses = clients!feeClassID Then cboFeeClass(index).ListIndex = !idFeeClasses - 1
                                         .MoveNext
                                     Loop
                                 End If
                             End With
-                            labClient(Index) = !Last & ", " & !First
-                            labClient(Index).Tag = !idClient
-                            labClient(Index).backcolor = val("&H" & roomLabels(section - 1).Tag)
+                            labClient(index) = !Last & ", " & !First
+                            labClient(index).Tag = !idClient
+                            labClient(index).backcolor = val("&H" & roomLabels(section - 1).Tag)
                             'If section = 1 Then labClient(Index).backcolor = IC_color
                             'If section = 2 Then labClient(Index).backcolor = PS_color
                             'If section = 3 Then labClient(Index).backcolor = SA_color
-                            lastline = Index
-                            Index = Index + 1
+                            lastline = index
+                            index = index + 1
                         End If
                         
                         .MoveNext
@@ -607,14 +607,14 @@ Sub fillClientList(ByVal d As Date)
         Loop
     End If
     
-    For i = Index To lastloaded
+    For i = index To lastloaded
         labClient(i).Caption = ""
         labFeeClass(i).Caption = ""
         chkAttended(i).value = 0
         chkPaid(i).value = 0
     Next i
     
-    DataFrame.height = (Index + 1) * lineheight + roomLabels(0).height * roomLabels.count
+    DataFrame.height = (index + 1) * lineheight + roomLabels(0).height * roomLabels.count
     
     If chkAttended(0).Visible Then chkAttended(0).SetFocus
     
@@ -647,7 +647,7 @@ End Sub
 Sub fillAttendanceData()
     Dim att As ADODB.Recordset
     Dim avgTime As ADODB.Recordset
-    Dim Index As Long
+    Dim index As Long
     'Dim intime As Double
     'Dim outtime As Double
     Dim intimes(1 To 20) As Double
@@ -659,31 +659,31 @@ Sub fillAttendanceData()
     
     Set att = db.Execute("SELECT * FROM attendance WHERE Date = " & sqlDate(MonthView.value))
     
-    For Index = 0 To labClient.count - 1
-        chkExists(Index).Tag = 0
-        chkExists_chg (Index)
-        chkAttended(Index) = 0
-        chkSick(Index) = 0
-        signin(Index) = CDate("8:00")
-        signout(Index) = CDate("17:00")
-        chkPaid(Index) = 0
-    Next Index
+    For index = 0 To labClient.count - 1
+        chkExists(index).Tag = 0
+        chkExists_chg (index)
+        chkAttended(index) = 0
+        chkSick(index) = 0
+        signin(index) = CDate("8:00")
+        signout(index) = CDate("17:00")
+        chkPaid(index) = 0
+    Next index
     
     With att
         If Not (.EOF And .BOF) Then
             .MoveFirst
             Do Until .EOF
-                For Index = 0 To labClient.count - 1
-                    If labClient(Index).Tag = !idClient Then
-                        chkExists(Index).Tag = 1
-                        chkExists_chg (Index)
-                        chkAttended(Index) = !attended
-                        chkSick(Index) = !sick
-                        signin(Index) = !signin
-                        signout(Index) = !signout
-                        chkPaid(Index) = !paid
+                For index = 0 To labClient.count - 1
+                    If labClient(index).Tag = !idClient Then
+                        chkExists(index).Tag = 1
+                        chkExists_chg (index)
+                        chkAttended(index) = !attended
+                        chkSick(index) = !sick
+                        signin(index) = !signin
+                        signout(index) = !signout
+                        chkPaid(index) = !paid
                     End If
-                Next Index
+                Next index
                 .MoveNext
             Loop
         End If
@@ -693,9 +693,9 @@ Sub fillAttendanceData()
     If labClient.count <= 1 And labClient(0).Tag = "" Then
         'do nothing
     Else
-        For Index = 0 To labClient.count - 1
-            If chkExists(Index).Tag = 0 Then
-                Set avgTime = db.Execute("SELECT * FROM attendance WHERE idclient = " & labClient(Index).Tag & " AND attended = 1 ORDER BY date DESC LIMIT 10")
+        For index = 0 To labClient.count - 1
+            If chkExists(index).Tag = 0 Then
+                Set avgTime = db.Execute("SELECT * FROM attendance WHERE idclient = " & labClient(index).Tag & " AND attended = 1 ORDER BY date DESC LIMIT 10")
                 countTimes = 0
                 'intime = 0
                 'outtime = 0
@@ -719,11 +719,11 @@ Sub fillAttendanceData()
                     'outtime = outtime / countTimes
                     'signin(index) = CDate(Format(intime, "hh:mm:00"))
                     'signout(index) = CDate(Format(outtime, "hh:mm:00"))
-                    signin(Index) = CDate(Format(intimes(5), "hh:mm:00"))
-                    signout(Index) = CDate(Format(outtimes(5), "hh:mm:00"))
+                    signin(index) = CDate(Format(intimes(5), "hh:mm:00"))
+                    signout(index) = CDate(Format(outtimes(5), "hh:mm:00"))
                 End If
             End If
-        Next Index
+        Next index
     End If
     
     autofilling = False
@@ -732,11 +732,11 @@ Sub fillAttendanceData()
     Set avgTime = Nothing
 End Sub
 
-Private Sub cboFeeClass_Change(Index As Integer)
-    cboFeeClass_Click Index
+Private Sub cboFeeClass_Change(index As Integer)
+    cboFeeClass_Click index
 End Sub
 
-Private Sub cboFeeClass_Click(Index As Integer)
+Private Sub cboFeeClass_Click(index As Integer)
     'Dim fc As ADODB.Recordset
     'Set fc = db.Execute("SELECT * FROM fee_classes WHERE idFeeClasses = " & cboFeeClass(index).ListIndex + 1)
     'With fc
@@ -749,55 +749,55 @@ Private Sub cboFeeClass_Click(Index As Integer)
 End Sub
 
 
-Private Sub chkAttended_Click(Index As Integer)
-    If chkAttended(Index) = 1 Then
-        selected = Index
-        chkAttended(Index).Caption = "Present"
-        chkAttended(Index).forecolor = &HC000&
-        signin(Index).Enabled = True
-        signout(Index).Enabled = True
-        chkPaid(Index).Enabled = True
-        chkAttended(Index).width = 2067
+Private Sub chkAttended_Click(index As Integer)
+    If chkAttended(index) = 1 Then
+        selected = index
+        chkAttended(index).Caption = "Present"
+        chkAttended(index).forecolor = &HC000&
+        signin(index).Enabled = True
+        signout(index).Enabled = True
+        chkPaid(index).Enabled = True
+        chkAttended(index).width = 2067
         
         'chk if this attended day is already paid on a receipt.  if so automatically set it to paid.
         Dim q As ADODB.Recordset
-        Set q = db.Execute("SELECT * FROM payments WHERE idClient = " & labClient(Index).Tag & " AND fromdate <= " & sqlDate(MonthView.value) & " AND todate >= " & sqlDate(MonthView.value))
+        Set q = db.Execute("SELECT * FROM payments WHERE idClient = " & labClient(index).Tag & " AND fromdate <= " & sqlDate(MonthView.value) & " AND todate >= " & sqlDate(MonthView.value))
         If Not (q.EOF And q.BOF) Then
-            chkPaid(Index).value = 1
+            chkPaid(index).value = 1
         End If
         Set q = Nothing
         DoEvents
         
         If Not autofilling Then dlgSetTimes.Show 1
     Else
-        chkAttended(Index).Caption = "Absent"
-        chkAttended(Index).forecolor = vbRed
-        signin(Index).Enabled = False
-        signout(Index).Enabled = False
-        chkPaid(Index).Enabled = False
-        chkAttended(Index).width = 1092
+        chkAttended(index).Caption = "Absent"
+        chkAttended(index).forecolor = vbRed
+        signin(index).Enabled = False
+        signout(index).Enabled = False
+        chkPaid(index).Enabled = False
+        chkAttended(index).width = 1092
     End If
     Changed = True
     saved.Visible = False
 End Sub
 
-Private Sub chkExists_chg(Index As Integer)
-    If chkExists(Index).Tag = 1 Then
-        chkExists(Index).Picture = frmMain.ImageList.ListImages("check").Picture
+Private Sub chkExists_chg(index As Integer)
+    If chkExists(index).Tag = 1 Then
+        chkExists(index).Picture = frmMain.ImageList.ListImages("check").Picture
     Else
-        chkExists(Index).Picture = Nothing
+        chkExists(index).Picture = Nothing
     End If
 End Sub
 
 
 
-Private Sub chkPaid_Click(Index As Integer)
-    If chkPaid(Index) = 1 Then
-        chkPaid(Index).Caption = "Paid"
-        chkPaid(Index).forecolor = vbGreen
+Private Sub chkPaid_Click(index As Integer)
+    If chkPaid(index) = 1 Then
+        chkPaid(index).Caption = "Paid"
+        chkPaid(index).forecolor = vbGreen
     Else
-        chkPaid(Index).Caption = "Not Paid"
-        chkPaid(Index).forecolor = vbRed
+        chkPaid(index).Caption = "Not Paid"
+        chkPaid(index).forecolor = vbRed
     End If
     Changed = True
     saved.Visible = False
@@ -806,11 +806,11 @@ End Sub
 
 
 
-Private Sub chkSick_Click(Index As Integer)
-    If chkSick(Index).value = 1 Then
-        chkSick(Index).forecolor = vbGreen
+Private Sub chkSick_Click(index As Integer)
+    If chkSick(index).value = 1 Then
+        chkSick(index).forecolor = vbGreen
     Else
-        chkSick(Index).forecolor = vbRed
+        chkSick(index).forecolor = vbRed
     End If
 End Sub
 
@@ -987,32 +987,32 @@ End Sub
 
 
 Private Sub SaveButn_Click()
-    Dim Index As Long
+    Dim index As Long
     Dim sql As String
     
-    For Index = 0 To lastline
-        If chkExists(Index).Tag = 1 Then
+    For index = 0 To lastline
+        If chkExists(index).Tag = 1 Then
             'update
             sql = "UPDATE attendance SET "
-            sql = sql & "attended=" & chkAttended(Index).value & ","
-            sql = sql & "sick=" & chkSick(Index).value & ","
-            sql = sql & "signin=" & sqlTime(signin(Index).value) & ","
-            sql = sql & "signout=" & sqlTime(signout(Index).value) & ","
-            sql = sql & "paid=" & chkPaid(Index).value
-            sql = sql & " WHERE idClient=" & labClient(Index).Tag & " AND date=" & sqlDate(MonthView.value)
+            sql = sql & "attended=" & chkAttended(index).value & ","
+            sql = sql & "sick=" & chkSick(index).value & ","
+            sql = sql & "signin=" & sqlTime(signin(index).value) & ","
+            sql = sql & "signout=" & sqlTime(signout(index).value) & ","
+            sql = sql & "paid=" & chkPaid(index).value
+            sql = sql & " WHERE idClient=" & labClient(index).Tag & " AND date=" & sqlDate(MonthView.value)
             
         Else
             'insert
             sql = "INSERT INTO attendance "
             sql = sql & "(idClient,date,attended,sick,signin,signout,paid)"
             sql = sql & " VALUES ("
-            sql = sql & labClient(Index).Tag & ","
+            sql = sql & labClient(index).Tag & ","
             sql = sql & sqlDate(MonthView.value) & ","
-            sql = sql & chkAttended(Index).value & ","
-            sql = sql & chkSick(Index).value & ","
-            sql = sql & sqlTime(signin(Index).value) & ","
-            sql = sql & sqlTime(signout(Index).value) & ","
-            sql = sql & chkPaid(Index).value
+            sql = sql & chkAttended(index).value & ","
+            sql = sql & chkSick(index).value & ","
+            sql = sql & sqlTime(signin(index).value) & ","
+            sql = sql & sqlTime(signout(index).value) & ","
+            sql = sql & chkPaid(index).value
             sql = sql & ")"
             
         End If
@@ -1023,7 +1023,7 @@ Private Sub SaveButn_Click()
         'Set q = db.Execute("SELECT @attid AS att;")
         'MsgBox q!att
         
-    Next Index
+    Next index
 
     fillAttendanceData
     updateMissingDays
@@ -1035,30 +1035,30 @@ End Sub
 
 
 
-Private Sub signin_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
-    If Hour(signin(Index).value) < 7 Or Hour(signin(Index).value) > 18 Or (Hour(signin(Index).value) = 18 And Minute(signin(Index).value) > 0) Then
-        signin(Index).Font.bold = True
-        signin(Index).Font.Italic = True
-        signin(Index).ToolTipText = "The selected time is outside the normal licensed hours! (Check AM/PM)"
+Private Sub signin_KeyUp(index As Integer, KeyCode As Integer, Shift As Integer)
+    If Hour(signin(index).value) < 7 Or Hour(signin(index).value) > 18 Or (Hour(signin(index).value) = 18 And Minute(signin(index).value) > 0) Then
+        signin(index).Font.bold = True
+        signin(index).Font.Italic = True
+        signin(index).ToolTipText = "The selected time is outside the normal licensed hours! (Check AM/PM)"
     Else
-        signin(Index).Font.bold = False
-        signin(Index).Font.Italic = False
-        signin(Index).ToolTipText = ""
+        signin(index).Font.bold = False
+        signin(index).Font.Italic = False
+        signin(index).ToolTipText = ""
     End If
     Changed = True
     saved.Visible = False
 End Sub
 
 
-Private Sub signout_KeyUp(Index As Integer, KeyCode As Integer, Shift As Integer)
-    If Hour(signout(Index).value) < 7 Or Hour(signout(Index).value) > 18 Or (Hour(signout(Index).value) = 18 And Minute(signout(Index).value) > 0) Then
-        signout(Index).Font.bold = True
-        signout(Index).Font.Italic = True
-        signout(Index).ToolTipText = "The selected time is outside the normal licensed hours! (Check AM/PM)"
+Private Sub signout_KeyUp(index As Integer, KeyCode As Integer, Shift As Integer)
+    If Hour(signout(index).value) < 7 Or Hour(signout(index).value) > 18 Or (Hour(signout(index).value) = 18 And Minute(signout(index).value) > 0) Then
+        signout(index).Font.bold = True
+        signout(index).Font.Italic = True
+        signout(index).ToolTipText = "The selected time is outside the normal licensed hours! (Check AM/PM)"
     Else
-        signout(Index).Font.bold = False
-        signout(Index).Font.Italic = False
-        signout(Index).ToolTipText = ""
+        signout(index).Font.bold = False
+        signout(index).Font.Italic = False
+        signout(index).ToolTipText = ""
     End If
     Changed = True
     saved.Visible = False
@@ -1072,85 +1072,85 @@ Private Sub Timer1_Timer()
     'fillClientList
 End Sub
 
-Sub newLine(ByVal Index As Long, ByVal section As Byte)
+Sub newLine(ByVal index As Long, ByVal section As Byte)
     Dim lineTop As Long
     Dim headerheight As Long
     'headerheight = labIC.height
     headerheight = roomLabels(0).height 'labIC.height
     
     'lineTop = labClient(index - 1).Top + lineheight
-    lineTop = labClient(0).Top + Index * lineheight + headerheight * (section - 1)
+    lineTop = labClient(0).Top + index * lineheight + headerheight * (section - 1)
     
     'If section = 1 Then labPS.Top = lineTop + lineheight
     'If section = 2 Then labSA.Top = lineTop + lineheight
     If section > 0 And section < roomLabels.count Then roomLabels(section).Top = lineTop + lineheight
     
-    Load labClient(Index)
-        labClient(Index).Top = lineTop
-        labClient(Index).Visible = True
-    Load chkAttended(Index)
-        chkAttended(Index).Top = lineTop
-        chkAttended(Index).Visible = True
-    Load chkSick(Index)
-        chkSick(Index).Top = lineTop
-        chkSick(Index).Visible = True
-    Load signin(Index)
-        signin(Index).Top = lineTop
-        signin(Index).Visible = True
-    Load signout(Index)
-        signout(Index).Top = lineTop
-        signout(Index).Visible = True
-    Load labFeeClass(Index)
-        labFeeClass(Index).Top = lineTop + 30
-        labFeeClass(Index).Visible = True
+    Load labClient(index)
+        labClient(index).Top = lineTop
+        labClient(index).Visible = True
+    Load chkAttended(index)
+        chkAttended(index).Top = lineTop
+        chkAttended(index).Visible = True
+    Load chkSick(index)
+        chkSick(index).Top = lineTop
+        chkSick(index).Visible = True
+    Load signin(index)
+        signin(index).Top = lineTop
+        signin(index).Visible = True
+    Load signout(index)
+        signout(index).Top = lineTop
+        signout(index).Visible = True
+    Load labFeeClass(index)
+        labFeeClass(index).Top = lineTop + 30
+        labFeeClass(index).Visible = True
     'Load fees(index)
     '    fees(index).Top = lineTop
     '    fees(index).Visible = True
-    Load chkPaid(Index)
-        chkPaid(Index).Top = lineTop
-        chkPaid(Index).Visible = True
-    Load chkExists(Index)
-        chkExists(Index).Top = lineTop + 60
-        chkExists(Index).Visible = True
+    Load chkPaid(index)
+        chkPaid(index).Top = lineTop
+        chkPaid(index).Visible = True
+    Load chkExists(index)
+        chkExists(index).Top = lineTop + 60
+        chkExists(index).Visible = True
     
-    lastloaded = Index
+    lastloaded = index
 End Sub
 
-Sub reactivateLine(ByVal Index As Long, ByVal section As Byte)
+Sub reactivateLine(ByVal index As Long, ByVal section As Byte)
     Dim lineTop As Long
     Dim headerheight As Long
     headerheight = roomLabels(0).height 'labIC.height
     'lineTop = labClient(index - 1).Top + lineheight
-    lineTop = labClient(0).Top + Index * lineheight + headerheight * (section - 1)
+    lineTop = labClient(0).Top + index * lineheight + headerheight * (section - 1)
     
     'If section = 1 Then labPS.Top = lineTop + lineheight
     'If section = 2 Then labSA.Top = lineTop + lineheight
     If section > 0 And section < roomLabels.count Then roomLabels(section).Top = lineTop + lineheight
     
     'Load labClient(Index)
-        labClient(Index).Top = lineTop
-        labClient(Index).Visible = True
+        labClient(index).Top = lineTop
+        labClient(index).Visible = True
     'Load chkAttended(Index)
-        chkAttended(Index).Top = lineTop
-        chkAttended(Index).Visible = True
+        chkAttended(index).Top = lineTop
+        chkAttended(index).Visible = True
     'Load signin(Index)
-        signin(Index).Top = lineTop
-        signin(Index).Visible = True
+        signin(index).Top = lineTop
+        signin(index).Visible = True
     'Load signout(Index)
-        signout(Index).Top = lineTop
-        signout(Index).Visible = True
+        signout(index).Top = lineTop
+        signout(index).Visible = True
     'Load labFeeClass(Index)
-        labFeeClass(Index).Top = lineTop + 30
-        labFeeClass(Index).Visible = True
+        labFeeClass(index).Top = lineTop + 30
+        labFeeClass(index).Visible = True
     'Load fees(index)
     '    fees(index).Top = lineTop
     '    fees(index).Visible = True
     'Load chkPaid(Index)
-        chkPaid(Index).Top = lineTop
-        chkPaid(Index).Visible = True
+        chkPaid(index).Top = lineTop
+        chkPaid(index).Visible = True
     'Load chkExists(Index)
-        chkExists(Index).Top = lineTop + 60
-        chkExists(Index).Visible = True
+        chkExists(index).Top = lineTop + 60
+        chkExists(index).Visible = True
     
     
 End Sub
