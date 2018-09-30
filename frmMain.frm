@@ -859,7 +859,7 @@ Sub displayQuote()
     
     quotes(0) = "Funtime Child Care Center: Satisfaction Guaranteed or Double Your Kids Back!"
     quotes(1) = "Children need the freedom and time to play. Play is not a luxury. Play is a necessity. ~Kay Redfield Jamison"
-    quotes(2) = "A child seldom needs a good talking to as a good listening to. ~Robert Brault"
+    quotes(2) = "A child seldom needs a good talking-to as much as a good listening-to. ~Robert Brault"
     quotes(3) = "While we try to teach our children all about life, Our children teach us what life is all about. ~Angela Schwindt"
     quotes(4) = "The prime purpose of being four is to enjoy being four — of secondary importance is to prepare for being five. ~Jim Trelease"
     quotes(5) = "Children make you want to start life over. ~Muhammad Ali"
