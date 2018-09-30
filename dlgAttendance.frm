@@ -266,8 +266,9 @@ Begin VB.Form frmAttendanceEntry
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         CustomFormat    =   "hh:mm"
-         Format          =   108199939
+         CustomFormat    =   "hh:mm tt"
+         Format          =   124649475
+         UpDown          =   -1  'True
          CurrentDate     =   42533
       End
       Begin MSComCtl2.DTPicker signout 
@@ -290,8 +291,9 @@ Begin VB.Form frmAttendanceEntry
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         CustomFormat    =   "hh:mm"
-         Format          =   108199939
+         CustomFormat    =   "hh:mm tt"
+         Format          =   124649475
+         UpDown          =   -1  'True
          CurrentDate     =   42533
       End
       Begin VB.Label labSADELETE 
@@ -433,7 +435,7 @@ Begin VB.Form frmAttendanceEntry
          Strikethrough   =   0   'False
       EndProperty
       MonthBackColor  =   16777215
-      StartOfWeek     =   108199937
+      StartOfWeek     =   124583937
       TitleBackColor  =   16755302
       CurrentDate     =   42533
    End
@@ -527,7 +529,7 @@ Sub fillClientList(ByVal d As Date)
                     'find out if client is scheduled today
                     Set fc = db.Execute("SELECT * FROM fee_classes WHERE idFeeClasses = " & getFeeClassAtDate(!idClient, d))
                     If Not (fc.EOF And fc.BOF) Then
-                        If fc.Fields(weekdayToLetter(Weekday(d))) > 0 Then
+                        If fc.fields(weekdayToLetter(Weekday(d))) > 0 Then
                             
                             'find what room the client is in
                             room = getRoomAtDate(!idClient, d)
@@ -1133,6 +1135,9 @@ Sub reactivateLine(ByVal index As Long, ByVal section As Byte)
     'Load chkAttended(Index)
         chkAttended(index).Top = lineTop
         chkAttended(index).Visible = True
+        
+        chkSick(index).Top = lineTop
+        chkSick(index).Visible = True
     'Load signin(Index)
         signin(index).Top = lineTop
         signin(index).Visible = True

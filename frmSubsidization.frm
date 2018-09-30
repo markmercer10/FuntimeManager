@@ -775,18 +775,20 @@ Private Sub calcButn_Click()
         If (subs.EOF And subs.BOF) Then 'if there is no saved entry for this month/year then
             FlexGrid.backcolor = &HDDFFDD ' green
             fillData
-            SaveButn.Enabled = True
-            LOADED = False
             cboMonth.Tag = cboMonth.Text
             cboYear.Tag = cboYear.Text
+            LOADED = False
+            SaveButn.Enabled = True
         Else
             If MsgBox("A record already exists for that month! You can load it by selecting from the 'load' dropdown." & vbCrLf & "Do you want to recalculate it?", vbYesNo) = vbYes Then
                 FlexGrid.backcolor = &HFFEEDD ' blue
                 fillData
-                SaveButn.Enabled = True
-                LOADED = True
                 cboMonth.Tag = cboMonth.Text
                 cboYear.Tag = cboYear.Text
+                LOADED = True
+                SaveButn.Enabled = True
+            Else
+                'do nothing
             End If
         End If
     Else
@@ -976,8 +978,8 @@ Sub fillData()
                 Else
                     clientFrom = periodStart
                     clientTo = periodEnd
-                    If clientFrom < !startDate Then clientFrom = !startDate
-                    If clientTo > !endDate Then clientTo = !endDate
+                    If clientFrom < !startdate Then clientFrom = !startdate
+                    If clientTo > !enddate Then clientTo = !enddate
                     
                     If !subsidized = 1 Then
                         If getSubsidizedAtDate(!idClient, clientFrom) = 0 Then
@@ -1057,7 +1059,7 @@ Sub fillData()
                                 'MsgBox d
                             If Not isWeekend(d) And d >= EPOCH Then
                                 If d >= clientFrom And d <= clientTo Then
-                                    If fc.Fields(weekdayToLetter(wkday)) And d >= !startDate Then 'if billed for today
+                                    If fc.fields(weekdayToLetter(wkday)) And d >= !startdate Then 'if billed for today
                                     'If ((wkday = 2 And fc!M = 1) Or (wkday = 3 And fc!T = 1) Or (wkday = 4 And fc!W = 1) Or (wkday = 5 And fc!h = 1) Or (wkday = 6 And fc!f = 1)) And d >= !startdate Then 'if billed for today
                                         totalCost = totalCost + getFeesAtDate(!idClient, d) / daysperweek 'CALCULATE DAILY CHARGES
                                         'If !idClient = 36 Then MsgBox totalCost
@@ -1410,13 +1412,15 @@ Private Sub loadButn_Click()
     DoEvents
     cboMonth.Tag = cboMonth.Text ' or some other source of month and year
     cboYear.Tag = cboYear.Text
+    SaveButn.Enabled = True
     
     loadData Mo, yr
+    DoEvents
     
     'if loaded then
     FlexGrid.backcolor = &HFFEEDD ' blue
-    SaveButn.Enabled = True
     LOADED = True
+    SaveButn.Enabled = True
 End Sub
 
 Private Sub modButn_Click(index As Integer)

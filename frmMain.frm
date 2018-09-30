@@ -576,6 +576,12 @@ Attribute VB_Exposed = False
 '   to clients change after it is supposed to be set, which was causing weird
 '   overwriting of database entries.
 
+' v2.3.2 - Jul 15, 2018
+' -Fixed some bugs on attendance entry form.  "sick" showing on room title line
+'   and made the DTPickers show the UpDown arrows rather than calendar dropdown
+
+' v2.3.3 - Sep 30, 2018
+' -minor tweaks, to ensure the subsidy save button gets enabled
 
 ' *********************************************************************
 
