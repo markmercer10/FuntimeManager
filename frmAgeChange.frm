@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form dlgAgeChange 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Child Aged Out of Fee Class"
@@ -25,7 +25,7 @@ Begin VB.Form dlgAgeChange
       Caption         =   "Skip"
       Height          =   495
       Left            =   4080
-      TabIndex        =   10
+      TabIndex        =   1
       Top             =   2520
       Width           =   1215
    End
@@ -103,11 +103,11 @@ Begin VB.Form dlgAgeChange
    End
    Begin MSComCtl2.DTPicker dpEffective 
       Height          =   375
-      Left            =   4320
-      TabIndex        =   1
+      Left            =   4440
+      TabIndex        =   10
       Top             =   1320
-      Width           =   2175
-      _ExtentX        =   3836
+      Width           =   2055
+      _ExtentX        =   3625
       _ExtentY        =   661
       _Version        =   393216
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -119,13 +119,9 @@ Begin VB.Form dlgAgeChange
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      CalendarBackColor=   16777215
-      CalendarForeColor=   255
-      CalendarTitleBackColor=   65535
-      CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   128122883
-      CurrentDate     =   42531
+      Format          =   133234691
+      CurrentDate     =   42687
    End
    Begin VB.Label Label4 
       Caption         =   "Fees:"
@@ -254,7 +250,7 @@ Private Sub okButn_Click()
     sql = sql & " WHERE idClient = " & Timer1.Tag
     db.Execute sql
     
-    insertClientChange dpEffective.value, _
+    upsertClientChange dpEffective.value, _
     Timer1.Tag, _
     cboFeeClass.ListIndex + 1, _
     txtFees, _
@@ -264,7 +260,6 @@ Private Sub okButn_Click()
     getAuthorizationNumberAtDate(val(Timer1.Tag), dpEffective.value), _
     getParentContributionAtDate(val(Timer1.Tag), dpEffective.value), _
     getStartDateAtDate(val(Timer1.Tag), dpEffective.value), _
-    getEndDateAtDate(val(Timer1.Tag), dpEffective.value), _
     getActiveAtDate(val(Timer1.Tag), dpEffective.value)
     
     Set q = Nothing

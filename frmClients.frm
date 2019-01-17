@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmClients 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Clients"
@@ -16,31 +16,58 @@ Begin VB.Form frmClients
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton ButnClientLabels 
       Caption         =   "Client Labels"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   615
-      Left            =   2760
+      Left            =   3000
       TabIndex        =   7
       Top             =   0
-      Width           =   1575
+      Width           =   1695
    End
    Begin VB.CommandButton butnChanges 
       Caption         =   "Client Changes"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   615
       Left            =   1200
       TabIndex        =   6
       Top             =   0
-      Width           =   1575
+      Width           =   1815
    End
    Begin VB.CommandButton listButn 
       Caption         =   "Print List of Active Clients"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   375
-      Left            =   10440
+      Left            =   10800
       TabIndex        =   5
       Top             =   120
-      Width           =   2415
+      Width           =   3015
    End
    Begin MSComCtl2.DTPicker dpAges 
       Height          =   300
-      Left            =   8760
+      Left            =   9120
       TabIndex        =   4
       Top             =   195
       Width           =   1455
@@ -48,13 +75,13 @@ Begin VB.Form frmClients
       _ExtentY        =   529
       _Version        =   393216
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   123863043
+      Format          =   135659523
       CurrentDate     =   42536
    End
    Begin VB.CheckBox chkActive 
       Caption         =   "Display only active clients"
       Height          =   252
-      Left            =   4440
+      Left            =   4800
       TabIndex        =   2
       Top             =   240
       Value           =   1  'Checked
@@ -62,8 +89,25 @@ Begin VB.Form frmClients
    End
    Begin VB.Timer Timer1 
       Interval        =   10
-      Left            =   6960
+      Left            =   7320
       Top             =   120
+   End
+   Begin VB.CommandButton addButn 
+      Caption         =   "Add Client"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   11.25
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   612
+      Left            =   0
+      TabIndex        =   0
+      Top             =   0
+      Width           =   1212
    End
    Begin MSComctlLib.ListView ListView 
       Height          =   5532
@@ -83,6 +127,15 @@ Begin VB.Form frmClients
       BackColor       =   -2147483643
       BorderStyle     =   1
       Appearance      =   1
+      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
+         Name            =   "Arial Narrow"
+         Size            =   12.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       NumItems        =   16
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "ID"
@@ -91,12 +144,12 @@ Begin VB.Form frmClients
       BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   1
          Text            =   "Last Name"
-         Object.Width           =   2540
+         Object.Width           =   3175
       EndProperty
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   2
          Text            =   "First Name"
-         Object.Width           =   2540
+         Object.Width           =   3175
       EndProperty
       BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   3
@@ -121,7 +174,7 @@ Begin VB.Form frmClients
       BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   7
          Text            =   "MCP Number"
-         Object.Width           =   2540
+         Object.Width           =   2999
       EndProperty
       BeginProperty ColumnHeader(9) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   8
@@ -132,17 +185,17 @@ Begin VB.Form frmClients
          Alignment       =   1
          SubItemIndex    =   9
          Text            =   "Fees"
-         Object.Width           =   1235
+         Object.Width           =   1411
       EndProperty
       BeginProperty ColumnHeader(11) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   10
-         Text            =   "Start Date"
+         Text            =   "Acct. Created"
          Object.Width           =   2540
       EndProperty
       BeginProperty ColumnHeader(12) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   11
-         Text            =   "End Date"
-         Object.Width           =   2540
+         Text            =   "Formerly End Date"
+         Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(13) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   12
@@ -158,27 +211,19 @@ Begin VB.Form frmClients
          Alignment       =   2
          SubItemIndex    =   14
          Text            =   "Subsidized"
-         Object.Width           =   776
+         Object.Width           =   1764
       EndProperty
       BeginProperty ColumnHeader(16) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   2
          SubItemIndex    =   15
-         Text            =   "Active"
-         Object.Width           =   776
+         Text            =   "Enrolled"
+         Object.Width           =   1764
       EndProperty
-   End
-   Begin VB.CommandButton addButn 
-      Caption         =   "Add Client"
-      Height          =   612
-      Left            =   0
-      TabIndex        =   0
-      Top             =   0
-      Width           =   1212
    End
    Begin VB.Label Label1 
       Caption         =   "List Ages as of"
       Height          =   255
-      Left            =   7560
+      Left            =   7920
       TabIndex        =   3
       Top             =   240
       Width           =   1575
@@ -314,12 +359,12 @@ Sub updateListview()
                 li.SubItems(8) = "" & !allergies
                 li.SubItems(9) = !fees
                 If !fees <= 0 Then li.ListSubItems(9).forecolor = vbRed: li.ListSubItems(9).bold = True
-                li.SubItems(10) = ansiDate(!startDate)
-                li.SubItems(11) = ansiDate(!endDate)
+                li.SubItems(10) = ansiDate(!startdate)
+                'li.SubItems(11) = ansiDate(!enddate)
                 li.SubItems(12) = !payperiod
                 li.SubItems(13) = !room
-                If !subsidized Then li.SubItems(14) = "*"
-                If !active Then li.SubItems(15) = "*"
+                If !subsidized Then li.SubItems(14) = Chr(149)
+                If !active Then li.SubItems(15) = Chr(149)
                 .MoveNext
             Loop
         End If

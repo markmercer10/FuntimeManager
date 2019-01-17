@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
 Begin VB.Form frmOGP 
    BorderStyle     =   1  'Fixed Single
@@ -97,7 +97,7 @@ Begin VB.Form frmOGP
       _ExtentY        =   503
       _Version        =   393216
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124911619
+      Format          =   136577027
       CurrentDate     =   42613
    End
    Begin MSComCtl2.DTPicker dpFromDate 
@@ -110,7 +110,7 @@ Begin VB.Form frmOGP
       _ExtentY        =   503
       _Version        =   393216
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   124911619
+      Format          =   136577027
       CurrentDate     =   42527
    End
    Begin VB.Label Label7 
@@ -241,7 +241,7 @@ End Sub
 Private Sub dpToDate_Click()
     totDays = DateDiff("d", dpFromDate.value, dpToDate.value)
     ProjFromDate = shortDate(dpToDate.value + 1)
-    ProjToDate = shortDate(DateSerial(year(dpToDate.value + 1), month(dpToDate.value + 1) + 3, Day(dpToDate.value + 1)) - 1)
+    ProjToDate = shortDate(DateSerial(year(dpToDate.value + 1), month(dpToDate.value + 1) + 3, day(dpToDate.value + 1)) - 1)
 End Sub
 
 Private Sub Form_Load()
@@ -376,7 +376,7 @@ Private Sub Timer1_Timer_OLD()
             IC_index = 0
             PS_index = 0
             SA_index = 0
-            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND (endDate >= " & sqlDate(tempdate) & " OR active = 1);")
+            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND active = 1;")
             With q
                 If Not (.EOF And .BOF) Then
                     Do Until .EOF
@@ -436,7 +436,7 @@ Private Sub Timer1_Timer_OLD()
             IC_index = 0
             PS_index = 0
             SA_index = 0
-            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND (endDate >= " & sqlDate(tempdate) & " OR active = 1);")
+            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND active = 1;")
             With q
                 If Not (.EOF And .BOF) Then
                     Do Until .EOF
@@ -582,7 +582,7 @@ Private Sub Timer1_Timer()
             IC_index = 0
             PS_index = 0
             SA_index = 0
-            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND (endDate >= " & sqlDate(tempdate) & " OR active = 1);")
+            Set q = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(tempdate) & " AND active = 1;")
             With q
                 If Not (.EOF And .BOF) Then
                     Do Until .EOF

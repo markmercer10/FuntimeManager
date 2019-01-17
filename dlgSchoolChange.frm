@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
 Begin VB.Form dlgSchoolChange 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Summer Switch"
@@ -91,32 +90,6 @@ Begin VB.Form dlgSchoolChange
       Interval        =   200
       Left            =   2040
       Top             =   1320
-   End
-   Begin MSComCtl2.DTPicker dpEffective 
-      Height          =   375
-      Left            =   4320
-      TabIndex        =   4
-      Top             =   1320
-      Width           =   2175
-      _ExtentX        =   3836
-      _ExtentY        =   661
-      _Version        =   393216
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   12
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      CalendarBackColor=   16777215
-      CalendarForeColor=   255
-      CalendarTitleBackColor=   65535
-      CalendarTitleForeColor=   255
-      CustomFormat    =   "MMM d, yyyy"
-      Format          =   126812163
-      CurrentDate     =   42531
    End
    Begin VB.Label message 
       Caption         =   "School's out for summer!"
@@ -246,7 +219,7 @@ Private Sub okButn_Click()
     db.Execute sql
     
     'add record to client_changes table
-    insertClientChange dpEffective.value, _
+    upsertClientChange dpEffective.value, _
     Timer1.Tag, _
     cboFeeClass.ListIndex + 1, _
     txtFees, _
@@ -256,7 +229,6 @@ Private Sub okButn_Click()
     getAuthorizationNumberAtDate(val(Timer1.Tag), dpEffective.value), _
     getParentContributionAtDate(val(Timer1.Tag), dpEffective.value), _
     getStartDateAtDate(val(Timer1.Tag), dpEffective.value), _
-    getEndDateAtDate(val(Timer1.Tag), dpEffective.value), _
     getActiveAtDate(val(Timer1.Tag), dpEffective.value)
     
     If Abs(DateDiff("d", LDOS, Date)) < 10 Then

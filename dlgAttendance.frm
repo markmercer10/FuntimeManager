@@ -267,7 +267,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm tt"
-         Format          =   124649475
+         Format          =   149684227
          UpDown          =   -1  'True
          CurrentDate     =   42533
       End
@@ -292,7 +292,7 @@ Begin VB.Form frmAttendanceEntry
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "hh:mm tt"
-         Format          =   124649475
+         Format          =   149684227
          UpDown          =   -1  'True
          CurrentDate     =   42533
       End
@@ -435,7 +435,7 @@ Begin VB.Form frmAttendanceEntry
          Strikethrough   =   0   'False
       EndProperty
       MonthBackColor  =   16777215
-      StartOfWeek     =   124583937
+      StartOfWeek     =   149684225
       TitleBackColor  =   16755302
       CurrentDate     =   42533
    End
@@ -506,13 +506,11 @@ Sub fillClientList(ByVal d As Date)
     End With
     
     'Set clients = db.Execute("SELECT * FROM clients WHERE active=1 ORDER BY room, last, first")
-    Set clients = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(d) & " AND (endDate >= " & sqlDate(d) & " OR active=1 ) ORDER BY idClient DESC")
+    Set clients = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(d) & " AND active=1 ORDER BY idClient DESC")
     If Not (clients.EOF And clients.BOF) Then
         clients.MoveFirst
         ReDim client_hash(clients!idClient) As Byte
     End If
-    
-    
     
     ' if its the weekend... empty list.
     If isWeekend(d) Then
@@ -554,7 +552,7 @@ Sub fillClientList(ByVal d As Date)
     End If
     
     Set fc = db.Execute("SELECT * FROM fee_classes")
-    Set clients = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(d) & " AND (endDate >= " & sqlDate(d) & " OR active=1 ) ORDER BY last, first")
+    Set clients = db.Execute("SELECT * FROM clients WHERE startDate <= " & sqlDate(d) & " AND active=1 ORDER BY last, first")
     
     index = 0
     'labIC.Top = 240 'Headers.height
@@ -950,18 +948,18 @@ Private Sub MonthView_DateClick(ByVal DateClicked As Date)
         chkAttended(0).SetFocus
     Else
         If isWeekend(DateClicked) Or DateClicked > Date Or isStatHoliday(DateClicked) Then
-            SaveButn.Enabled = False
+            saveButn.Enabled = False
             If DateClicked > Date Then
-                SaveButn.Caption = "Future!"
+                saveButn.Caption = "Future!"
             ElseIf isWeekend(DateClicked) Then
-                SaveButn.Caption = "Weekend"
+                saveButn.Caption = "Weekend"
                 weekend.Caption = WeekdayName(Weekday(DateClicked))
             Else
-                SaveButn.Caption = "Stat Holiday"
+                saveButn.Caption = "Stat Holiday"
             End If
         Else
-            SaveButn.Enabled = True
-            SaveButn.Caption = "Save"
+            saveButn.Enabled = True
+            saveButn.Caption = "Save"
         End If
         LabDate = shortDate(MonthView.value)
         'Timer1.Enabled = True

@@ -49,7 +49,7 @@ Begin VB.Form frmLedger
       GridLines       =   -1  'True
       _Version        =   393217
       ForeColor       =   -2147483640
-      BackColor       =   255
+      BackColor       =   8454016
       BorderStyle     =   1
       Appearance      =   1
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -244,7 +244,7 @@ Begin VB.Form frmLedger
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107544579
+         Format          =   56229891
          CurrentDate     =   42718
       End
       Begin VB.Label Label3 
@@ -551,7 +551,7 @@ Private Sub Form_Load()
         cboClient.ListIndex = val(cboClient.Tag)
         cboClient.Tag = ""
     Else
-        cboClient.ListIndex = 0
+        cboClient.ListIndex = -1
     End If
     Set cl = Nothing
     
@@ -620,12 +620,12 @@ Sub updateListview()
             FrameAdd.Caption = "Add Adjustment - " & !First & "  " & !Last
             client_id = !idClient
             
-            If IsNull(!enddate) Then
-                enddate = Date
+            'If IsNull(!enddate) Then
+                enddate = getLatestEnrolledDate(client_id)
                 'Always go to today because if the client is not active u still have to check for payments after the end date
-            Else
-                enddate = !enddate
-            End If
+            'Else
+            '    enddate = !enddate
+            'End If
             
             
             If Not (pm.EOF And pm.BOF) Then pm.MoveFirst
@@ -645,12 +645,14 @@ Sub updateListview()
                     Set fc = db.Execute("SELECT * FROM fee_classes WHERE idFeeClasses = " & getFeeClassAtDate(!idClient, d))
                     If fc.EOF And fc.BOF Then
                         MsgBox !First & " " & !Last & " did not have a valid fee class as of " & d
+                        ListView.ListItems.Clear
+                        Exit Sub
                     Else
                         daysperweek = fc!days_per_week
                         For tempdate = nextbill - 6 To nextbill
                             day = Weekday(tempdate)
                             If day <> 1 And day <> 7 Then ' it's not the weekend
-                                If ((day = 2 And fc!M = 1) Or (day = 3 And fc!T = 1) Or (day = 4 And fc!W = 1) Or (day = 5 And fc!h = 1) Or (day = 6 And fc!f = 1)) And tempdate >= !startdate Then 'if billed for today
+                                If ((day = 2 And fc!M = 1) Or (day = 3 And fc!T = 1) Or (day = 4 And fc!W = 1) Or (day = 5 And fc!h = 1) Or (day = 6 And fc!f = 1)) And tempdate >= !startdate And getActiveAtDate(client_id, tempdate) Then 'if billed for today
                                     If school_age Then
                                         If isStatHoliday(tempdate) Then ' parents pay minimum $30 for a stat holiday regardless of regular fees and regardless of attendance.
                                             If getFeesAtDate(!idClient, tempdate) / daysperweek <= 30 Then
@@ -683,10 +685,12 @@ Sub updateListview()
                             'If nextbill = CDate("11/11/2016") Then MsgBox charges
                         Next tempdate
                     End If
-                    Set li = ListView.ListItems.Add(, , ansiDate(d)) ' ADD CHARGE
-                    li.SubItems(3) = " "
-                    li.SubItems(2) = Format(charges, "0.00")
-                    li.SubItems(1) = "Child Care Fees (" & Format(nextbill - 4, "mmm d") & " to " & Format(nextbill, "mmm d") & ")"
+                    If charges > 0 Then
+                        Set li = ListView.ListItems.Add(, , ansiDate(d)) ' ADD CHARGE
+                        li.SubItems(3) = " "
+                        li.SubItems(2) = Format(charges, "0.00")
+                        li.SubItems(1) = "Child Care Fees (" & Format(nextbill - 4, "mmm d") & " to " & Format(nextbill, "mmm d") & ")"
+                    End If
                     nextbill = nextbill + 7
                 End If
                 If Not ad.EOF Then
@@ -716,7 +720,7 @@ Sub updateListview()
                         li.SubItems(3) = Format(pm!amount, "0.00")
                         li.SubItems(2) = " "
                         li.SubItems(1) = "Payment"
-                        pmnote = "" & Replace(pm!details, vbCrLf, " | ")
+                        pmnote = "" & Replace("" & pm!details, vbCrLf, " | ")
                         If pmnote <> "" Then li.SubItems(1) = li.SubItems(1) & " - " & pmnote
                         li.ToolTipText = ansiDate(pm!fromDate) & "  to  " & ansiDate(pm!toDate)
                         pm.MoveNext
@@ -740,7 +744,7 @@ Sub updateListview()
         For Each li In ListView.ListItems
             If li.Text <> "" Then
                 If year(CDate(li.Text)) = val(cboYear.Text) Then
-                    fli = ListViewFiltered.ListItems.Add(, , li.Text)
+                    Set fli = ListViewFiltered.ListItems.Add(, , li.Text)
                     For Each si In li.ListSubItems
                         fli.ListSubItems.Add si.index, si.key, si.Text
                     Next si
@@ -854,7 +858,7 @@ Private Sub printButn_Click()
         Set cl = db.Execute("SELECT * FROM clients WHERE idClient = " & getClientID(cboClient.Text))
         Dim c As ADODB.Recordset
         Dim parentname As String
-        Set c = getParents(q!idClient)
+        Set c = getParents(cl!idClient)
         If Not (c.EOF And c.BOF) Then
             c.MoveFirst
             parentname = "Parent: " & c!name

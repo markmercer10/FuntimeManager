@@ -1,4 +1,4 @@
-db: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=funtime;USER=funtime;PASSWORD=funtimetest;OPTION=3;
-gcdb: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=gnucash;USER=funtime;PASSWORD=funtimetest;OPTION=3;
+db: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=funtime;USER=root;PASSWORD=.3ohazk.;OPTION=3;
+gcdb: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=gnucash;USER=root;PASSWORD=.3ohazk.;OPTION=3;
 daycaredb: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=funtime;USER=funtime_user;PASSWORD=funtime.3ohazk.;OPTION=3;
 daycaregcdb: DRIVER={MySQL ODBC 5.1 Driver};SERVER=localhost;DATABASE=gnucash;USER=funtime_user;PASSWORD=funtime.3ohazk.;OPTION=3;

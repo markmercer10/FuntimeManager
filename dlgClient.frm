@@ -1,17 +1,17 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form dlgClient 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Add New Client"
-   ClientHeight    =   9975
+   ClientHeight    =   9600
    ClientLeft      =   30
    ClientTop       =   360
    ClientWidth     =   5760
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   9975
+   ScaleHeight     =   9600
    ScaleWidth      =   5760
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton butnReactivate 
@@ -29,7 +29,7 @@ Begin VB.Form dlgClient
       Height          =   495
       Left            =   0
       Style           =   1  'Graphical
-      TabIndex        =   79
+      TabIndex        =   77
       Top             =   6360
       Visible         =   0   'False
       Width           =   1455
@@ -46,7 +46,7 @@ Begin VB.Form dlgClient
       Caption         =   "Frame1"
       Height          =   5655
       Left            =   0
-      TabIndex        =   46
+      TabIndex        =   44
       Top             =   2160
       Visible         =   0   'False
       Width           =   5775
@@ -56,7 +56,7 @@ Begin VB.Form dlgClient
          Caption         =   "Frame1"
          Height          =   3975
          Left            =   0
-         TabIndex        =   67
+         TabIndex        =   65
          Top             =   1080
          Visible         =   0   'False
          Width           =   4380
@@ -75,7 +75,7 @@ Begin VB.Form dlgClient
             Height          =   495
             Left            =   2880
             Style           =   1  'Graphical
-            TabIndex        =   77
+            TabIndex        =   75
             Top             =   3120
             Width           =   1215
          End
@@ -95,7 +95,7 @@ Begin VB.Form dlgClient
             Index           =   3
             Left            =   1560
             Style           =   1  'Graphical
-            TabIndex        =   75
+            TabIndex        =   73
             Top             =   1920
             Width           =   2535
          End
@@ -113,7 +113,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   720
-            TabIndex        =   74
+            TabIndex        =   72
             Top             =   2640
             Width           =   4335
          End
@@ -132,7 +132,7 @@ Begin VB.Form dlgClient
             Height          =   495
             Left            =   4200
             Style           =   1  'Graphical
-            TabIndex        =   73
+            TabIndex        =   71
             Top             =   3120
             Width           =   1215
          End
@@ -153,7 +153,7 @@ Begin VB.Form dlgClient
             Left            =   3720
             Picture         =   "dlgClient.frx":0000
             Style           =   1  'Graphical
-            TabIndex        =   72
+            TabIndex        =   70
             Top             =   840
             Width           =   1575
          End
@@ -174,7 +174,7 @@ Begin VB.Form dlgClient
             Left            =   2160
             Picture         =   "dlgClient.frx":31C7
             Style           =   1  'Graphical
-            TabIndex        =   71
+            TabIndex        =   69
             Top             =   840
             Width           =   1575
          End
@@ -195,7 +195,7 @@ Begin VB.Form dlgClient
             Left            =   480
             Picture         =   "dlgClient.frx":657D
             Style           =   1  'Graphical
-            TabIndex        =   70
+            TabIndex        =   68
             Top             =   840
             Width           =   1695
          End
@@ -213,7 +213,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   960
-            TabIndex        =   69
+            TabIndex        =   67
             Top             =   480
             Width           =   4455
          End
@@ -231,7 +231,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   720
-            TabIndex        =   68
+            TabIndex        =   66
             Top             =   120
             Width           =   1815
          End
@@ -242,10 +242,10 @@ Begin VB.Form dlgClient
          Caption         =   "Frame1"
          Height          =   4935
          Left            =   0
-         TabIndex        =   55
+         TabIndex        =   53
          Top             =   480
          Visible         =   0   'False
-         Width           =   2850
+         Width           =   4170
          Begin VB.CommandButton butnCancelSaveContact 
             BackColor       =   &H00FFBB88&
             Caption         =   "Cancel"
@@ -261,7 +261,7 @@ Begin VB.Form dlgClient
             Height          =   495
             Left            =   2880
             Style           =   1  'Graphical
-            TabIndex        =   66
+            TabIndex        =   64
             Top             =   2640
             Width           =   1215
          End
@@ -280,7 +280,7 @@ Begin VB.Form dlgClient
             Height          =   495
             Left            =   4200
             Style           =   1  'Graphical
-            TabIndex        =   65
+            TabIndex        =   63
             Top             =   2640
             Width           =   1215
          End
@@ -297,7 +297,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   405
             Left            =   1800
-            TabIndex        =   63
+            TabIndex        =   61
             Top             =   2040
             Width           =   3615
          End
@@ -314,7 +314,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   405
             Left            =   1800
-            TabIndex        =   61
+            TabIndex        =   59
             Top             =   1560
             Width           =   3615
          End
@@ -331,7 +331,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   405
             Left            =   1800
-            TabIndex        =   59
+            TabIndex        =   57
             Top             =   1080
             Width           =   3615
          End
@@ -348,7 +348,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   405
             Left            =   1800
-            TabIndex        =   57
+            TabIndex        =   55
             Top             =   600
             Width           =   3615
          End
@@ -367,7 +367,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   -480
-            TabIndex        =   64
+            TabIndex        =   62
             Top             =   2040
             Width           =   2175
          End
@@ -386,7 +386,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   -480
-            TabIndex        =   62
+            TabIndex        =   60
             Top             =   1560
             Width           =   2175
          End
@@ -405,7 +405,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   -480
-            TabIndex        =   60
+            TabIndex        =   58
             Top             =   1080
             Width           =   2175
          End
@@ -424,7 +424,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   -480
-            TabIndex        =   58
+            TabIndex        =   56
             Top             =   600
             Width           =   2175
          End
@@ -442,7 +442,7 @@ Begin VB.Form dlgClient
             EndProperty
             Height          =   375
             Left            =   360
-            TabIndex        =   56
+            TabIndex        =   54
             Top             =   120
             Width           =   3000
          End
@@ -462,7 +462,7 @@ Begin VB.Form dlgClient
          Height          =   375
          Left            =   4440
          Style           =   1  'Graphical
-         TabIndex        =   54
+         TabIndex        =   52
          Top             =   480
          Width           =   1215
       End
@@ -481,7 +481,7 @@ Begin VB.Form dlgClient
          Height          =   495
          Left            =   4560
          Style           =   1  'Graphical
-         TabIndex        =   53
+         TabIndex        =   51
          Top             =   4560
          Width           =   1215
       End
@@ -500,7 +500,7 @@ Begin VB.Form dlgClient
          Height          =   495
          Left            =   4800
          Style           =   1  'Graphical
-         TabIndex        =   52
+         TabIndex        =   50
          Top             =   1200
          Width           =   495
       End
@@ -519,7 +519,7 @@ Begin VB.Form dlgClient
          Height          =   495
          Left            =   5280
          Style           =   1  'Graphical
-         TabIndex        =   51
+         TabIndex        =   49
          Top             =   1200
          Width           =   495
       End
@@ -536,14 +536,14 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   405
          Left            =   840
-         TabIndex        =   49
+         TabIndex        =   47
          Top             =   480
          Width           =   2655
       End
       Begin MSComctlLib.ListView LV_contacts 
          Height          =   3420
          Left            =   0
-         TabIndex        =   50
+         TabIndex        =   48
          Top             =   1080
          Width           =   5775
          _ExtentX        =   10186
@@ -625,7 +625,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   375
          Left            =   120
-         TabIndex        =   48
+         TabIndex        =   46
          Top             =   600
          Width           =   975
       End
@@ -643,7 +643,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   375
          Left            =   120
-         TabIndex        =   47
+         TabIndex        =   45
          Top             =   120
          Width           =   1575
       End
@@ -660,13 +660,13 @@ Begin VB.Form dlgClient
       Caption         =   "Frame1"
       Height          =   2175
       Left            =   0
-      TabIndex        =   40
-      Top             =   7080
+      TabIndex        =   38
+      Top             =   6720
       Width           =   5775
       Begin VB.ListBox contactIDs 
          Height          =   255
          Left            =   120
-         TabIndex        =   76
+         TabIndex        =   74
          Top             =   1320
          Visible         =   0   'False
          Width           =   2175
@@ -684,7 +684,7 @@ Begin VB.Form dlgClient
          Height          =   360
          Left            =   0
          Style           =   2  'Dropdown List
-         TabIndex        =   43
+         TabIndex        =   41
          Top             =   360
          Width           =   2655
       End
@@ -704,7 +704,7 @@ Begin VB.Form dlgClient
          Height          =   495
          Left            =   1320
          Style           =   1  'Graphical
-         TabIndex        =   42
+         TabIndex        =   40
          Top             =   720
          Width           =   1215
       End
@@ -723,7 +723,7 @@ Begin VB.Form dlgClient
          Height          =   495
          Left            =   0
          Style           =   1  'Graphical
-         TabIndex        =   41
+         TabIndex        =   39
          Top             =   720
          Width           =   1215
       End
@@ -740,7 +740,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   255
          Left            =   2760
-         TabIndex        =   78
+         TabIndex        =   76
          Top             =   1680
          Width           =   1815
       End
@@ -758,7 +758,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   255
          Left            =   0
-         TabIndex        =   45
+         TabIndex        =   43
          Top             =   120
          Width           =   1815
       End
@@ -775,7 +775,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   1335
          Left            =   2760
-         TabIndex        =   44
+         TabIndex        =   42
          Top             =   360
          Width           =   4995
       End
@@ -784,8 +784,8 @@ Begin VB.Form dlgClient
       Caption         =   "Subsidization Info"
       Height          =   1215
       Left            =   2880
-      TabIndex        =   35
-      Top             =   5670
+      TabIndex        =   33
+      Top             =   5400
       Visible         =   0   'False
       Width           =   2775
       Begin VB.TextBox txtParentalContrib 
@@ -800,7 +800,7 @@ Begin VB.Form dlgClient
          EndProperty
          Height          =   288
          Left            =   1440
-         TabIndex        =   38
+         TabIndex        =   36
          Text            =   "0.00"
          Top             =   600
          Width           =   1215
@@ -808,7 +808,7 @@ Begin VB.Form dlgClient
       Begin VB.TextBox txtAuthNumber 
          Height          =   288
          Left            =   1320
-         TabIndex        =   36
+         TabIndex        =   34
          Top             =   240
          Width           =   1335
       End
@@ -816,7 +816,7 @@ Begin VB.Form dlgClient
          Caption         =   "Parental Contrib."
          Height          =   255
          Left            =   120
-         TabIndex        =   39
+         TabIndex        =   37
          Top             =   600
          Width           =   1455
       End
@@ -824,7 +824,7 @@ Begin VB.Form dlgClient
          Caption         =   "Authorization #"
          Height          =   255
          Left            =   120
-         TabIndex        =   37
+         TabIndex        =   35
          Top             =   240
          Width           =   1095
       End
@@ -842,14 +842,14 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   252
       Left            =   1560
-      TabIndex        =   34
-      Top             =   6120
+      TabIndex        =   32
+      Top             =   5760
       Width           =   1455
    End
    Begin VB.TextBox ID 
       Height          =   288
       Left            =   120
-      TabIndex        =   31
+      TabIndex        =   29
       Top             =   6120
       Visible         =   0   'False
       Width           =   852
@@ -869,8 +869,8 @@ Begin VB.Form dlgClient
       Left            =   1560
       List            =   "dlgClient.frx":9876
       Style           =   2  'Dropdown List
-      TabIndex        =   29
-      Top             =   5310
+      TabIndex        =   27
+      Top             =   4830
       Width           =   855
    End
    Begin VB.CheckBox chkSubsidized 
@@ -886,8 +886,8 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   252
       Left            =   1560
-      TabIndex        =   12
-      Top             =   5760
+      TabIndex        =   11
+      Top             =   5400
       Width           =   1452
    End
    Begin VB.Timer Timer1 
@@ -926,8 +926,8 @@ Begin VB.Form dlgClient
       Height          =   492
       Left            =   2640
       Style           =   1  'Graphical
-      TabIndex        =   15
-      Top             =   9360
+      TabIndex        =   14
+      Top             =   9000
       Width           =   1455
    End
    Begin VB.CommandButton saveButn 
@@ -946,12 +946,12 @@ Begin VB.Form dlgClient
       Height          =   492
       Left            =   4200
       Style           =   1  'Graphical
-      TabIndex        =   14
-      Top             =   9360
+      TabIndex        =   13
+      Top             =   9000
       Width           =   1455
    End
    Begin VB.CheckBox chkActive 
-      Caption         =   "Active"
+      Caption         =   "Enrolled"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   9.75
@@ -963,8 +963,8 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   252
       Left            =   1560
-      TabIndex        =   13
-      Top             =   6480
+      TabIndex        =   12
+      Top             =   6120
       Value           =   1  'Checked
       Visible         =   0   'False
       Width           =   1455
@@ -984,15 +984,15 @@ Begin VB.Form dlgClient
       Left            =   1560
       List            =   "dlgClient.frx":9888
       Style           =   2  'Dropdown List
-      TabIndex        =   11
+      TabIndex        =   10
       Top             =   3975
       Width           =   2055
    End
-   Begin MSComCtl2.DTPicker dpEnd 
+   Begin MSComCtl2.DTPicker dpStart 
       Height          =   375
       Left            =   1560
-      TabIndex        =   10
-      Top             =   4860
+      TabIndex        =   9
+      Top             =   4380
       Visible         =   0   'False
       Width           =   2055
       _ExtentX        =   3625
@@ -1008,29 +1008,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   107806723
-      CurrentDate     =   42531
-   End
-   Begin MSComCtl2.DTPicker dpStart 
-      Height          =   375
-      Left            =   1560
-      TabIndex        =   9
-      Top             =   4380
-      Width           =   2055
-      _ExtentX        =   3625
-      _ExtentY        =   661
-      _Version        =   393216
-      BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Arial"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      CustomFormat    =   "MMM d, yyyy"
-      Format          =   107806723
+      Format          =   135856131
       CurrentDate     =   42531
    End
    Begin VB.TextBox txtFees 
@@ -1104,7 +1082,7 @@ Begin VB.Form dlgClient
          Strikethrough   =   0   'False
       EndProperty
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   128188419
+      Format          =   135856131
       CurrentDate     =   42530
    End
    Begin VB.TextBox txtAllergies 
@@ -1185,7 +1163,7 @@ Begin VB.Form dlgClient
    Begin MSComCtl2.DTPicker dpEffective 
       Height          =   375
       Left            =   1560
-      TabIndex        =   32
+      TabIndex        =   30
       Top             =   120
       Visible         =   0   'False
       Width           =   1815
@@ -1206,18 +1184,28 @@ Begin VB.Form dlgClient
       CalendarTitleBackColor=   65535
       CalendarTitleForeColor=   255
       CustomFormat    =   "MMM d, yyyy"
-      Format          =   128188419
+      Format          =   135856131
       CurrentDate     =   42531
    End
    Begin VB.Label Label17 
       BackColor       =   &H000000FF&
-      Caption         =   "Changes Effective                                             Ensure correct date!"
+      Caption         =   "Changes Effective                                 Ensure correct date!"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00FFFFFF&
       Height          =   375
-      Left            =   120
-      TabIndex        =   33
+      Left            =   0
+      TabIndex        =   31
       Top             =   120
       Visible         =   0   'False
-      Width           =   5535
+      Width           =   5655
    End
    Begin VB.Label Label16 
       Caption         =   "Weeks"
@@ -1232,8 +1220,8 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   2520
-      TabIndex        =   30
-      Top             =   5355
+      TabIndex        =   28
+      Top             =   4875
       Width           =   855
    End
    Begin VB.Label Label15 
@@ -1250,8 +1238,8 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   28
-      Top             =   5400
+      TabIndex        =   26
+      Top             =   4920
       Width           =   1935
    End
    Begin VB.Label Label12 
@@ -1268,26 +1256,8 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   27
+      TabIndex        =   25
       Top             =   4005
-      Width           =   1935
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "End Date"
-      BeginProperty Font 
-         Name            =   "Arial"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
-      Left            =   -480
-      TabIndex        =   26
-      Top             =   4920
       Width           =   1935
    End
    Begin VB.Label Label10 
@@ -1304,7 +1274,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   25
+      TabIndex        =   24
       Top             =   4440
       Width           =   1935
    End
@@ -1322,7 +1292,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   24
+      TabIndex        =   23
       Top             =   3600
       Width           =   1935
    End
@@ -1340,7 +1310,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   23
+      TabIndex        =   22
       Top             =   3240
       Width           =   1935
    End
@@ -1358,7 +1328,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   2160
       Width           =   1935
    End
@@ -1376,7 +1346,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   21
+      TabIndex        =   20
       Top             =   1680
       Width           =   1935
    End
@@ -1394,7 +1364,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   20
+      TabIndex        =   19
       Top             =   2880
       Width           =   1935
    End
@@ -1412,7 +1382,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   19
+      TabIndex        =   18
       Top             =   2520
       Width           =   1935
    End
@@ -1430,7 +1400,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   18
+      TabIndex        =   17
       Top             =   1320
       Width           =   1935
    End
@@ -1448,7 +1418,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   17
+      TabIndex        =   16
       Top             =   960
       Width           =   1935
    End
@@ -1466,7 +1436,7 @@ Begin VB.Form dlgClient
       EndProperty
       Height          =   255
       Left            =   -480
-      TabIndex        =   16
+      TabIndex        =   15
       Top             =   600
       Width           =   1935
    End
@@ -1592,12 +1562,12 @@ Private Sub butnReactivate_Click()
         With cl
             If Not (.EOF And .BOF) Then
                 .MoveFirst
-                insertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, dpEffective.value, Null, 1
+                upsertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, dpStart.value, 1
             End If
         End With
         Set cl = Nothing
         
-        db.Execute "UPDATE clients SET active=1, startDate=" & sqlDate(dpEffective.value) & ", endDate=NULL WHERE idClient = " & ID.Text
+        db.Execute "UPDATE clients SET active=1 WHERE idClient = " & ID.Text
         MsgBox "Account reactivated. Window will be closed."
         Unload Me
     End If
@@ -1671,11 +1641,11 @@ End Sub
 
 Private Sub chkActive_Click()
     'If CBool(chkActive) Then chkDropIn.value = 0
-    If chkActive.value = 0 Then
-        dpEnd.Visible = 1
-    Else
-        dpEnd.Visible = 0
-    End If
+    'If chkActive.value = 0 Then
+    '    dpEnd.Visible = 1
+    'Else
+    '    dpEnd.Visible = 0
+    'End If
 End Sub
 
 Private Sub chkDropIn_Click()
@@ -1780,12 +1750,12 @@ End Sub
 Private Sub dpEffective_Validate(Cancel As Boolean)
     If chkActive = 1 Then
         If dpEffective.value < dpStart.value Then dpEffective.value = dpStart.value
-        If dpEffective.value > dpEnd.value Then dpEffective.value = dpEnd.value
+        'If dpEffective.value > dpEnd.value Then dpEffective.value = dpEnd.value
     End If
 End Sub
 
-Private Sub dpEnd_Change()
-    dpEffective.value = dpEnd.value
+Private Sub dpStart_Change()
+    dpEffective.value = dpStart.value
 End Sub
 
 Private Sub Form_Load()
@@ -1912,9 +1882,9 @@ Private Sub SaveButn_Click()
             sql = sql & "authorizationNumber=""" & txtAuthNumber.Text & ""","
             sql = sql & "parentalContribution=" & val(txtParentalContrib.Text) & ","
         End If
-        If chkActive.value = 0 Then
-            sql = sql & "enddate=" & sqlDate(dpEnd.value) & ","
-        End If
+        'If chkActive.value = 0 Then
+        '    sql = sql & "enddate=" & sqlDate(dpEnd.value) & ","
+        'End If
         sql = sql & "active=" & chkActive.value
         sql = sql & " WHERE idClient = " & ID.Text
         
@@ -1923,23 +1893,23 @@ Private Sub SaveButn_Click()
     End If
     DoEvents
     
-    'add record to client_changes table
+    'UPSERT record to client_changes table
     Dim q As ADODB.Recordset
     Set q = db.Execute("SELECT * FROM clients WHERE first = """ & txtFirst & """ AND last = """ & txtLast & """ AND DOB = " & sqlDate(dpDOB.value))
     With q
         If Not (.EOF And .BOF) Then
             .MoveFirst
-            insertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, !startdate, !enddate, !active
-            .MoveNext
+            upsertClientChange dpEffective.value, !idClient, !feeClassID, !fees, !payperiod, !room, !subsidized, "" & !authorizationNumber, !parentalContribution, !startdate, !active
         End If
     End With
     
-    If ID <> "" Then ' EDITING CLIENT
+    'If ID <> "" Then ' EDITING CLIENT
         If originalStartDate <> dpStart Then
-            sql = "UPDATE client_changes SET date=" & sqlDate(dpStart.value) & " WHERE idClient = " & ID & " AND date = " & sqlDate(originalStartDate)
-            db.Execute sql
+            MsgBox "Start date should never change, this line should never be reached. Notify Mark Mercer if this message is ever displayed"
+            'sql = "UPDATE client_changes SET date=" & sqlDate(dpStart.value) & " WHERE idClient = " & ID & " AND date = " & sqlDate(originalStartDate)
+            'db.Execute sql
         End If
-    End If
+    'End If
     
     Set q = Nothing
     
@@ -1951,7 +1921,7 @@ Private Sub Timer1_Timer()
     Dim fc As ADODB.Recordset
     Dim rm As ADODB.Recordset
     dpStart = Date
-    dpEnd = Date
+    'dpEnd = Date
     dpEffective = Date
     dpDOB = CDate(MonthName(month(Date)) & " " & day(Date) & ", " & year(Date) - 2)
     cboPP.ListIndex = 0
@@ -2000,11 +1970,11 @@ Private Sub Timer1_Timer()
                 txtFees = !fees
                 dpStart.value = !startdate
                 originalStartDate = !startdate
-                If IsNull(!enddate) Then
-                    dpEnd.value = Date
-                Else
-                    dpEnd.value = !enddate
-                End If
+                'If IsNull(!enddate) Then
+                '    dpEnd.value = Date
+                'Else
+                '    dpEnd.value = !enddate
+                'End If
                 comboSelectItem cboPP, !payperiod
                 comboSelectItem cboRoom, !room
                 chkSubsidized.value = !subsidized
@@ -2031,6 +2001,7 @@ Private Sub Timer1_Timer()
         UpdateClientContacts
     Else
         'NEW ENTRY
+        dpStart.Visible = True
         ContactsFrame.Visible = False
     End If
     Set cl = Nothing

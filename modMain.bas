@@ -270,38 +270,40 @@ End Function
 Function getStartDateAtDate(ByVal client As Long, ByVal d As Date) As Date
     Dim q As ADODB.Recordset
     getStartDateAtDate = 0
-    Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
-    If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
+    'start date now never changes but this method remains for posterity
+    Set q = db.Execute("SELECT * FROM cliends WHERE idClient = " & client)
+    'Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
+    'If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
     With q
         If Not (.EOF And .BOF) Then
             .MoveFirst
-            If (IsNull(!startdate)) Then
-                getStartDateAtDate = 0
-            Else
+            'If (IsNull(!startdate)) Then
+            '    getStartDateAtDate = 0
+            'Else
                 getStartDateAtDate = !startdate
-            End If
+            'End If
         End If
     End With
     Set q = Nothing
 End Function
 
-Function getEndDateAtDate(ByVal client As Long, ByVal d As Date) As Date
-    Dim q As ADODB.Recordset
-    getEndDateAtDate = 0
-    Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
-    If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
-    With q
-        If Not (.EOF And .BOF) Then
-            .MoveFirst
-            If (IsNull(!enddate)) Then
-                getEndDateAtDate = 0
-            Else
-                getEndDateAtDate = !enddate
-            End If
-        End If
-    End With
-    Set q = Nothing
-End Function
+'Function getEndDateAtDate(ByVal client As Long, ByVal d As Date) As Date
+'    Dim q As ADODB.Recordset
+'    getEndDateAtDate = 0
+'    Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND date <= " & sqlDate(d) & " ORDER BY date DESC, idChange DESC LIMIT 1;")
+'    If (q.EOF And q.BOF) Then Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " ORDER BY date ASC, idChange ASC LIMIT 1;")
+'    With q
+'        If Not (.EOF And .BOF) Then
+'            .MoveFirst
+'            If (IsNull(!enddate)) Then
+'                getEndDateAtDate = 0
+'            Else
+'                getEndDateAtDate = !enddate
+'            End If
+'        End If
+'    End With
+'    Set q = Nothing
+'End Function
 
 Function getActiveAtDate(ByVal client As Long, ByVal d As Date) As Long
     Dim q As ADODB.Recordset
@@ -314,6 +316,24 @@ Function getActiveAtDate(ByVal client As Long, ByVal d As Date) As Long
         End If
     End With
     Set q = Nothing
+End Function
+
+Function getLatestEnrolledDate(ByVal client As Long) As Date
+    If getActiveAtDate(client, Date) Then
+        getLatestEnrolledDate = Date
+    Else
+        Dim q As ADODB.Recordset
+        Set q = db.Execute("SELECT * FROM client_changes WHERE idClient = " & client & " AND active = 0 ORDER BY date DESC, idChange DESC LIMIT 1;")
+        With q
+            If Not (.EOF And .BOF) Then
+                .MoveFirst
+                getLatestEnrolledDate = !Date
+            Else
+                getLatestEnrolledDate = Date
+            End If
+        End With
+        Set q = Nothing
+    End If
 End Function
 
 Function getAuthorizationNumberAtDate(ByVal client As Long, ByVal d As Date) As String
@@ -434,24 +454,42 @@ Sub check_for_client_changes()
     End With
 End Sub
 
-Sub insertClientChange(changedate As Date, idClient As Long, feeClassID As Long, fees As String, payperiod As Byte, room As String, subsidized As Byte, authorizationNumber As String, parentalContribution As Double, startdate As Variant, enddate As Variant, active As Byte)
-    sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, authorizationNumber, parentalContribution, startDate, endDate, active) VALUES ("
-    sql = sql & sqlDate(changedate) & ","
-    sql = sql & idClient & ","
-    sql = sql & feeClassID & ","
-    sql = sql & fees & ","
-    sql = sql & payperiod & ","
-    sql = sql & """" & room & ""","
-    sql = sql & subsidized & ","
-    sql = sql & """" & authorizationNumber & ""","
-    sql = sql & parentalContribution & ","
-    sql = sql & sqlDate(startdate) & ","
-    If IsNull(enddate) Then
-        sql = sql & "NULL ,"
+Sub upsertClientChange(changedate As Date, idClient As Long, feeClassID As Long, fees As String, payperiod As Byte, room As String, subsidized As Byte, authorizationNumber As String, parentalContribution As Double, startdate As Variant, active As Byte)
+    Dim cc As ADODB.Recordset
+    Set cc = db.Execute("SELECT * FROM client_changes WHERE idClient = " & idClient & " AND date = " & sqlDate(changedate) & " ORDER BY idChange DESC")
+    
+    If cc.EOF And cc.BOF Then
+        sql = "INSERT INTO client_changes (date, idClient, feeClassID, fees, payperiod, room, subsidized, authorizationNumber, parentalContribution, startDate, active) VALUES ("
+        sql = sql & sqlDate(changedate) & ","
+        sql = sql & idClient & ","
+        sql = sql & feeClassID & ","
+        sql = sql & fees & ","
+        sql = sql & payperiod & ","
+        sql = sql & """" & room & ""","
+        sql = sql & subsidized & ","
+        sql = sql & """" & authorizationNumber & ""","
+        sql = sql & parentalContribution & ","
+        sql = sql & sqlDate(startdate) & ","
+        'If IsNull(enddate) Then
+        '    sql = sql & "NULL ,"
+        'Else
+        '    sql = sql & sqlDate(enddate) & ","
+        'End If
+        sql = sql & active & ")"
     Else
-        sql = sql & sqlDate(enddate) & ","
+        cc.MoveFirst
+        sql = "UPDATE client_changes SET "
+        sql = sql & "feeClassID = " & feeClassID & ","
+        sql = sql & "fees = " & fees & ","
+        sql = sql & "payperiod = " & payperiod & ","
+        sql = sql & "room = """ & room & ""","
+        sql = sql & "subsidized = " & subsidized & ","
+        sql = sql & "authorizationNumber = " & """" & authorizationNumber & ""","
+        sql = sql & "parentalContribution = " & parentalContribution & ","
+        sql = sql & "active = " & active & " "
+        sql = sql & "WHERE idChange = " & cc!idChange
     End If
-    sql = sql & active & ")"
+    
     db.Execute sql
 End Sub
 
@@ -559,7 +597,7 @@ Function feeClassDaysPerWeek(ByVal feeClassID As Long) As Byte
         d = 0
         fc.MoveFirst
         For i = 2 To 6
-            If fc.Fields(weekdayToLetter(i)) Then d = d + 1
+            If fc.fields(weekdayToLetter(i)) Then d = d + 1
         'M Then d = d + 1
         'If fc!T Then d = d + 1
         'If fc!W Then d = d + 1

@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmClientChanges 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Changes to Clients"
@@ -14,6 +14,7 @@ Begin VB.Form frmClientChanges
    ScaleHeight     =   12870
    ScaleWidth      =   15030
    StartUpPosition =   3  'Windows Default
+   Visible         =   0   'False
    Begin VB.Frame frmEdit 
       Caption         =   "Edit Entry"
       BeginProperty Font 
@@ -25,7 +26,7 @@ Begin VB.Form frmClientChanges
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Height          =   6495
+      Height          =   5895
       Left            =   4680
       TabIndex        =   5
       Top             =   2160
@@ -45,7 +46,7 @@ Begin VB.Form frmClientChanges
          Height          =   495
          Left            =   1920
          TabIndex        =   25
-         Top             =   5760
+         Top             =   5160
          Width           =   1695
       End
       Begin VB.CommandButton okButn 
@@ -62,7 +63,7 @@ Begin VB.Form frmClientChanges
          Height          =   495
          Left            =   3720
          TabIndex        =   24
-         Top             =   5760
+         Top             =   5160
          Width           =   1695
       End
       Begin VB.TextBox txtAuth 
@@ -156,7 +157,7 @@ Begin VB.Form frmClientChanges
          Height          =   375
          Left            =   2280
          TabIndex        =   20
-         Top             =   5280
+         Top             =   4320
          Width           =   855
       End
       Begin VB.CheckBox chkSubs 
@@ -249,14 +250,15 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   135528451
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker StartDTPicker 
          Height          =   375
          Left            =   2280
          TabIndex        =   26
-         Top             =   4320
+         Top             =   4680
+         Visible         =   0   'False
          Width           =   2055
          _ExtentX        =   3625
          _ExtentY        =   661
@@ -271,7 +273,7 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   135528451
          CurrentDate     =   42687
       End
       Begin MSComCtl2.DTPicker EndDTPicker 
@@ -279,6 +281,7 @@ Begin VB.Form frmClientChanges
          Left            =   2280
          TabIndex        =   28
          Top             =   4800
+         Visible         =   0   'False
          Width           =   2055
          _ExtentX        =   3625
          _ExtentY        =   661
@@ -293,26 +296,8 @@ Begin VB.Form frmClientChanges
             Strikethrough   =   0   'False
          EndProperty
          CustomFormat    =   "MMM d, yyyy"
-         Format          =   107085827
+         Format          =   135528451
          CurrentDate     =   42687
-      End
-      Begin VB.Label Label11 
-         Alignment       =   1  'Right Justify
-         Caption         =   "End Date"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   12
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Left            =   120
-         TabIndex        =   29
-         Top             =   4800
-         Width           =   1935
       End
       Begin VB.Label Label10 
          Alignment       =   1  'Right Justify
@@ -329,7 +314,27 @@ Begin VB.Form frmClientChanges
          Height          =   375
          Left            =   120
          TabIndex        =   27
-         Top             =   4320
+         Top             =   4680
+         Visible         =   0   'False
+         Width           =   1935
+      End
+      Begin VB.Label Label11 
+         Alignment       =   1  'Right Justify
+         Caption         =   "End Date"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   120
+         TabIndex        =   29
+         Top             =   4920
+         Visible         =   0   'False
          Width           =   1935
       End
       Begin VB.Label Label9 
@@ -347,7 +352,7 @@ Begin VB.Form frmClientChanges
          Height          =   375
          Left            =   120
          TabIndex        =   14
-         Top             =   5280
+         Top             =   4320
          Width           =   1935
       End
       Begin VB.Label Label8 
@@ -594,7 +599,7 @@ Begin VB.Form frmClientChanges
       BeginProperty ColumnHeader(3) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   2
          Text            =   "Fee Class"
-         Object.Width           =   6703
+         Object.Width           =   7938
       EndProperty
       BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
@@ -631,17 +636,18 @@ Begin VB.Form frmClientChanges
       BeginProperty ColumnHeader(10) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   9
          Text            =   "StartDate"
-         Object.Width           =   2117
+         Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(11) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   10
          Text            =   "EndDate"
-         Object.Width           =   2117
+         Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(12) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         Alignment       =   1
          SubItemIndex    =   11
-         Text            =   "Active"
-         Object.Width           =   1411
+         Text            =   "Enrolled"
+         Object.Width           =   2117
       EndProperty
    End
    Begin VB.Menu mnuRC 
@@ -688,9 +694,9 @@ Private Sub cboFeeClasses_Click()
 End Sub
 
 Private Sub DTPicker_Change()
-    If DTPicker.value < startdate Then
+    If dtPicker.value < startdate Then
         MsgBox "You cannot set a client change to before the client's start date"
-        DTPicker.value = startdate
+        dtPicker.value = startdate
     End If
 End Sub
 
@@ -743,7 +749,7 @@ Private Sub mnuEdit_Click()
     With q
         If Not (.EOF And .BOF) Then
             .MoveFirst
-            DTPicker.value = ansiDate(!Date)
+            dtPicker.value = ansiDate(!Date)
             cboFeeClasses.ListIndex = !feeClassID - 1
             txtFees = Format(!fees, "0.00")
             comboSelectItem pp, !payperiod
@@ -752,22 +758,22 @@ Private Sub mnuEdit_Click()
             txtAuth = "" & !authorizationNumber
             txtParentCont = Format(!parentalContribution, "0.00")
             StartDTPicker.value = !startdate
-            If (IsNull(!enddate)) Then
-                EndDTPicker.value = 0
-                EndDTPicker.Visible = False
-            Else
-                EndDTPicker.value = !enddate
-            End If
+            'If (IsNull(!enddate)) Then
+            '    EndDTPicker.value = 0
+            '    EndDTPicker.Visible = False
+            'Else
+            '    EndDTPicker.value = !enddate
+            'End If
             chkActive.value = !active
         End If
     End With
     frmEdit.Visible = True
     
     If ListView.SelectedItem.index = 1 Then
-        DTPicker.Enabled = False
+        dtPicker.Enabled = False
         chkActive.Enabled = False
     Else
-        DTPicker.Enabled = True
+        dtPicker.Enabled = True
         chkActive.Enabled = True
     End If
     
@@ -780,7 +786,7 @@ Private Sub okButn_Click()
     
     
     sql = "UPDATE client_changes SET "
-    sql = sql & "date=" & sqlDate(DTPicker.value) & ","
+    sql = sql & "date=" & sqlDate(dtPicker.value) & ","
     sql = sql & "feeClassID=" & cboFeeClasses.ListIndex + 1 & ","
     sql = sql & "fees=" & txtFees & ","
     sql = sql & "payperiod=" & pp.Text & ","
@@ -791,11 +797,11 @@ Private Sub okButn_Click()
         sql = sql & "parentalContribution=" & val(txtParentCont.Text) & ","
     End If
     sql = sql & "startDate=" & sqlDate(StartDTPicker.value) & ","
-    If EndDTPicker.Visible Then
-        sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
-    Else
-        sql = sql & "endDate=NULL,"
-    End If
+    'If EndDTPicker.Visible Then
+    '    sql = sql & "endDate=" & sqlDate(EndDTPicker.value) & ","
+    'Else
+    '    sql = sql & "endDate=NULL,"
+    'End If
     sql = sql & "active=" & chkActive.value
     sql = sql & " WHERE idChange = " & editID
     
@@ -807,7 +813,7 @@ Private Sub okButn_Click()
             If CDate(li.SubItems(1)) > latestdate Then latestdate = CDate(li.SubItems(1))
         End If
     Next li
-    If DTPicker.value > latestdate Then ' this is the last entry so update the clients table to match.
+    If dtPicker.value > latestdate Then ' this is the last entry so update the clients table to match.
         
         'NOT DONE!!!
         'This setup doesn't account for if you take the latest client change and save it as an earlier one so that a different one ends up being last.
@@ -914,7 +920,7 @@ Sub fillList()
                 li.SubItems(7) = "" & !authorizationNumber
                 li.SubItems(8) = !parentalContribution
                 li.SubItems(9) = "" & ansiDate(!startdate)
-                li.SubItems(10) = "" & ansiDate(!enddate)
+                'li.SubItems(10) = "" & ansiDate(!enddate)
                 li.SubItems(11) = !active
                 'total = total + (!value_num / 100#)
                 .MoveNext

@@ -583,6 +583,18 @@ Attribute VB_Exposed = False
 ' v2.3.3 - Sep 30, 2018
 ' -minor tweaks, to ensure the subsidy save button gets enabled
 
+' v2.4.0 - Dec 17, 2018
+' -Completely removed endDate from clients.  Also startDate now indicates the date
+'   of the accounts creation and can never be changed.  The previous notions of
+'   start date and end date (meaning when a child enrolls or ceases to be enrolled
+'   in daycare) are now retrieved from the client changes by evaluating the times
+'   the 'active' field change.  Use the functions getActiveAtDate and
+'   getLatestEnrolledDate
+
+' v2.4.1 - Jan 2, 2019
+'  -made the client ledger not show bills for dates not active
+'  -Upsert client changes.
+
 ' *********************************************************************
 
 Private timeout_counter As Long
@@ -734,19 +746,19 @@ Private Sub Form_Load()
         q.MoveFirst
         payroll_account_guid = q!guid
     End If
-
+    
     If Not RIDE Then
         check_for_client_changes
-        For d = Date - 30 To Date - 7
-            If Weekday(d) <> 1 And Weekday(d) <> 7 And Not isStatHoliday(d) Then
-                Set q = db.Execute("SELECT * FROM attendance WHERE date = " & sqlDate(d))
-                If q.EOF And q.BOF Then
-                    MsgBox "Attendance entry missing for " & shortDate(d)
-                End If
-            End If
-        Next d
+    '    For d = Date - 30 To Date - 7
+    '        If Weekday(d) <> 1 And Weekday(d) <> 7 And Not isStatHoliday(d) Then
+    '            Set q = db.Execute("SELECT * FROM attendance WHERE date = " & sqlDate(d))
+    '            If q.EOF And q.BOF Then
+    '                MsgBox "Attendance entry missing for " & shortDate(d)
+    '            End If
+    '        End If
+    '    Next d
     End If
-    
+
     Set q = Nothing
     Set c = Nothing
 End Sub

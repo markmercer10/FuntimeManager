@@ -778,7 +778,7 @@ Private Sub calcButn_Click()
             cboMonth.Tag = cboMonth.Text
             cboYear.Tag = cboYear.Text
             LOADED = False
-            SaveButn.Enabled = True
+            saveButn.Enabled = True
         Else
             If MsgBox("A record already exists for that month! You can load it by selecting from the 'load' dropdown." & vbCrLf & "Do you want to recalculate it?", vbYesNo) = vbYes Then
                 FlexGrid.backcolor = &HFFEEDD ' blue
@@ -786,13 +786,13 @@ Private Sub calcButn_Click()
                 cboMonth.Tag = cboMonth.Text
                 cboYear.Tag = cboYear.Text
                 LOADED = True
-                SaveButn.Enabled = True
+                saveButn.Enabled = True
             Else
                 'do nothing
             End If
         End If
     Else
-        SaveButn.Enabled = False
+        saveButn.Enabled = False
         initFlexgrid
     End If
     
@@ -813,7 +813,7 @@ Private Sub cboMonth_Click()
         periodStart = CDate(cboMonth.Text & " 1, " & cboYear.Text)
         periodEnd = CDate(cboMonth.Text & " " & daysInMonth(periodStart) & ", " & cboYear.Text)
     End If
-    SaveButn.Enabled = False
+    saveButn.Enabled = False
 End Sub
 
 Private Sub cboSaved_Click()
@@ -829,7 +829,7 @@ Private Sub cboYear_Click()
         periodStart = CDate(cboMonth.Text & " 1, " & cboYear.Text)
         periodEnd = CDate(cboMonth.Text & " " & daysInMonth(periodStart) & ", " & cboYear.Text)
     End If
-    SaveButn.Enabled = False
+    saveButn.Enabled = False
 End Sub
 
 
@@ -958,7 +958,7 @@ Sub fillData()
     
     If Me.Visible Then initFlexgrid
     
-    Set cl = db.Execute("SELECT * FROM Clients WHERE (active = 1 OR endDate >= " & sqlDate(periodStart) & ") AND startDate <= " & sqlDate(periodEnd) & " ORDER BY Last, First ASC")
+    Set cl = db.Execute("SELECT * FROM Clients WHERE active = 1 AND startDate <= " & sqlDate(periodEnd) & " ORDER BY Last, First ASC")
     'Set cl = db.Execute("SELECT * FROM Clients WHERE subsidized = 1 AND (active = 1 OR endDate >= " & sqlDate(periodStart) & ") AND startDate <= " & sqlDate(periodEnd) & " ORDER BY Last, First ASC")
     'Clipboard.SetText "SELECT * FROM Clients WHERE subsidized = 1 AND (active = 1 OR endDate >= " & sqlDate(periodStart) & ") AND startDate <= " & sqlDate(periodEnd) & " ORDER BY Last, First ASC"
     'MsgBox "SELECT * FROM Clients WHERE subsidized = 1 AND (active = 1 OR endDate >= " & sqlDate(periodStart) & ") AND startDate <= " & sqlDate(periodEnd) & " ORDER BY Last, First ASC"
@@ -979,7 +979,8 @@ Sub fillData()
                     clientFrom = periodStart
                     clientTo = periodEnd
                     If clientFrom < !startdate Then clientFrom = !startdate
-                    If clientTo > !enddate Then clientTo = !enddate
+                    lastEnrolled = getLatestEnrolledDate(cl!idClient)
+                    If clientTo > lastEnrolled Then clientTo = lastEnrolled
                     
                     If !subsidized = 1 Then
                         If getSubsidizedAtDate(!idClient, clientFrom) = 0 Then
@@ -1412,7 +1413,7 @@ Private Sub loadButn_Click()
     DoEvents
     cboMonth.Tag = cboMonth.Text ' or some other source of month and year
     cboYear.Tag = cboYear.Text
-    SaveButn.Enabled = True
+    saveButn.Enabled = True
     
     loadData Mo, yr
     DoEvents
@@ -1420,7 +1421,7 @@ Private Sub loadButn_Click()
     'if loaded then
     FlexGrid.backcolor = &HFFEEDD ' blue
     LOADED = True
-    SaveButn.Enabled = True
+    saveButn.Enabled = True
 End Sub
 
 Private Sub modButn_Click(index As Integer)
@@ -1453,7 +1454,7 @@ Private Sub SaveButn_Click()
     Dim record_count As Long
     Dim guid As String
     
-    SaveButn.Enabled = False
+    saveButn.Enabled = False
 
     If LOADED Then 'Update the loaded entry
         'to update subsidy entries
